@@ -1,8 +1,7 @@
-import path from 'path';
 import sinon from 'sinon';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from './../../server';
+import server from '../../server';
 import { userTestSeed, documentsTestSeed, rolesTestSeed } from './seeder';
 import models from '../../models';
 
@@ -11,12 +10,6 @@ const UsersModel = models.Users;
 const DocumentsModel = models.Documents;
 const RolesModels = models.Roles;
 const spy = sinon.spy();
-
-
-
-
-
-process.env.NODE_ENV = 'test';
 
 const should = chai.should();
 chai.use(chaiHttp);

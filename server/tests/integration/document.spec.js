@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import server from './../../server';
+import server from '../../server';
 
 const expect = chai.expect;
 chai.use(chaiHttp);
