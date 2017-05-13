@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "AJUdensi",
     "password": null,
     "database": "hermes_dev",
     "host": "127.0.0.1",
@@ -13,7 +13,8 @@
     "database": "hermes_test",
     "host": "127.0.0.1",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "use_env_variable": "DATABASE_TEST_URL"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
