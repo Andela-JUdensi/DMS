@@ -7,14 +7,12 @@
     "build:dev": "webpack --env=dev --progress --profile --colors",
     "build:dist": "webpack --env=prod --progress --profile --colors",
     "start": "nodemon --watch server --exec babel-node -- glimpse.js",
-
     "integration": "NODE_ENV=test mocha --timeout 50000 --compilers js:babel-core/register server/tests/**/*.spec.js",
     "coverage": "nyc report --reporter=text-lcov |  coveralls",
     "db:migrate:test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "db:seed:test": "NODE_ENV=test sequelize db:seed:all",
     "test:integration": "npm run db:migrate:test && npm run db:seed:test && npm run integration",
     "test": "npm run test:integration",
-
     "db:migrate": "NODE_ENV=development sequelize db:migrate:undo:all && NODE_ENV=development sequelize db:migrate",
     "db:seed": "NODE_ENV=development sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed"
@@ -110,6 +108,7 @@
     "sass-loader": "^6.0.3",
     "sass-resources-loader": "^1.2.1",
     "sequelize": "^3.30.4",
+    "sequelize-cli": "^2.7.0",
     "serve-favicon": "^2.4.2",
     "shortid": "^2.2.8",
     "sinon": "^2.1.0",
