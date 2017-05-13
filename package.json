@@ -7,7 +7,7 @@
     "build:dev": "webpack --env=dev --progress --profile --colors",
     "build:dist": "webpack --env=prod --progress --profile --colors",
     "start": "nodemon --watch server --exec babel-node -- glimpse.js",
-    "integration": "NODE_ENV=test mocha --timeout 50000 --compilers js:babel-core/register server/tests/**/*.spec.js",
+    "integration": "NODE_ENV=test nyc --reporter=html mocha server/tests/**/*.spec.js --compilers js:babel-core/register --timeout 100000 ",
     "coverage": "nyc report --reporter=text-lcov |  coveralls",
     "db:migrate:test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "db:seed:test": "NODE_ENV=test sequelize db:seed:all",
