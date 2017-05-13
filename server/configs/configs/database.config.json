@@ -8,13 +8,8 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": null,
-    "database": "hermes_test",
-    "host": "127.0.0.1",
-    "port": 5432,
-    "dialect": "postgres",
-    "use_env_variable": "DATABASE_TEST_URL"
+    "use_env_variable": "DATABASE_TEST_URL",
+    "dialect": "postgres"
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
