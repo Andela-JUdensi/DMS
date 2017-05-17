@@ -6,7 +6,7 @@ export default (sequelize, DataTypes) => {
       unique: true,
       validate: {
         len: {
-          args: [10, 150],
+          args: [5, 150],
           msg: 'Document title must be between 10 and 150 characters',
         },
       },
@@ -32,6 +32,7 @@ export default (sequelize, DataTypes) => {
       associate(models) {
         Documents.belongsTo(models.Users, {
           foreignKey: 'ownerID',
+          onDelete: 'CASCADE'
         });
       }
     }
