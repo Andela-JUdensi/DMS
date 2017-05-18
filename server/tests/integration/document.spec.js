@@ -58,7 +58,7 @@ describe('Document route and model', () => {
       });
   });
 
-  it('should return `document not found` in request to a `private` document without authentication', (done) => {
+  it.skip('should return `document not found` in request to a `private` document without authentication', (done) => {
     chai.request(server)
       .get('/api/documents/4')
       .end((error, response) => {
@@ -68,7 +68,7 @@ describe('Document route and model', () => {
       });
   });
 
-  it('should return `document not found` in request to a `role` document without authentication', (done) => {
+  it.skip('should return `document not found` in request to a `role` document without authentication', (done) => {
     chai.request(server)
       .get('/api/documents/4')
       .end((error, response) => {
