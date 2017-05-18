@@ -2,7 +2,7 @@ export default class Response {
 
   /**
    * Creates an instance of Response.
-   * 
+   *
    * @memberOf Response
    */
   constructor() {
@@ -10,12 +10,12 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} status 
-   * @returns 
-   * 
+   * @param {any} status
+   * @returns
+   *
    * @memberOf Response
    */
   static setStatus(status) {
@@ -24,11 +24,11 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @returns 
-   * 
+   * @returns
+   *
    * @memberOf Response
    */
   static getStatus() {
@@ -36,13 +36,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} data 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} data
+   * @returns
+   *
    * @memberOf Response
    */
   static respond(res, data) {
@@ -51,13 +51,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} data 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} data
+   * @returns
+   *
    * @memberOf Response
    */
   static success(res, data) {
@@ -66,13 +66,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} message 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} message
+   * @returns
+   *
    * @memberOf Response
    */
   static notFound(res, message) {
@@ -83,13 +83,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} message 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} message
+   * @returns
+   *
    * @memberOf Response
    */
   static internalError(res, message) {
@@ -100,13 +100,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} message 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} message
+   * @returns
+   *
    * @memberOf Response
    */
   static badRequest(res, message) {
@@ -117,13 +117,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} message 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} message
+   * @returns
+   *
    * @memberOf Response
    */
   static unAuthorized(res, message) {
@@ -134,13 +134,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} message 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} message
+   * @returns
+   *
    * @memberOf Response
    */
   static forbidden(res, message) {
@@ -151,13 +151,13 @@ export default class Response {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    * @static
-   * @param {any} res 
-   * @param {any} data 
-   * @returns 
-   * 
+   * @param {any} res
+   * @param {any} data
+   * @returns
+   *
    * @memberOf Response
    */
   static created(res, data) {
