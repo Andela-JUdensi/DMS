@@ -6,7 +6,8 @@
   "scripts": {
     "build:dev": "webpack --env=dev --progress --profile --colors",
     "build:dist": "webpack --env=prod --progress --profile --colors",
-    "start": "nodemon --watch server --exec babel-node -- glimpse.js",
+    "start": "nodemon --watch server --exec babel-node -- server/server.js",
+    "start:dev": "nodemon --watch server --exec babel-node -- glimpse.js",
     "integration": "NODE_ENV=test nyc --reporter=html mocha server/tests/**/*.spec.js --compilers js:babel-core/register --timeout 10000 ",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
