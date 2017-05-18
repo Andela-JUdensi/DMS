@@ -5,8 +5,7 @@
     "database": "hermes_dev",
     "host": "127.0.0.1",
     "port": 5432,
-    "dialect": "postgres",
-    "use_env_variable": "DATABASE_URL"
+    "dialect": "postgres"
   },
   "test": {
     "username": "AJUdensi",
@@ -15,7 +14,7 @@
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres",
-    "use_env_variable": "DATABASE_URL"
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
