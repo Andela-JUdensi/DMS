@@ -13,7 +13,7 @@
     "db:migrate:test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "db:seed:test": "NODE_ENV=test sequelize db:seed:all",
     "test:integration": "npm run db:migrate:test && npm run db:seed:test && npm run integration",
-    "test": "npm run integration && npm run coverage",
+    "test": "npm run test:integration && npm run coverage",
     "db:migrate": "NODE_ENV=development sequelize db:migrate:undo:all && NODE_ENV=development sequelize db:migrate",
     "db:seed": "NODE_ENV=development sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed"
