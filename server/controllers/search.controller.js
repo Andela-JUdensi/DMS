@@ -10,7 +10,7 @@ export default {
    */
   searchForAUser(req, res) {
     const query = req.query.q.split(' ').map(element => `%${element}%`);
-    const { limit = 5, offset = 0, orderBy = 'id' } = req.query;
+    const { limit = 5, offset = 0 } = req.query;
     Users.findAndCountAll({
       limit,
       offset,

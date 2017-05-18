@@ -57,7 +57,7 @@ export default {
             user,
           });
         }
-        return Response.unAuthorized(res, 'Your password is invalid');
+        return Response.unAuthorized(res, 'wrong login credentials');
       })
       .catch(error => Response.badRequest(res, error.message));
   },
@@ -108,7 +108,7 @@ export default {
           const result = Object.assign(users, pagination);
           return Response.success(res, result);
         }
-        return Response.notFound(res, 'no user can be found');
+        return Response.notFound(res, 'no user found');
       })
       .catch(error => Response
         .badRequest(res, error.message));

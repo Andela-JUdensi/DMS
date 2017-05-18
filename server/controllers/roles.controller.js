@@ -9,6 +9,10 @@ export default {
    * @param {any} res 
    */
   create(req, res) {
+    const { roleID } = req.locals.user.decoded;
+    if (roleID !== 1) {
+      Response.unAuthorized(res, 'you are not authorized');
+    }
     const roleData = lodash.pick(req.body, ['roleName', 'description']);
     Roles.create(roleData)
       .then(role => Response.created(res, role))
@@ -41,7 +45,7 @@ export default {
    * @param {any} res 
    */
   findOne(req, res) {
-    const { id } = req.body;
+    const { id } = req.params;
     Roles.findOne({
       where: {
         id,
@@ -62,10 +66,11 @@ export default {
    * @param {any} res 
    */
   update(req, res) {
-    if (!(req.locals.user.isAuthenticated)) {
-      return Response.unAuthorized(res, 'You are not logged in');
+    const { roleID } = req.locals.user.decoded;
+    if (roleID !== 1) {
+      Response.unAuthorized(res, 'you are not authorized');
     }
-    const { id } = req.body;
+    const { id } = req.params;
     Roles.findOne({
       where: {
         id,
@@ -88,10 +93,11 @@ export default {
    * @param {any} res 
    */
   delete(req, res) {
-    if (!(req.locals.user.isAuthenticated)) {
-      return Response.unAuthorized(res, 'You are not logged in');
+    const { roleID } = req.locals.user.decoded;
+    if (roleID !== 1) {
+      Response.unAuthorized(res, 'you are not authorized');
     }
-    const { id } = req.body;
+    const { id } = req.params;
     Roles.destroy({
       where: {
         id,
