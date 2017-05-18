@@ -78,9 +78,9 @@ describe('Document route and model', () => {
       });
   });
 
-  it('should return `success` in request to a `public` document without authentication', (done) => {
+  it('should return `success` in request to documents without authentication', (done) => {
     chai.request(server)
-      .get('/api/documents/2')
+      .get('/api/documents/')
       .end((error, response) => {
         response.status.should.equal(200);
         response.body.should.be.an('object');

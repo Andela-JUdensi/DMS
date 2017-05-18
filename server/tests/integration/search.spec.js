@@ -40,7 +40,7 @@ describe('Search API', () => {
     });
   });
 
-  describe.only('for authenticated users', () => {
+  describe('for authenticated users', () => {
     let authenticatedUser;
     before((done) => {
       chai.request(server)
