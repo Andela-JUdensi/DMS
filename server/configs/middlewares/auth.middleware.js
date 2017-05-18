@@ -45,9 +45,13 @@ const auth = {
             next();
           }
         });
-    } else if (!(authRoutes.includes(req.path))
+    } else if (
+    (!authRoutes.includes(req.path)
       && forbiddenRequest.includes(req.method)
-      && (!req.locals.user.isAuthenticated)) {
+      && !req.locals.user.isAuthenticated)
+      || (!req.locals.user.isAuthenticated && req.method === 'GET'
+      && (req.path.includes('users') || req.path.includes('roles'))
+      )) {
       return res.status(401).json({ message: 'you are not signed in' });
     }
     req.locals.user;
