@@ -10,7 +10,7 @@ module.exports = {
       authorizationToken: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: false,
       },
       createdAt: {
         allowNull: false,
