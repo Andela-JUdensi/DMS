@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import SERVER from '../configs/server.config';
-import Helpers from '../../utils/Helpers';
+import { Helpers, Response } from '../../utils/';
+import models from '../../models/';
+
+const Users = models.Users;
+const Documents = models.Documents;
 
 const auth = {
   verifyAuthentication(req, res, next) {
@@ -56,8 +60,117 @@ const auth = {
     }
     req.locals.user;
     return next();
-  }
+  },
 
+  validateUserInput(req, res, next) {
+    if (parseInt(req.body.roleID, 10) === 1) {
+      return Response.badRequest(res, 'you cannot signup with this priviledge');
+    }
+    const username = /\w+/g.test(req.body.username);
+    const firstname = /\w+/g.test(req.body.firstname);
+    const lastname = /\w+/g.test(req.body.lastname);
+    const email = /\S+@\S+\.\S+/.test(req.body.email);
+    const password = /\w+/g.test(req.body.password);
+
+    if (!username) {
+      return Response.badRequest(res, 'enter a valid username');
+    }
+    if (!firstname) {
+      return Response.badRequest(res, 'enter a valid firstname');
+    }
+    if (!lastname) {
+      return Response.badRequest(res, 'enter a valid lastname');
+    }
+    if (!email) {
+      return Response.badRequest(res, 'enter a valid email');
+    }
+    if (!password) {
+      return Response.badRequest(res, 'enter a valid password');
+    }
+    if (req.body.password && req.body.password.length < 7) {
+      return Response.badRequest(res, 'password must be greater than 7 characters');
+    }
+
+    Users.findOne({ where: { email: req.body.email } })
+      .then((user) => {
+        if (user) {
+          return Response.badRequest(res, 'email already exist');
+        }
+        Users.findOne({ where: { username: req.body.username } })
+          .then((newUser) => {
+            if (newUser) {
+              return Response.badRequest(res, 'username already exist');
+            }
+            req.locals.userInput = req.body;
+            next();
+          });
+      });
+  },
+
+  validateLoginInput(req, res, next) {
+    if (!(req.body.identifier) || !(req.body.password)) {
+      return Response.badRequest(res, 'username and password are required');
+    }
+    req.locals.userLogin = req.body;
+    next();
+  },
+
+  validateUserUpdate(req, res, next) {
+    if ([1, 2, 3].includes(parseInt(req.params.id, 10))) {
+      return Response.badRequest(res, 'you cannot modify this user');
+    }
+    if (parseInt(req.locals.user.decoded.roleID, 10) !== 1
+    || parseInt(req.locals.user.decoded.userID, 10) !== parseInt(req.params.id, 10)) {
+      return Response.unAuthorized(res, 'you are not permitted');
+    }
+    Users.findById(req.params.id)
+      .then((userToUpdate) => {
+        if (!userToUpdate) {
+          return Response.badRequest(res, 'user not found');
+        }
+        req.locals.userToUpdate = userToUpdate;
+        next();
+      });
+  },
+
+  validateDeleteUser(req, res, next) {
+    if (req.locals.roleID !== 1 || req.locals.userID !== req.params.id) {
+      return Response.forbidden(res, 'you cannot perform this action');
+    }
+    Users.findById(req.params.id)
+      .then((user) => {
+        if (!user) {
+          return Response.notFound(res, 'user not found');
+        }
+        if (parseInt(user.roleID, 10) === 1 || [1, 2, 3].includes(user.id)) {
+          return Response.forbidden(res, 'you can not perform this action');
+        }
+        req.locals.userToBeDeleted = user;
+        next();
+      });
+  },
+
+  validateUserUpdateAccess(req, res, next) {
+    Documents.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        model: Users,
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
+      }
+    })
+      .then((documentToUpdate) => {
+        if (!(documentToUpdate)) return Response.notFound(res, 'document not found');
+        if (parseInt(req.locals.user.decoded.roleID, 10) < parseInt(documentToUpdate.dataValues.User.roleID, 10)
+          || parseInt(req.locals.user.decoded.userID, 10) === parseInt(documentToUpdate.ownerID, 10)) {
+          req.locals.documentToUpdate = documentToUpdate;
+          return next();
+        }
+        return Response.unAuthorized(res, 'you are not authorized');
+      })
+      .catch(() => Response.badRequest());
+  }
 };
 
 export default auth;
