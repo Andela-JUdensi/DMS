@@ -1,15 +1,20 @@
-import webpack from 'webpack';
-import path from 'path';
+// import webpack from 'webpack';
+// import path from 'path';
+const webpack = require('webpack');
+const path = require('path');
 
-export default {
+module.exports = {
   entry: [
-    'webpack-hot-middleware/client',
-    path.join(__dirname, '/client/index.js'),
+    // 'eventsource-polyfill',
+    'webpack-hot-middleware/client?reaload=true',
+    path.join(__dirname, '/client/index'),
   ],
 
   output: {
+    // path: path.resolve(__dirname, ''),
     publicPath: '/',
-    path: path.resolve(__dirname, 'dist'),
+    sourceMapFilename: 'source.map',
+    filename: 'main.js'
   },
 
   module: {
@@ -20,12 +25,17 @@ export default {
           path.resolve(__dirname, 'client')
         ],
         exclude: /node_modules/,
-        loader: ['react-hot-loader', 'babel-loader'],
+        use: ['react-hot-loader', 'babel-loader'],
+      },
+      {
+        test: /\.scss?$/,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       }
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.css'],
+    extensions: ['.js', '.json', '.jsx', '.scss', '.pug', '.html'],
   },
   devtool: 'source-map',
   target: 'web',
@@ -43,23 +53,18 @@ export default {
   plugins: [
     new webpack.LoaderOptionsPlugin({
       minimize: true,
-      debug: false,
+      debug: false
     }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       mangle: {
         screw_ie8: true,
-        keep_fnames: true,
+        keep_fnames: true
       },
       compress: {
-        screw_ie8: true,
+        screw_ie8: true
       },
-      comments: false,
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development')
-      }
+      comments: false
     })
   ],
   node: {

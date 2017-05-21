@@ -5,5 +5,3 @@ runs.js
 .nyc_output
 coverage
 **docker**
-client/
-

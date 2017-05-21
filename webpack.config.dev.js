@@ -1,7 +1,9 @@
-import webpack from 'webpack';
-import path from 'path';
+// import webpack from 'webpack';
+// import path from 'path';
+const webpack = require('webpack');
+const path = require('path');
 
-export default {
+module.exports = {
   entry: [
     // 'eventsource-polyfill',
     'webpack-hot-middleware/client?reaload=true',
@@ -9,10 +11,10 @@ export default {
   ],
 
   output: {
-    path: path.resolve(__dirname),
+    // path: path.resolve(__dirname, 'build'),
     publicPath: '/',
     sourceMapFilename: 'source.map',
-    // path: path.resolve(__dirname, 'dist'), // string
+    filename: 'main.js'
   },
 
   module: {
@@ -32,7 +34,7 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.css'],
+    extensions: ['.js', '.json', '.jsx', '.scss'],
   },
   devtool: 'cheap-module-eval-source-map', // enum
   target: 'web', // enum
