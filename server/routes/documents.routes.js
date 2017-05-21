@@ -1,5 +1,6 @@
 import {
   documentsCtrl,
+  middlewares
 } from './dependencies';
 
 const documentRoute = (router) => {
@@ -10,7 +11,7 @@ const documentRoute = (router) => {
   router
     .route('/documents/:id')
     .get(documentsCtrl.findOne)
-    .put(documentsCtrl.update)
+    .put(middlewares.validateUserUpdateAccess, documentsCtrl.update)
     .delete(documentsCtrl.delete);
 };
 
