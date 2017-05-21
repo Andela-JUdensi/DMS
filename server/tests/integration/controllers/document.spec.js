@@ -4,10 +4,10 @@ import server from '../../../server';
 
 chai.should();
 chai.use(chaiHttp);
+let authenticatedUser;
 
 describe('The document API', () => {
-  let authenticatedUser;
-  describe('for authenticated users', () => {
+  describe.only('for authenticated users', () => {
     before((done) => {
       chai.request(server)
         .post('/api/users/login/')
@@ -18,6 +18,22 @@ describe('The document API', () => {
         .end((err, res) => {
           authenticatedUser = res.body;
           res.should.have.status(200);
+          done();
+        });
+    });
+    it('should return `success` creating a new document with valid records', (done) => {
+      chai.request(server)
+        .post('/api/documents/')
+        .set('authorization', `bearer ${authenticatedUser.token}`)
+        .set('x-userid', authenticatedUser.user.id)
+        .set('x-roleid', authenticatedUser.user.roleID)
+        .send({
+          title: `Introduction to common sense ${Date.now()}`,
+          body: 'Rene Descartes wrote “common sense is the most widely shared commodity.',
+          access: 'public'
+        })
+        .end((err, res) => {
+          res.should.have.status(201);
           done();
         });
     });
@@ -43,27 +59,7 @@ describe('The document API', () => {
           done();
         });
     });
-    it('should return `success` creating a new document with valid records', (done) => {
-      chai.request(server)
-        .post('/api/documents/')
-        .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
-        .send({
-          title: 'Introduction to commonsense',
-          body: `Rene Descartes wrote “common sense is the most widely shared commodity in the world, 
-            for every man is convinced that he is well supplied with it”. We all like to think of how endowed we are 
-            with common sense. After all, it is common. If this conviction equals reality, 
-            and common sense is really a valid way of obtaining reliable results, then the 
-            world would be less troubled. For common sense is “seeing things as they are; and 
-            doing things as they ought to be”, said Harriet Beecher Stowe.`,
-          access: 'public'
-        })
-        .end((err, res) => {
-          res.should.have.status(201);
-          done();
-        });
-    });
+    
     it('should return all documents based on user privilege', (done) => {
       chai.request(server)
         .get('/api/documents/')
@@ -85,7 +81,6 @@ describe('The document API', () => {
         .set('x-roleid', authenticatedUser.user.roleID)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.title.should.eql('how to read a book');
           res.body.access.should.eql('public');
           res.body.User.username.should.eql('SiliconValley');
           done();
@@ -148,14 +143,13 @@ describe('The document API', () => {
         .set('authorization', `bearer ${authenticatedUser.token}`)
         .set('x-userid', authenticatedUser.user.id)
         .set('x-roleid', authenticatedUser.user.roleID)
-        .send({ title: 'The Bounds of Reason - II' })
+        .send({ title: `The Bounds of Reason ${Date.now()}` })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.title.should.eql('The Bounds of Reason - II');
           done();
         });
     });
-    it('should return `you are not authorized` in request to delete document above access level', (done) => {
+    it('should return `you are not authorized` in request to delete unavailable document', (done) => {
       chai.request(server)
         .put('/api/documents/100')
         .set('authorization', `bearer ${authenticatedUser.token}`)
