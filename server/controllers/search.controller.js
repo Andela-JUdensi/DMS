@@ -18,7 +18,8 @@ export default {
         username: {
           $ilike: { $any: query }
         }
-      }
+      },
+      attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
     })
       .then((searchResult) => {
         if (searchResult.length < 1) {

@@ -1,20 +1,15 @@
 import chai from 'chai';
-import faker from 'faker';
-import sinon from 'sinon';
 import chaiHttp from 'chai-http';
-import server from '../../server';
-import models from '../../models';
-import { searchCtrl } from '../../controllers';
+import server from '../../../server';
 
-const should = chai.should();
-const RolesModels = models.Roles;
+chai.should();
 chai.use(chaiHttp);
 
-describe('Search API', () => {
+
+describe('The Search API', () => {
   describe('for Unauthenticated users', () => {
     describe('searching for a user', () => {
-      it('should not return `not signed in` for unauthenticated users', function (done) {
-        this.timeout(20000);
+      it('should not return `not signed in` for unauthenticated users', (done) => {
         chai.request(server)
           .get('/api/search/users/?q=ajudensi')
           .end((err, res) => {
@@ -29,54 +24,34 @@ describe('Search API', () => {
     describe('searching for a document', () => {
       it('should not return `not signed in` for unauthenticated users', (done) => {
         chai.request(server)
-          .get('/api/search/documents/?q=sa')
+          .get('/api/search/documents/?q=a very random title')
           .end((err, res) => {
             res.should.not.have.status(200);
             res.body.should.be.an('object');
-            res.body.message.should.eql('no match found for sa');
+            res.body.message.should.eql('no match found for a very random title');
             done();
           });
       });
     });
   });
 
-  describe.only('for authenticated users', () => {
+  describe('for Authenticated users', () => {
     let authenticatedUser;
     before((done) => {
       chai.request(server)
         .post('/api/users/login/')
         .send({
-          identifier: 'ajudensi',
+          identifier: 'SiliconValley',
           password: 'password123',
         })
         .end((err, res) => {
           authenticatedUser = res.body;
+          res.should.have.status(200);
           done();
         });
     });
-    // describe.only('sinon mocking', () => {
-    //   const req = {};
-    //   let res = {};
-    //   beforeEach((done) => {
-    //     res = {};
-    //     res.status = sinon.spy();
-    //     res.json = sinon.spy();
-    //     done();
-    //   });
-    //   it('should return search result with pagination', (done) => {
-    //   // const req = {};
-    //   // const res = {
-    //   //   data: sinon.spy(),
-    //   // };
-    //     req.query = { q: 'ajudensi' };
-    //     searchCtrl.searchForAUser(req, res);
-    //     console.log(res.status.returnValues);
-    //     done();
-    //   });
-    // });
     describe('searching for a user', () => {
-      it('should not return `bad request` for authenticated users', function (done) {
-        this.timeout(20000);
+      it('should return `actual user` for authenticated users', (done) => {
         chai.request(server)
           .get('/api/search/users/?q=ajudensi')
           .set('authorization', `bearer ${authenticatedUser.token}`)
@@ -92,17 +67,16 @@ describe('Search API', () => {
       });
     });
 
-    describe('searching for a user', () => {
+    describe('searching for a document', () => {
       it('should not return `bad request` for authenticated users', (done) => {
         chai.request(server)
-          .get('/api/search/documents/?q=quo')
+          .get('/api/search/documents/?q=cheese')
           .set('authorization', `bearer ${authenticatedUser.token}`)
           .set('x-userid', authenticatedUser.user.id)
           .set('x-roleid', authenticatedUser.user.roleID)
           .end((err, res) => {
             res.should.not.have.status(401);
             res.body.should.be.an('object');
-            res.body.message.should.eql('no match found for quo');
             done();
           });
       });

@@ -1,11 +1,9 @@
 import chai from 'chai';
 import faker from 'faker';
 import chaiHttp from 'chai-http';
-import server from '../../server';
-import models from '../../models';
+import server from '../../../server';
 
-const should = chai.should();
-const RolesModels = models.Roles;
+chai.should();
 chai.use(chaiHttp);
 
 describe('Role API', () => {
@@ -24,16 +22,14 @@ describe('Role API', () => {
       });
   });
 
-
   describe('GET Role', () => {
-    it('should not GET all the roles if not authorized', function (done) {
-      this.timeout(500000);
+    it('should not GET all the roles if not authorized', (done) => {
       chai.request(server)
         .get('/api/roles/')
         .end((err, res) => {
           res.should.have.status(401);
           res.should.be.an('object');
-          // res.body.message.should.eql('you are not signed in');
+          res.body.message.should.eql('you are not signed in');
           done();
         });
     });
@@ -64,7 +60,7 @@ describe('Role API', () => {
     });
   });
 
-  describe('get roles route if user is authenticated', () => {  
+  describe('get roles route if user is authenticated', () => {
     let authenticatedUser;
     it('should login an existing user', (done) => {
       chai.request(server)
@@ -88,9 +84,6 @@ describe('Role API', () => {
         .set('x-roleid', authenticatedUser.user.roleID)
         .end((err, res) => {
           res.should.have.status(200);
-          // res.body.should.be.a('Object');
-          // res.body.success.should.eql(true);
-          // res.body.message.should.eql('This are the roles');
           done();
         });
     });
@@ -104,8 +97,6 @@ describe('Role API', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('Object');
-          // res.body.success.should.eql(true);
-          // res.body.message.should.eql('This is the role');
           done();
         });
     });
@@ -118,9 +109,6 @@ describe('Role API', () => {
       .set('x-roleid', authenticatedUser.user.roleID)
       .end((err, res) => {
         res.should.have.status(404);
-        // res.body.should.be.a('Object');
-        // res.body.success.should.eql(false);
-        // res.body.message.should.eql('This role does not exist');
         done();
       });
     });
@@ -137,9 +125,6 @@ describe('Role API', () => {
         })
         .end((err, res) => {
           res.should.have.status(201);
-          // res.body.should.be.a('Object');
-          // res.body.success.should.eql(false);
-          // res.body.message.should.eql('Role not found');
           done();
         });
     });
@@ -152,9 +137,6 @@ describe('Role API', () => {
         .set('x-roleid', authenticatedUser.user.roleID)
         .end((err, res) => {
           res.should.have.status(404);
-          // res.body.should.be.a('Object');
-          // res.body.success.should.eql(false);
-          // res.body.message.should.eql('Error deleting role');
           done();
         });
     });
@@ -167,9 +149,6 @@ describe('Role API', () => {
         .set('x-roleid', authenticatedUser.user.roleID)
         .end((err, res) => {
           res.should.have.status(200);
-          // res.body.should.be.a('Object');
-          // res.body.success.should.eql(true);
-          // res.body.message.should.eql('Role deleted succesfully');
           done();
         });
     });

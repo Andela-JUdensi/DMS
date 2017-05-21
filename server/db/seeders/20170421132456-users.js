@@ -1,4 +1,4 @@
-const Faker = require('Faker');
+const faker = require('faker');
 const bcrypt = require('bcrypt');
 
 const salt = bcrypt.genSaltSync(10);
@@ -9,16 +9,7 @@ module.exports = {
     for (let index = 4; index < 20; index += 1) {
       arr.push(index);
     }
-    const users = [...arr.map(num => ({
-      username: Faker.Internet.userName(),
-      firstname: Faker.Name.lastName(),
-      lastname: Faker.Name.firstName(),
-      email: Faker.Internet.email(),
-      password: bcrypt.hashSync('password123', salt),
-      roleID: 3,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })), ...[{
+    const users = [...[{
       username: 'SiliconValley',
       firstname: 'Chidi',
       lastname: 'Udensi',
@@ -27,12 +18,11 @@ module.exports = {
       roleID: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
-    },
-    {
-      username: Faker.Internet.userName(),
-      firstname: Faker.Name.firstName(),
-      lastname: Faker.Name.lastName(),
-      email: Faker.Internet.email(),
+    }, {
+      username: 'thePiper',
+      firstname: 'Peter',
+      lastname: 'Piper',
+      email: 'peter@piper.com',
       password: bcrypt.hashSync('password123', salt),
       roleID: 3,
       createdAt: new Date(),
@@ -47,7 +37,16 @@ module.exports = {
       roleID: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }]];
+    }], ...arr.map(num => ({
+      username: faker.internet.userName(),
+      firstname: faker.name.lastName(),
+      lastname: faker.name.firstName(),
+      email: faker.internet.email(),
+      password: bcrypt.hashSync('password123', salt),
+      roleID: 3,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }))];
     return queryInterface.bulkInsert('Users', users, { returning: true, validate: true });
   },
 

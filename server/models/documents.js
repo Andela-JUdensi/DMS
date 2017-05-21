@@ -3,11 +3,14 @@ export default (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: 'a document with this title already exist. Choose another'
+      },
       validate: {
         len: {
-          args: [5, 150],
-          msg: 'Document title must be between 10 and 150 characters',
+          args: [5, 100],
+          msg: 'document title must be between 5 and 100 characters',
         },
       },
     },
@@ -20,12 +23,19 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 'public',
       validate: {
-        isIn: [['public', 'private', 'role']],
+        isIn: {
+          args: [['public', 'private', 'role']],
+          msg: 'the specified access name is not available. Choose from [public, private, role]'
+        }
       },
     },
     ownerID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
   }, {
     classMethods: {

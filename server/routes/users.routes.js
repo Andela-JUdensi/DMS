@@ -1,20 +1,21 @@
 import {
   usersCtrl,
+  middlewares
 } from './dependencies';
 
 const userRoute = (router) => {
   router
     .route('/users')
-    .post(usersCtrl.create)
+    .post(middlewares.validateUserInput, usersCtrl.create)
     .get(usersCtrl.findAll);
   router
     .route('/users/:id')
     .get(usersCtrl.findOne)
-    .put(usersCtrl.update)
+    .put(middlewares.validateUserUpdate, usersCtrl.update)
     .delete(usersCtrl.delete);
   router
     .route('/users/login')
-    .post(usersCtrl.login);
+    .post(middlewares.validateLoginInput, usersCtrl.login);
   router
     .route('/users/logout')
     .post(usersCtrl.logout);

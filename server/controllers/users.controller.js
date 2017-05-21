@@ -11,10 +11,10 @@ export default {
    * @param {any} res
    */
   create(req, res) {
-    const userData = lodash.pick(req.body, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
+    const userData = lodash.pick(req.locals.userInput, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
     Users.create(userData)
-      .then(user => Response.created(res, user))
-      .catch(error => Response.badRequest(res, error));
+      .then(user => Response.created(res, {user, message: 'account created successfully' }))
+      .catch(error => Response.badRequest(res, error.message));
   },
 
   /**
@@ -25,12 +25,7 @@ export default {
    * @returns
    */
   login(req, res) {
-    if (!(req.body.identifier) || !(req.body.password)) {
-      return Response.badRequest(res, 'Username and password are required');
-    }
-
-    const { identifier, password } = req.body;
-
+    const { identifier, password } = req.locals.userLogin;
     Users.findOne({
       where: {
         $or: {
@@ -47,19 +42,18 @@ export default {
             username: user.username,
             roleID: user.roleID
           }, secret, {
-            expiresIn: 3400
+            expiresIn: 86400
           });
 
           return res.status(200).send({
             token,
             expiresIn: 86400,
-            message: `Welcome ${user.username}`,
+            message: `welcome ${user.username}`,
             user,
           });
         }
         return Response.unAuthorized(res, 'wrong login credentials');
       })
-      .catch(error => Response.badRequest(res, error.message));
   },
 
   /**
@@ -79,8 +73,7 @@ export default {
         req.locals.user = {};
 
         Response.success(res, 'logout successful');
-      })
-      .catch(error => Response.badRequest(res, error.message));
+      });
   },
 
   /**
@@ -126,9 +119,10 @@ export default {
       where: {
         id,
       },
+      attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt', 'roleID'],
     })
     .then((user) => {
-      if (!(user)) return Response.notFound(res, 'User not found');
+      if (!(user)) return Response.notFound(res, 'user not found');
       Response.success(res, user);
     })
     .catch(error => Response
@@ -142,23 +136,10 @@ export default {
    * @param {any} res
    */
   update(req, res) {
-    if (!(req.locals.user.isAuthenticated)) {
-      return Response.unAuthorized(res, 'You are not logged in');
-    }
-    const { id } = req.params;
-    Users.findOne({
-      where: {
-        id,
-      }
-    })
-      .then((userToUpdate) => {
-        if (!(userToUpdate)) return Response.notFound(res, 'user not found');
-        const fieldsToUpdate = lodash.pick(req.body, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
-        userToUpdate.updateAttributes(fieldsToUpdate)
-          .then(updatedUser => Response.success(res, updatedUser))
-          .catch(error => Response.internalError(res, error.message));
-      })
-        .catch(error => Response.badRequest(res, error.message));
+    const fieldsToUpdate = lodash.pick(req.body, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
+    req.locals.userToUpdate.update(fieldsToUpdate)
+      .then(updatedUser => Response.success(res, updatedUser))
+      .catch(error => Response.badRequest(res, error.message));
   },
 
   /**
@@ -168,15 +149,7 @@ export default {
    * @param {any} res
    */
   delete(req, res) {
-    if (!(req.locals.user.isAuthenticated)) {
-      return Response.unAuthorized(res, 'You are not logged in');
-    }
-    const { id } = req.params;
-    Users.destroy({
-      where: {
-        id,
-      }
-    })
+    req.locals.userToBeDeleted.destroy()
       .then(userToDelete => Response.success(res, userToDelete))
       .catch(error => Response.badRequest(res, error.message));
   },
@@ -198,7 +171,7 @@ export default {
       }
     })
       .then((response) => {
-        if (!(response)) return Response.notFound(res, 'User not found');
+        if (response.count < 1) return Response.notFound(res, 'no document found');
         Response.success(res, { response });
       })
       .catch(error => Response.badRequest(res, error.message));

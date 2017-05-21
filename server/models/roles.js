@@ -3,12 +3,15 @@ export default (sequelize, DataTypes) => {
     roleName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: {
+        args: true,
+        msg: 'a role with this name already exist. Choose another'
+      },
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
-      unique: true,
+      unique: false,
     }
   }, {
     classMethods: {

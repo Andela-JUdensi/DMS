@@ -38,6 +38,7 @@ export default {
       order: [[orderBy, 'ASC']],
       include: {
         model: Users,
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
         where: {
           roleID: { $gte: roleID },
         }
@@ -68,6 +69,7 @@ export default {
     Documents.findOne({
       include: {
         model: Users,
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
         where: {
           roleID: { $gte: roleID },
         }
@@ -91,22 +93,8 @@ export default {
    * @param {any} res 
    */
   update(req, res) {
-    const { id } = req.params;
-    if (!(req.locals.user.isAuthenticated)) {
-      return Response.unAuthorized(res, 'You are not logged in');
-    }
-    Documents.findOne({
-      where: {
-        id,
-      }
-    })
-      .then((documentToUpdate) => {
-        if (!(documentToUpdate)) return Response.notFound(res, 'document not found');
-        const fieldsToUpdate = lodash.pick(req.body, ['title', 'body']);
-        documentToUpdate.updateAttributes(fieldsToUpdate)
-          .then(updatedDocument => Response.success(res, { fieldsToUpdate, updatedDocument }))
-          .catch(error => Response.internalError(res, error.message));
-      })
+    req.locals.documentToUpdate.update(lodash.pick(req.body, ['title', 'body']))
+      .then(updatedDocument => Response.success(res, updatedDocument))
       .catch(error => Response.badRequest(res, error.message));
   },
 
@@ -117,7 +105,6 @@ export default {
    * @param {any} res 
    */
   delete(req, res) {
-    console.log('In document controller');
     const { id } = req.params;
     const { userID, roleID } = req.locals.user.decoded;
     const query = Helpers.determineDocsforUser(userID, roleID);
@@ -135,6 +122,7 @@ export default {
     })
       .then((document) => {
         if (!(document)) return Response.notFound(res, 'document not found');
+        
         return Response.success(res, document);
       })
       .catch(error => Response.badRequest(res, error.message));
