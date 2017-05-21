@@ -32,7 +32,7 @@ if (process.env.NODE_ENV !== 'production') {
   }));
   app.use(webpackHotMiddleware(compiler));
 } else {
-  app.use('/', express.static(path.join(__dirname)));
+  app.use('/', express.static(path.join(__dirname, 'build')));
 }
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json({ limit: '50mb' }));
