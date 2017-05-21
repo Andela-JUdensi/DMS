@@ -1,14 +1,10 @@
 export default [
   {
-    roleName: 'superadmin',
+    roleName: 'regular',
     description: 'can add admins',
   },
   {
-    roleName: 'admin',
-    description: 'have admin priviledge',
-  },
-  {
-    roleName: 'regular',
-    description: 'do stuff like a normal person',
+    roleName: 'guest',
+    description: 'an unregistered user',
   },
 ];
