@@ -27,7 +27,9 @@ class PublicDocuments extends React.Component {
       this.props.searchAction(this.state.inputData, 'public');
     });
     setInterval(() => {
-      if ((this.state.inputData.length > 0 || document.activeElement['id'] === 'publicDocumentSearch') && this.searchInput !== null) {
+      if ((this.state.inputData.length > 0 ||
+          document.activeElement.id === 'publicDocumentSearch')
+          && this.searchInput !== null) {
         this.searchInput.focus();
       } else if (this.searchInput !== null) {
         this.searchInput.blur();
