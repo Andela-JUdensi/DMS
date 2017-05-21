@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 let authenticatedUser;
 
 describe('The document API', () => {
-  describe.only('for authenticated users', () => {
+  describe('for authenticated users', () => {
     before((done) => {
       chai.request(server)
         .post('/api/users/login/')
@@ -59,7 +59,7 @@ describe('The document API', () => {
           done();
         });
     });
-    
+
     it('should return all documents based on user privilege', (done) => {
       chai.request(server)
         .get('/api/documents/')
