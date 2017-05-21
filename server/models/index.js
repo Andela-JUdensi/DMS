@@ -1,11 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require('../configs/configs/database.config.js')[env];
+const allConfig = require('../configs/configs/database.config.js');
+const basename = path.basename(module.filename);
 const db = {};
 const dotenv = require('dotenv');
+
+const config = allConfig[env];
 
 dotenv.config();
 
