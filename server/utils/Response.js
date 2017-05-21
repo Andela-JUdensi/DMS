@@ -46,6 +46,7 @@ export default class Response {
    * @memberOf Response
    */
   static respond(res, data) {
+    // return { status: this.getStatus(), data: res.json(data) };
     return res.status(this.getStatus())
       .json(data);
   }
