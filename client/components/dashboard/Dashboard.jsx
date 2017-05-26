@@ -56,6 +56,7 @@ class Dashboard extends React.Component {
       const { count } = this.props.documents;
       const { rows } = this.props.documents;
       const { currentUser, documents } = this.props;
+
       return (
         <MuiThemeProvider>
           <div className="mui-row">
@@ -90,7 +91,7 @@ class Dashboard extends React.Component {
                     Icon={Assessment}
                     color={purple600}
                     title="My Documents"
-                    value={Helpers.countUserDocuments(documents, currentUser.userid)}
+                    value={Helpers.countUserDocuments(documents, currentUser.userID)}
                   />
                 </div>
 

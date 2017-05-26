@@ -8,22 +8,22 @@ import routes from './routes';
 import { SERVER } from './configs/configs';
 import middleware from './configs/middlewares/';
 
-const server = express();
+const app = express();
 const router = express.Router();
 const format = mJson(':method :url :status :res[content-length] bytes :response-time ms');
 
-server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
-server.use(bodyParser.json({ limit: '100mb' }));
-server.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
-server.use([middleware.verifyAuthentication, middleware.verifyRouteAndMethod]);
-server.use(morgan(format));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use([middleware.verifyAuthentication, middleware.verifyRouteAndMethod]);
+app.use(morgan(format));
 
 routes(router);
-server.use('/api', router);
-server.listen(SERVER.PORT, () => winston.info(`Hermes is Awakened ON PORT ${SERVER.PORT}`));
+app.use('/api', router);
+app.listen(SERVER.PORT, () => winston.info(`Hermes is Awakened ON PORT ${SERVER.PORT}`));
 
-export default server;
+export default app;

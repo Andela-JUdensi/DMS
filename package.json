@@ -22,7 +22,9 @@
     "db:migrate": "NODE_ENV=development sequelize db:migrate:undo:all && NODE_ENV=development sequelize db:migrate",
     "db:seed": "NODE_ENV=development sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed",
-    "postinstall": "npm run db:setup && npm run build"
+    "postinstall": "npm run db:setup && npm run build",
+    "e2e-setup": "selenium-standalone install",
+    "test-e2e": "nightwatch"
   },
   "jest": {
     "transform": {
@@ -78,7 +80,6 @@
     "jest-cli": "^20.0.3",
     "json-loader": "^0.5.4",
     "mocha": "^3.3.0",
-    "nightwatch": "^0.9.15",
     "node-mocks-http": "^1.6.2",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
@@ -152,7 +153,9 @@
     "sequelize-cli": "^2.7.0",
     "serve-favicon": "^2.4.2",
     "shortid": "^2.2.8",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "selenium-standalone": "5.9.0",
+    "nightwatch": "0.9.9"
   },
   "engines": {
     "node": "6.10.0"
