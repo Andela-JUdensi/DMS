@@ -120,18 +120,19 @@ const auth = {
       return Response.badRequest(res, 'you cannot modify this user');
     }
     if (parseInt(req.locals.user.decoded.userID, 10)
-        !== parseInt(req.params.id, 10)) {
+        === parseInt(req.params.id, 10) ||
+        (parseInt(req.locals.user.decoded.roleID, 10) === 1)) {
+      Users.findById(req.params.id)
+        .then((userToUpdate) => {
+          if (!userToUpdate) {
+            return Response.badRequest(res, 'user not found');
+          }
+          req.locals.userToUpdate = userToUpdate;
+          return next();
+        });
+    } else {
       return Response.unAuthorized(res, 'you are not permitted');
     }
-    Users.findById(req.params.id)
-      .then((userToUpdate) => {
-        if (!userToUpdate) {
-          console.log('bad 3')
-          return Response.badRequest(res, 'user not found');
-        }
-        req.locals.userToUpdate = userToUpdate;
-        next();
-      });
   },
 
   validateDeleteUser(req, res, next) {
