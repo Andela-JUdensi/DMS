@@ -18,7 +18,7 @@
     "db:seed:test": "NODE_ENV=test sequelize db:seed:all",
     "test:component": "jest",
     "test:integration": "NODE_ENV=test npm run db:migrate:test && npm run db:seed:test && npm run integration",
-    "test": "NODE_ENV=test npm run test:integration && npm run coverage && npm run test:component",
+    "test": "NODE_ENV=test npm run test:integration && npm run coverage",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed",
