@@ -14,10 +14,12 @@ export default class Helpers {
    *
    * @memberOf Helpers
    */
-  static determineDocsforUser(userID, userRoleID) {
+  static determineDocsforUser(userID, userRoleID, searchAccess) {
     if (!(userID)) {
       return [{ access: 'public' }];
-    } else if (userRoleID <= 2) {
+    } else if (userRoleID <= 2 && searchAccess) {
+      return [{ access: searchAccess }, { ownerID: userID }];
+    } else if (userRoleID <= 2 && !searchAccess) {
       return [{ access: 'private' }, { access: 'public' }, { access: 'role' }, { ownerID: userID }];
     }
     return [{ access: 'public' }, { access: 'role' }, { ownerID: userID }];
@@ -65,7 +67,7 @@ export default class Helpers {
         $ilike: { $any: searchTokens },
       },
       access: searchAccess,
-      $or: this.determineDocsforUser(userID, roleID)
+      $or: this.determineDocsforUser(userID, roleID, searchAccess)
     };
     return query;
   }
