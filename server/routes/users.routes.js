@@ -12,7 +12,7 @@ const userRoute = (router) => {
     .route('/users/:id')
     .get(usersCtrl.findOne)
     .put(middlewares.validateUserUpdate, usersCtrl.update)
-    .delete(usersCtrl.delete);
+    .delete(middlewares.validateDeleteUser, usersCtrl.delete);
   router
     .route('/users/login')
     .post(middlewares.validateLoginInput, usersCtrl.login);
