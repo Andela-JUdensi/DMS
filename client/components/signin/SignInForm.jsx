@@ -10,22 +10,7 @@ import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import FormTextFields from '../common/FormTextFields';
 import { signInAction } from '../../actions/authentication.action';
 import Alerts from '../common/alerts';
-
-const styles = {
-  formStyle: {
-    margin: 15,
-  },
-  button: {
-    margin: 1,
-    width: '',
-    display: 'inline-block',
-    position: 'relative',
-    backgroundColor: 'crimson'
-  },
-  formElement: {
-    margin: 5,
-  },
-};
+import styles from '../../assets/styles';
 
 class SignInForm extends React.Component {
   constructor(props) {

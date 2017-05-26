@@ -22,9 +22,11 @@ export const getUserAction = userID => dispatch => axios.get(`/api/users/${userI
   });
 
 export const updateUserAction = (userID, userData) => dispatch => axios.put(`/api/users/${userID}`, userData)
-  .then(() => {
+  .then((success) => {
+    console.log(success);
   })
-  .catch(() => {
+  .catch((error) => {
+    console.log(error.response);
   });
 
 

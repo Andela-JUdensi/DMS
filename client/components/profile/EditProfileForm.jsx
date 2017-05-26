@@ -96,7 +96,7 @@ class EditProfileForm extends React.Component {
       .omitBy(lodash.isEmpty)
       .omitBy(lodash.isNull).value();
 
-    this.props.updateUserAction(this.state.userID, selectedUserInfo)
+    this.props.updateUserAction(this.props.match.params.id, selectedUserInfo)
       .then(() => {
         this.setState({
           errors: '',
