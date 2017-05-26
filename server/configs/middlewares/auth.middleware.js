@@ -116,17 +116,17 @@ const auth = {
   },
 
   validateUserUpdate(req, res, next) {
-    if ([1, 2, 3].includes(parseInt(req.params.id, 10))) {
+    if ([1, 2, 3].indexOf(parseInt(req.params.id, 10)) > 0) {
       return Response.badRequest(res, 'you cannot modify this user');
     }
-    if (parseInt(req.locals.user.decoded.roleID, 10) !== 1
-      || parseInt(req.locals.user.decoded.userID, 10)
-      !== parseInt(req.params.id, 10)) {
+    if (parseInt(req.locals.user.decoded.userID, 10)
+        !== parseInt(req.params.id, 10)) {
       return Response.unAuthorized(res, 'you are not permitted');
     }
     Users.findById(req.params.id)
       .then((userToUpdate) => {
         if (!userToUpdate) {
+          console.log('bad 3')
           return Response.badRequest(res, 'user not found');
         }
         req.locals.userToUpdate = userToUpdate;
@@ -145,7 +145,7 @@ const auth = {
           return Response.notFound(res, 'user not found');
         }
         if (parseInt(user.roleID, 10) === 1 || [1, 2, 3].includes(user.id)) {
-          return Response.forbidden(res, 'you can not perform this action two');
+          return Response.forbidden(res, 'you can not perform this action');
         }
         req.locals.userToBeDeleted = user;
         next();
