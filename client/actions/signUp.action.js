@@ -1,12 +1,11 @@
 import axios from 'axios';
-import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 const signUpAction = userData => dispatch => new Promise((resolve, reject) => {
   axios.post('/api/users/', userData)
     .then((response) => {
       resolve(response);
     })
-    .catch(error => reject(error));
+    .catch(error => reject(error.response.data.message));
 });
 
 export default signUpAction;
