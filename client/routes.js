@@ -5,7 +5,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import AddDocument from './components/documents/AddDocument';
 import Profile from './components/profile/Profile';
 import ViewUsers from './components/users/ViewUsers';
-import requireAuthentication from './utils/isAuthenticated';
+import requireAuthentication from './utils/requireAuthentication';
 import preventAuthenticatedUsers from './utils/preventAuthenticatedUsers';
 
 const routes = [
