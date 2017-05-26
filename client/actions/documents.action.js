@@ -20,36 +20,46 @@ export const deleteDocumentSuccess = documentID => ({
   documentID,
 });
 
-export const getDocumentsAction = (limit = 12) => dispatch => axios.get(`/api/documents/?limit=${limit}`)
-  .then((response) => {
-    dispatch(getDocumentSuccess(response.data));
-  })
-  .catch(() => {
-    // throw (error);
-  });
-
-export const addDocumentAction = documentData => dispatch => axios.post('/api/documents/', documentData)
-  .then((response) => {
-    dispatch(getDocumentSuccess(response));
-  })
-  .catch(() => {
-    // throw (error);
-  });
-
-
-export const deleteDocumentAction = documentID => dispatch => axios.delete(`/api/documents/${documentID}`)
-  .then((response) => {
-    dispatch(deleteDocumentSuccess(documentID));
-  })
-  .catch(() => {
-    // console.log(error);
-  });
-
-export const editDocumentAction = (documentID, documentData) => (dispatch) => {
-  return axios.put(`/api/documents/${documentID}`, documentData)
+export const getDocumentsAction = (limit = 10, offset = 0) =>
+  dispatch => axios.get(`/api/documents/?limit=${limit}&offset=${offset}`)
     .then((response) => {
-      dispatch(getDocumentsAction());
+      dispatch(getDocumentSuccess(response.data));
     })
-    .catch(() => {
+    .catch((error) => {
+      throw error;
     });
-};
+
+
+export const addDocumentAction = documentData =>
+  dispatch => new Promise((resolve, reject) => {
+    axios.post('/api/documents/', documentData)
+      .then((response) => {
+        dispatch(getDocumentSuccess(response));
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+      });
+  });
+
+export const deleteDocumentAction = documentID =>
+  dispatch => new Promise((resolve, reject) => {
+    axios.delete(`/api/documents/${documentID}`)
+      .then(() => {
+        resolve(dispatch(deleteDocumentSuccess(documentID)));
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+      });
+  });
+
+export const editDocumentAction = (documentID, documentData) =>
+  dispatch => new Promise((resolve, reject) => {
+    axios.put(`/api/documents/${documentID}`, documentData)
+      .then(() => {
+        resolve(dispatch(getDocumentsAction()));
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+      });
+  });

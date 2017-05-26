@@ -6,11 +6,12 @@ export const getSearchSuccess = search => ({
   search
 });
 
-export const searchAction = (searchToken, access = undefined) => dispatch => axios.get(`/api/search/documents/?q=${searchToken}&a=${access}`)
-  .then((response) => {
-    dispatch(getSearchSuccess(response.data));
-  })
-  .catch((error) => {
-    // console.log(error);
-  });
+export const searchAction = (searchToken, access = undefined) =>
+  dispatch => axios.get(`/api/search/documents/?q=${searchToken}&a=${access}`)
+    .then((response) => {
+      dispatch(getSearchSuccess(response.data));
+    })
+    .catch((error) => {
+      throw error;
+    });
 

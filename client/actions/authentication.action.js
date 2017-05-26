@@ -2,7 +2,6 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER, SHOW_ONLY_PUBLIC_DOCUMENTS } from './types';
-import { getDocumentsAction } from '../actions/documents.action';
 
 export const setCurrentUser = user => ({
   type: SET_CURRENT_USER,
@@ -40,6 +39,6 @@ export const signInAction = userInput => dispatch => new Promise((resolve, rejec
       dispatch(setCurrentUser(jwt.decode(token)));
       resolve(response);
     })
-    .catch(error => reject(error));
+    .catch(error => reject(error.response.data.message));
 });
 
