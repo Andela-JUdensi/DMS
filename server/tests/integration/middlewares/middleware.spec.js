@@ -100,7 +100,7 @@ describe('Middlewares', () => {
       const response = responseEvent();
       request = httpMocks.createRequest({
         method: 'DELETE',
-        url: '/api/users/10',
+        url: '/api/users/1',
         headers: { authorization: regularToken },
         locals: {
           user: {
@@ -204,6 +204,7 @@ describe('Middlewares', () => {
         url: '/api/users/',
         body: {
           username: '',
+          email: 'test@test.com'
         }
       });
       const middlewareStub = {
@@ -428,6 +429,123 @@ describe('Middlewares', () => {
       middlewares.validateUserUpdate(request, response, middlewareStub.callback);
       middlewareStub.callback.should.not.have.been.called;
       done();
+    });
+  });
+
+  describe('validateDocumentInput', () => {
+    it('it should return `bad request if case of an an empty title', () => {
+      const response = responseEvent();
+      request = httpMocks.createRequest({
+        method: 'POST',
+        url: '/api/documents/',
+        headers: { authorization: regularToken },
+        body: {
+          body: 'Okonkwo was well known throughout the nine villages and even beyond',
+        },
+      });
+      const middlewareStub = {
+        callback: () => { }
+      };
+      sinon.spy(middlewareStub, 'callback');
+      response.on('end', () => {
+        const data = JSON.parse(response._getData());
+        response.statusCode.should.eql(400);
+        data.message.should.eql('enter valid title');
+      });
+      middlewares.validateDocumentInput(request, response, middlewareStub.callback);
+    });
+
+    it('it should return `bad request if case of an an empty access', () => {
+      const response = responseEvent();
+      request = httpMocks.createRequest({
+        method: 'POST',
+        url: '/api/documents/',
+        headers: { authorization: regularToken },
+        body: {
+          title: 'things fall apart',
+        },
+      });
+      const middlewareStub = {
+        callback: () => { }
+      };
+      sinon.spy(middlewareStub, 'callback');
+      response.on('end', () => {
+        const data = JSON.parse(response._getData());
+        response.statusCode.should.eql(400);
+        data.message.should.eql('enter valid access');
+      });
+      middlewares.validateDocumentInput(request, response, middlewareStub.callback);
+    });
+
+    it('it should return `bad request if case of an an empty content', () => {
+      const response = responseEvent();
+      request = httpMocks.createRequest({
+        method: 'POST',
+        url: '/api/documents/',
+        headers: { authorization: regularToken },
+        body: {
+          title: 'things fall apart',
+          access: 'public'
+        },
+      });
+      const middlewareStub = {
+        callback: () => { }
+      };
+      sinon.spy(middlewareStub, 'callback');
+      response.on('end', () => {
+        const data = JSON.parse(response._getData());
+        response.statusCode.should.eql(400);
+        data.message.should.eql('enter valid content');
+      });
+      middlewares.validateDocumentInput(request, response, middlewareStub.callback);
+    });
+
+    it('it should return `bad request if case of an an ivalid title length', () => {
+      const response = responseEvent();
+      request = httpMocks.createRequest({
+        method: 'POST',
+        url: '/api/documents/',
+        headers: { authorization: regularToken },
+        body: {
+          title: 'abc',
+          access: 'public',
+          body: 'Okonkwo was well known throughout the nine villages and even beyond'
+        },
+      });
+      const middlewareStub = {
+        callback: () => { }
+      };
+      sinon.spy(middlewareStub, 'callback');
+      response.on('end', () => {
+        const data = JSON.parse(response._getData());
+        response.statusCode.should.eql(400);
+        data.message.should.eql('document title must be between 5 and 100 characters');
+      });
+      middlewares.validateDocumentInput(request, response, middlewareStub.callback);
+    });
+
+    it('it should return bad request if title already exist', () => {
+      const response = responseEvent();
+      request = httpMocks.createRequest({
+        method: 'POST',
+        url: '/api/documents/',
+        headers: { authorization: regularToken },
+        body: {
+          title: 'who moved my cheese',
+          access: 'public',
+          body: 'Okonkwo was well known throughout the nine villages and even beyond'
+        },
+      });
+      const middlewareStub = {
+        callback: () => { }
+      };
+      sinon.spy(middlewareStub, 'callback');
+      response.on('end', () => {
+        const data = JSON.parse(response._getData());
+        response.statusCode.should.eql(400);
+        data.message.should.eql('document with title already exist');
+      });
+      middlewares.validateDocumentInput(request, response, middlewareStub.callback);
     });
   });
 });
