@@ -54,7 +54,7 @@ module.exports = {
       updatedAt: new Date(),
     }], ...arr.map(() => ({
       title: faker.lorem.sentence(),
-      body: faker.lorem.paragraphs(60),
+      body: faker.lorem.paragraphs(5),
       access: access[Math.round(Math.random() * 2) + 1],
       ownerID: Math.floor(Math.random() * 19) + 1,
       createdAt: new Date(),
