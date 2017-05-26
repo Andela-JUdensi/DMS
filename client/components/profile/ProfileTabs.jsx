@@ -3,36 +3,63 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import EditProfileForm from './EditProfileForm';
-import ProfileInfo from './ProfileInfo';
-import UserDocuments from './UserDocuments';
+import EditProfile from './EditProfileForm';
+import UserInfo from './ProfileInfo';
+import UserDocs from './UserDocuments';
 
-class profileTabs extends React.Component {
+/**
+ * 
+ * 
+ * @class ProfileTabs
+ * @extends {React.Component}
+ */
+class ProfileTabs extends React.Component {
+
+  /**
+   * Creates an instance of ProfileTabs.
+   * @param {any} props 
+   * 
+   * @memberof ProfileTabs
+   */
   constructor(props) {
     super(props);
     this.state = { username: '' };
     this.setUserName = this.setUserName.bind(this);
   }
 
+  /**
+   * 
+   * 
+   * @param {any} username 
+   * 
+   * @memberof ProfileTabs
+   */
   setUserName(username) {
     this.setState({ username });
   }
 
+  /**
+   * 
+   * 
+   * @returns 
+   * 
+   * @memberof ProfileTabs
+   */
   render() {
     return (
       <Tabs className="profile-tabs">
         <Tab label="User">
-          <ProfileInfo setUsername={username => this.setUserName(username)} />
+          <UserInfo setUsername={username => this.setUserName(username)} />
         </Tab>
         <Tab label="Documents">
-          <UserDocuments />
+          <UserDocs />
         </Tab>
         {
-          this.props.stateUser.userID === this.props.user.id
+          parseInt(this.props.stateUser.userID, 10) === parseInt(this.props.match.params.id, 10)
           || this.props.stateUser.roleID === 1
             ?
               <Tab label="Preference">
-                <EditProfileForm />
+                <EditProfile />
               </Tab>
             :
               ''
@@ -43,9 +70,15 @@ class profileTabs extends React.Component {
 }
 
 
-profileTabs.propTypes = {
-  user: PropTypes.any.isRequired,
-  stateUser: PropTypes.any.isRequired,
+ProfileTabs.propTypes = {
+  stateUser: PropTypes.any,
+  match: PropTypes.object.isRequired,
+};
+
+ProfileTabs.defaultProps = {
+  user: {},
+  stateUser: {},
+  match: {},
 };
 
 const mapStateToProps = state => ({
@@ -53,4 +86,4 @@ const mapStateToProps = state => ({
   stateUser: state.authentication.user
 });
 
-export default withRouter(connect(mapStateToProps)(profileTabs));
+export default withRouter(connect(mapStateToProps)(ProfileTabs));

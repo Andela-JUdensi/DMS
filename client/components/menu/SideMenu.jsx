@@ -1,7 +1,6 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import {
   Link,
   withRouter,
@@ -47,8 +46,6 @@ const style = {
     background: 'white'
   }
 };
-
-injectTapEventPlugin();
 
 class SideMenu extends React.Component {
 
