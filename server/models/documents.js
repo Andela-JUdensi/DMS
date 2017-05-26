@@ -42,7 +42,7 @@ export default (sequelize, DataTypes) => {
       associate(models) {
         Documents.belongsTo(models.Users, {
           foreignKey: 'ownerID',
-          onDelete: 'CASCADE'
+          onDelete: 'SET NULL'
         });
       }
     }
