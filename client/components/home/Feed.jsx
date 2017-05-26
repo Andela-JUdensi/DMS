@@ -7,19 +7,46 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import documentStack from '../common/documentsStack';
 import { getDocumentsAction } from '../../actions/documents.action';
 
+/**
+ * 
+ * 
+ * @class Feed
+ * @extends {React.Component}
+ */
 class Feed extends React.Component {
 
+  /**
+   * Creates an instance of Feed.
+   * @param {any} props 
+   * 
+   * @memberof Feed
+   */
   constructor(props) {
     super(props);
-    this.props.dispatch(getDocumentsAction(100));
+    this.props.dispatch(getDocumentsAction(8));
   }
 
+  /**
+   * 
+   * 
+   * @param {any} nextProps 
+   * @returns 
+   * 
+   * @memberof Feed
+   */
   componentWillUpdate(nextProps) {
     if (this.props.documents !== nextProps.documents) {
       return true;
     }
   }
 
+  /**
+   * 
+   * 
+   * @returns 
+   * 
+   * @memberof Feed
+   */
   render() {
     const { documents } = this.props;
     if (documents.count) {
@@ -52,4 +79,8 @@ const mapStateToProps = state => ({
   documents: state.documents,
 });
 
-export default withRouter(connect(mapStateToProps)(Feed));
+export default 
+  withRouter(connect(mapStateToProps)(Feed));
+
+export { Feed };
+
