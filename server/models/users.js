@@ -69,7 +69,7 @@ export default (sequelize, DataTypes) => {
       associate(models) {
         Documents.hasMany(models.Documents, {
           foreignKey: 'ownerID',
-          onDelete: 'CASCADE'
+          onDelete: 'SET NULL'
         });
       }
     },
