@@ -1,4 +1,4 @@
 if (process.env.NODE_ENV !== 'production') {
   require('@glimpse/glimpse').init();
 }
-require('./server/server.js');
+require('./server/app.js');
