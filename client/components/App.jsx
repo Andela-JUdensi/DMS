@@ -1,26 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import scss from '../assets/app.scss';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import '../assets/app.scss';
 import AppMenu from './menu/Index';
 
-class App extends React.Component {
-  render() {
-    return (
-      <CSSTransitionGroup
-        transitionName="example"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}
-      >
-        <AppMenu />
-        { this.props.children }
-      </CSSTransitionGroup>
-    );
-  }
-}
+injectTapEventPlugin();
+
+const App = props => (
+  <div>
+    <AppMenu />
+    { props.children }
+  </div>
+);
 
 App.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.array
+};
+
+
+App.defaultProps = {
+  children: []
 };
 
 export default App;
