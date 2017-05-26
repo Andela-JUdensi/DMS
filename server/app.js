@@ -29,7 +29,7 @@ if (isDeveloping) {
   });
 }
 
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // app.get('/', (req, res) => {
 //   res.render('index', {
