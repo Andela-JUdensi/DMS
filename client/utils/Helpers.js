@@ -11,5 +11,9 @@ export default {
         return 'Admin';
       default: return 'Regular';
     }
-  }
+  },
+  countUserDocuments: (object, userID) =>
+    Object.keys(object).filter(userDocument =>
+      userDocument.ownerID === userID)
+      .length
 };
