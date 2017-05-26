@@ -24,7 +24,11 @@ const documentReducer = (state = {}, action = {}) => {
       rows = state.rows.filter(document => document.id !== action.documentID);
       newState = Object.assign({}, state.documents, {
         count: rows.length,
-        rows
+        rows,
+        currentPage: state.currentPage,
+        pageSize: state.pageSize,
+        pages: state.pages,
+        totalCount: state.totalCount
       });
       return newState;
     default: return state;

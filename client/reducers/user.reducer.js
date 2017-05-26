@@ -1,4 +1,8 @@
-import { GET_USER_INFO_SUCCESS, GET_DOCUMENTS_BY_USER_SUCCESS } from '../actions/types';
+import {
+  GET_USER_INFO_SUCCESS,
+  GET_DOCUMENTS_BY_USER_SUCCESS,
+  DELETE_USER_SUCCESS,
+} from '../actions/types';
 
 const userReducer = (state = [], action = {}) => {
   switch (action.type) {
@@ -8,6 +12,8 @@ const userReducer = (state = [], action = {}) => {
       return Object.assign({}, state, {
         userDocuments: action.userDocuments
       });
+    case DELETE_USER_SUCCESS:
+      return action.status;
     default: return state;
   }
 };
