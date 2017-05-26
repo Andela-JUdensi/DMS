@@ -72,9 +72,6 @@ const auth = {
     const email = /\S+@\S+\.\S+/.test(req.body.email);
     const password = /\w+/g.test(req.body.password);
 
-    if (!username) {
-      return Response.badRequest(res, 'enter a valid username');
-    }
     if (!firstname) {
       return Response.badRequest(res, 'enter a valid firstname');
     }
@@ -83,6 +80,9 @@ const auth = {
     }
     if (!email) {
       return Response.badRequest(res, 'enter a valid email');
+    }
+    if (!username) {
+      return Response.badRequest(res, 'enter a valid username');
     }
     if (!password) {
       return Response.badRequest(res, 'enter a valid password');
@@ -120,7 +120,8 @@ const auth = {
       return Response.badRequest(res, 'you cannot modify this user');
     }
     if (parseInt(req.locals.user.decoded.roleID, 10) !== 1
-    || parseInt(req.locals.user.decoded.userID, 10) !== parseInt(req.params.id, 10)) {
+      || parseInt(req.locals.user.decoded.userID, 10)
+      !== parseInt(req.params.id, 10)) {
       return Response.unAuthorized(res, 'you are not permitted');
     }
     Users.findById(req.params.id)
@@ -134,7 +135,8 @@ const auth = {
   },
 
   validateDeleteUser(req, res, next) {
-    if (req.locals.roleID !== 1 || req.locals.userID !== req.params.id) {
+    if ((req.locals.user.decoded.roleID) !== 1
+      && req.locals.user.decoded.userID !== parseInt(req.params.id, 10)) {
       return Response.forbidden(res, 'you cannot perform this action');
     }
     Users.findById(req.params.id)
@@ -143,7 +145,7 @@ const auth = {
           return Response.notFound(res, 'user not found');
         }
         if (parseInt(user.roleID, 10) === 1 || [1, 2, 3].includes(user.id)) {
-          return Response.forbidden(res, 'you can not perform this action');
+          return Response.forbidden(res, 'you can not perform this action two');
         }
         req.locals.userToBeDeleted = user;
         next();
@@ -162,15 +164,41 @@ const auth = {
     })
       .then((documentToUpdate) => {
         if (!(documentToUpdate)) return Response.notFound(res, 'document not found');
-        if (parseInt(req.locals.user.decoded.roleID, 10) < parseInt(documentToUpdate.dataValues.User.roleID, 10)
-          || parseInt(req.locals.user.decoded.userID, 10) === parseInt(documentToUpdate.ownerID, 10)) {
+        if (parseInt(req.locals.user.decoded.roleID, 10)
+          < parseInt(documentToUpdate.dataValues.User.roleID, 10)
+          || parseInt(req.locals.user.decoded.userID, 10)
+          === parseInt(documentToUpdate.ownerID, 10)) {
           req.locals.documentToUpdate = documentToUpdate;
           return next();
         }
         return Response.unAuthorized(res, 'you are not authorized');
       })
       .catch(() => Response.badRequest());
+  },
+
+  validateDocumentInput(req, res, next) {
+    if (!req.body.title) {
+      return Response.badRequest(res, 'enter valid title');
+    }
+    if (!req.body.access) {
+      return Response.badRequest(res, 'enter valid access');
+    }
+    if (!req.body.body) {
+      return Response.badRequest(res, 'enter valid content');
+    }
+    if (req.body.title.length <= 4 || req.body.title.length >= 100) {
+      return Response.badRequest(res, 'document title must be between 5 and 100 characters');
+    }
+    Documents.findOne({ where: { title: req.body.title } })
+      .then((document) => {
+        if (document) {
+          return Response.badRequest(res, 'document with title already exist');
+        }
+        req.locals.documentInput = req.body;
+        next();
+      });
   }
+
 };
 
 export default auth;
