@@ -12,8 +12,9 @@ export default {
       default: return 'Regular';
     }
   },
-  countUserDocuments: (object, userID) =>
-    Object.keys(object).filter(userDocument =>
-      userDocument.ownerID === userID)
-      .length
-};
+  countUserDocuments: (documents, userID) => {
+    return documents.rows
+      .filter(document => document.ownerID === userID)
+        .length;
+  }
+}

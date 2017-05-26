@@ -79,6 +79,7 @@ class SignInForm extends React.Component {
                 value={this.state.identifier}
                 label="Username or Email"
                 type="text"
+                id="input-identifier"
                 fullWidth
                 onChange={this.onChange}
               />
@@ -88,7 +89,8 @@ class SignInForm extends React.Component {
                 field="password"
                 value={this.state.password}
                 label="Password"
-                type="text"
+                type="password"
+                id="input-password"
                 fullWidth
                 onChange={this.onChange}
               />

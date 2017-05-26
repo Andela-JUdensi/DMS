@@ -3,43 +3,33 @@ import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import webpackMiddleWare from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import server from './server';
+import app from './server';
 
-server.set('views', path.join(__dirname, 'views'));
-server.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
 if (isDeveloping) {
-  const webpackConfig = require('../webpack.config.prod');
+  const webpackConfig = require('../webpack.config.dev');
   const compiler = webpack(webpackConfig);
-  const webpackMiddleware = webpackMiddleWare(compiler, {
+  app.use(webpackMiddleWare(compiler, {
+    hot: true,
     publicPath: webpackConfig.output.publicPath,
-    contentBase: 'src',
-    stats: {
-      colors: true,
-      hash: false,
-      timings: true,
-      chunks: false,
-      chunkModules: false,
-      modules: false
-    }
-  });
-
-  server.use(webpackMiddleware);
-  server.use(webpackHotMiddleware(compiler));
-  server.get('*', (req, res) => {
+    noInfo: true,
+  }));
+  app.use(webpackHotMiddleware(compiler));
+  app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
-    res.end();
   });
 } else {
-  server.use(require('express').static('lib/client'));
-  server.get('*', (req, res) => {
+  app.use(require('express').static('lib/client'));
+  app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/index.html'));
   });
 }
 
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // app.get('/', (req, res) => {
 //   res.render('index', {

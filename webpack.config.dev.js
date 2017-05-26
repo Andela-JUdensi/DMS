@@ -1,5 +1,3 @@
-// import webpack from 'webpack';
-// import path from 'path';
 const webpack = require('webpack');
 const path = require('path');
 
@@ -14,7 +12,7 @@ module.exports = {
     // path: path.resolve(__dirname, 'build'),
     publicPath: '/',
     sourceMapFilename: 'source.map',
-    filename: 'main.js'
+    filename: 'javascript.js'
   },
 
   module: {
