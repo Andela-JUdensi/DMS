@@ -44,9 +44,9 @@ class UserDocuments extends React.Component {
           :
             <MuiThemeProvider>
               <div>
-                <h3>
-                  No document yet
-                </h3>
+                <h1>
+                  404: No document
+                </h1>
                 <CircularProgress size={60} thickness={7} />
               </div>
             </MuiThemeProvider>
@@ -63,4 +63,8 @@ const mapStateToProps = state => ({
   userDocuments: state.user.userDocuments,
 });
 
-export default withRouter(connect(mapStateToProps, { userDocumentsAction })(UserDocuments));
+export default
+  withRouter(connect(mapStateToProps,
+  { userDocumentsAction })(UserDocuments));
+
+export { UserDocuments };

@@ -16,22 +16,8 @@ import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import Snackbar from 'material-ui/Snackbar';
 import FormTextFields from '../common/FormTextFields';
 import { getDocumentsAction, addDocumentAction } from '../../actions/documents.action';
-
-
-const styles = {
-  formStyle: {
-    margin: 15,
-  },
-  button: {
-    margin: 1,
-    width: '',
-    display: 'inline-block',
-    position: 'relative',
-  },
-  formElement: {
-    margin: 5,
-  },
-};
+import styles from '../../assets/styles';
+import Alerts from '../common/alerts';
 
 class DocumentForm extends React.Component {
 
@@ -54,7 +40,7 @@ class DocumentForm extends React.Component {
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value, success: '' });
+    this.setState({ [event.target.name]: event.target.value, success: '', errors: '', snackBarOpen: false });
   }
 
   onSubmit(event) {
@@ -68,7 +54,7 @@ class DocumentForm extends React.Component {
           body: '',
           access: '',
           errors: '',
-          isLoading: false, 
+          isLoading: false,
           success: `${title} has been added successfully. View it here ${id}`,
           snackBarOpen: true,
         });
@@ -91,8 +77,7 @@ class DocumentForm extends React.Component {
           <div>
             <form onSubmit={this.onSubmit} style={styles.formStyle}>
               <h1>Add new Document</h1>
-              {(errors) ? <p> {errors.message} </p> : ''}
-              {(success) ? <p> {success} </p> : '' }
+              <Alerts errors={this.state.errors} success={this.state.success} />
               <div className="mui-col-md-6">
                 <FormTextFields
                   field="title"
@@ -107,6 +92,8 @@ class DocumentForm extends React.Component {
                   floatingLabelText="Access level"
                   value={this.state.access}
                   onChange={this.handleChange}
+                  className="app-select-dropdown"
+                  style={{color: "#fff"}} 
                 >
                   <MenuItem value="private" primaryText="Private" rightIcon={<LockIcon />} />
                   <MenuItem value="role" primaryText="Role" rightIcon={<RoleIcon />} />
@@ -124,6 +111,7 @@ class DocumentForm extends React.Component {
                   multiLine
                   rows={10}
                   onChange={this.onChange}
+                  className="app-textarea"
                 />
               </div>
               <div className="mui-col-md-12">
@@ -156,6 +144,11 @@ DocumentForm.propTypes = {
   addDocumentAction: PropTypes.func.isRequired,
   getDocumentsAction: PropTypes.func.isRequired,
   ownerID: PropTypes.number.isRequired,
+  newDocument: PropTypes.object.isRequired,
+};
+
+DocumentForm.defaultProps = {
+  newDocument: {}
 };
 
 const mapStateToProps = state => ({

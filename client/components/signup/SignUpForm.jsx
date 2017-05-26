@@ -14,21 +14,8 @@ import {
 
 import FormElements from '../common/FormTextFields';
 import signUpAction from '../../actions/signUp.action';
-
-const styles = {
-  formStyle: {
-    margin: 15,
-  },
-  button: {
-    margin: 1,
-    width: '',
-    display: 'inline-block',
-    position: 'relative',
-  },
-  formElement: {
-    margin: 5,
-  },
-};
+import Alerts from '../common/alerts';
+import styles from '../../assets/styles';
 
 class SignUpForm extends React.Component {
 
@@ -54,7 +41,7 @@ class SignUpForm extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     this.setState({
-      errors: {},
+      errors: '',
       isLoading: true,
     });
     this.props.signUpAction(this.state)
@@ -83,23 +70,23 @@ class SignUpForm extends React.Component {
           2000
         );
       })
-      .catch((error) => {
-        this.setState({ errors: error, isLoading: false });
+      .catch((errors) => {
+        this.setState({ errors, isLoading: false });
       });
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value, errors: '' });
   }
 
   render() {
-    const { isLoading, errors } = this.state;
+    const { isLoading } = this.state;
     return (
       <div className="mui-col-md-12 form-container">
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <form onSubmit={this.onSubmit} style={styles.formStyle}>
             <h1>Join Hermes</h1>
-            {(errors) ? <p> {errors.message} </p> : ''}
+            <Alerts errors={this.state.errors} />
             <div className="mui-col-md-6">
               <FormElements
                 field="firstname"

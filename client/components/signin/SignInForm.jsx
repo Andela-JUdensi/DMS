@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import FormTextFields from '../common/FormTextFields';
 import { signInAction } from '../../actions/authentication.action';
+import Alerts from '../common/alerts';
 
 const styles = {
   formStyle: {
@@ -32,7 +33,7 @@ class SignInForm extends React.Component {
     this.state = {
       identifier: '',
       password: '',
-      errors: {},
+      errors: '',
       isLoading: false,
       redirect: false,
     };
@@ -50,13 +51,13 @@ class SignInForm extends React.Component {
       .then(() => {
         this.setState({ redirect: true });
       })
-      .catch((error) => {
-        this.setState({ errors: error, isLoading: false });
+      .catch((errors) => {
+        this.setState({ errors, isLoading: false });
       });
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value, errors: '' });
   }
 
   render() {
@@ -71,7 +72,7 @@ class SignInForm extends React.Component {
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <form onSubmit={this.onSubmit} style={styles.formStyle}>
             <h1><center>Sign in</center></h1>
-            {(errors) ? <p> {errors.message} </p> : ''}
+            <Alerts errors={this.state.errors} />
             <div className="mui-col-md-6">
               <FormTextFields
                 field="identifier"

@@ -7,29 +7,21 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Paper from 'material-ui/Paper';
 import ReactTooltip from 'react-tooltip';
-import ViewDocumentInModal from './ViewDocumentInModal';
+import DocumentOptions from './DocumentOptions';
 import Helpers from '../../utils/Helpers';
+import styles from '../../assets/styles';
 
-
-const style = {
-  width: '100%',
-  margin: 5,
-  marginBottom: 25,
-  padding: 5,
-  textAlign: 'center',
-  display: 'inline-block',
-};
 
 const documentStack = (document, index) => (
   <div key={document.id} >
     {
-      index < 8
+      index < 100
       ?
         <div className="mui-col-md-3 document-stack">
           <ReactTooltip />
-          <ViewDocumentInModal documentToView={document} />
+          <DocumentOptions documentToView={document} />
           <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-            <Paper style={style} zDepth={3}>
+            <Paper style={styles.documentStack} zDepth={3}>
               <div className="mui-col-md-12 each-document-in-stack">
                 <div className="each-document-in-stack-topbar">
                   <span className="pull-left">
