@@ -261,6 +261,24 @@ Endpoint for document API.
 ### Get Document
 #### Request
 - Endpoint: GET: `/documents/:id`
+- Requires: No Authentication
+#### Response
+- Status: `200: OK`
+- Body `(application/json)`
+```json
+{
+  "id": 1,
+  "title": "Document title",
+  "content": "This placeholder should not always be a lorem ipsum generated document",
+  "OwnerId": 1,
+  "access": "public",
+  "createdAt": "2017-02-05T05:51:51.217Z",
+  "updatedAt": "2016-02-05T05:51:51.217Z"
+}
+```
+### Get Document
+#### Request
+- Endpoint: GET: `/documents/:id`
 - Requires: Authentication
 #### Response
 - Status: `200: OK`
@@ -309,14 +327,13 @@ Endpoint for document API.
 - Body `(application/json)`
 ```json
 {
-  "message": "Deleted Document with id:42"
+  "message": ""
 }
 ```
 ### Search
 #### Documents
 #### Request
-- Endpoint: GET: `/search/documents/:term`
-- Requires: Authentication
+- Endpoint: GET: `/search/documents/:search-term`
 #### Response
 - Status: `200: OK`
 - Body `(application/json)`
@@ -325,7 +342,7 @@ Endpoint for document API.
     "id": 45,
     "title": "Another new document",
     "content": "Test Epic things like lorem etc",
-    "access": "Public",
+    "access": "public",
     "OwnerId": 29,
     "createdAt": "2017-02-17T17:40:45.146Z",
     "updatedAt": "2017-02-17T17:40:45.146Z"
@@ -334,7 +351,7 @@ Endpoint for document API.
     "id": 44,
     "title": "New Title",
     "content": "The unique content of a document does not lie in the presence of the word unique",
-    "access": "1",
+    "access": "public",
     "OwnerId": 1,
     "createdAt": "2017-02-06T22:55:43.747Z",
     "updatedAt": "2017-02-06T22:55:43.747Z"
@@ -342,26 +359,25 @@ Endpoint for document API.
 ```
 ### Users
 #### Request
-- Endpoint: GET: `/search/users/:term`
-- Requires: Authentication, Admin Role
+- Endpoint: GET: `/search/users/:search-term`
 #### Response
 - Status: `200: OK`
 - Body `(application/json)`
 ```json
 [{
   "id": 140,
-  "username": "uyi2",
-  "fullNames": "wuyi2AH",
-  "email": "uyi2@uyi.com",
+  "username": "piper",
+  "fullNames": "peter parker",
+  "email": "piper@parker.com",
   "RoleId": 1,
   "createdAt": "2017-02-17T19:41:30.837Z",
   "updatedAt": "2017-02-17T19:41:30.837Z"
 },
 {
   "id": 141,
-  "username": "uniqueuser",
-  "fullNames": "Unique User",
-  "email": "uniqueuser@unique.com",
+  "username": "randomuser",
+  "fullNames": "Random User",
+  "email": "random@user.com",
   "RoleId": 1,
   "createdAt": "2017-02-19T17:34:19.992Z",
   "updatedAt": "2017-02-19T17:34:19.992Z"
