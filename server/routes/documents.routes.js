@@ -6,7 +6,7 @@ import {
 const documentRoute = (router) => {
   router
     .route('/documents')
-    .post(documentsCtrl.create)
+    .post(middlewares.validateDocumentInput, documentsCtrl.create)
     .get(documentsCtrl.findAll);
   router
     .route('/documents/:id')
