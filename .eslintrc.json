@@ -19,6 +19,7 @@
     "no-param-reassign": 0,
     "comma-dangle": 0,
     "import/no-unresolved": 0,
+    "react/forbid-prop-types": 0,
     "curly": ["error", "multi-line"],
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
     "valid-jsdoc": ["error", {

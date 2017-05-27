@@ -9,14 +9,13 @@ export default {
    * @param {any} res 
    */
   create(req, res) {
-    // if (!req.locals.user.isAuthenticated) {
-    //   return res.status(401).json('Signin to create document');
-    // }
+    const ownerID = req.locals.user.decoded.userID;
+    const { title, body, access } = req.locals.documentInput;
     Documents.create({
-      title: req.body.title,
-      body: req.body.body,
-      access: req.body.access,
-      ownerID: req.locals.user.decoded.userID,
+      title,
+      body,
+      access,
+      ownerID
     })
       .then(document => Response.created(res, document))
       .catch(error => Response.badRequest(res, error.message));
@@ -47,7 +46,19 @@ export default {
         $or: query,
       }
     })
-      .then(allDocuments => Response.success(res, allDocuments))
+      .then((allDocuments) => {
+        if (allDocuments.length < 1) {
+          return Response.notFound(res, 'no document found');
+        }
+        const pagination = limit && offset ? {
+          totalCount: allDocuments.count,
+          pages: Math.ceil(allDocuments.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: allDocuments.rows.length,
+        } : null;
+        const result = Object.assign(allDocuments, pagination);
+        Response.success(res, result);
+      })
       .catch(error => Response.badRequest(res, error.message));
   },
 

@@ -49,7 +49,7 @@ describe('The document API', () => {
           access: 'public'
         })
         .end((err, res) => {
-          res.body.message.should.eql('Validation error: document title must be between 5 and 100 characters');
+          res.body.message.should.eql('document title must be between 5 and 100 characters');
           done();
         });
     });
