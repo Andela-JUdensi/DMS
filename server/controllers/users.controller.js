@@ -1,4 +1,12 @@
-import { Users, Documents, SERVER, jwt, Response, lodash, Helpers } from './dependencies';
+import {
+  Users,
+  Documents,
+  SERVER,
+  jwt,
+  Response,
+  lodash,
+  Helpers
+} from './dependencies';
 
 const secret = SERVER.JWT_SECRET;
 
@@ -13,7 +21,10 @@ export default {
   create(req, res) {
     const userData = lodash.pick(req.locals.userInput, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
     Users.create(userData)
-      .then(user => Response.created(res, {user, message: 'account created successfully' }))
+      .then(user => Response.created(res, {
+        user,
+        message: 'account created successfully'
+      }))
       .catch(error => Response.badRequest(res, error.message));
   },
 
@@ -25,15 +36,18 @@ export default {
    * @returns
    */
   login(req, res) {
-    const { identifier, password } = req.locals.userLogin;
+    const {
+      identifier,
+      password
+    } = req.locals.userLogin;
     Users.findOne({
-      where: {
-        $or: {
-          username: identifier,
-          email: identifier
+        where: {
+          $or: {
+            username: identifier,
+            email: identifier
+          },
         },
-      },
-    })
+      })
       .then((user) => {
         if (!user) return Response.notFound(res, 'You don\'t exist');
         if (user && user.validatePassword(password)) {
@@ -53,7 +67,7 @@ export default {
           });
         }
         return Response.unAuthorized(res, 'wrong login credentials');
-      })
+      });
   },
 
   /**
@@ -63,12 +77,14 @@ export default {
    * @param {any} res
    */
   logout(req, res) {
-    const { userID } = req.locals.user.decoded;
+    const {
+      userID
+    } = req.locals.user.decoded;
     Users.findOne({
-      where: {
-        id: userID
-      },
-    })
+        where: {
+          id: userID
+        },
+      })
       .then(() => {
         req.locals.user = {};
 
@@ -83,13 +99,17 @@ export default {
    * @param {any} res
    */
   findAll(req, res) {
-    const { limit = 5, offset = 0, orderBy = 'id' } = req.query;
+    const {
+      limit = 5, offset = 0, orderBy = 'id'
+    } = req.query;
     Users.findAndCountAll({
-      limit,
-      offset,
-      attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt', 'roleID'],
-      order: [[orderBy, 'ASC']],
-    })
+        limit,
+        offset,
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt', 'roleID'],
+        order: [
+          [orderBy, 'ASC']
+        ],
+      })
       .then((users) => {
         if (users) {
           const pagination = limit && offset ? {
@@ -114,19 +134,21 @@ export default {
    * @param {any} res
    */
   findOne(req, res) {
-    const { id } = req.params;
+    const {
+      id
+    } = req.params;
     Users.findOne({
-      where: {
-        id,
-      },
-      attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt', 'roleID'],
-    })
-    .then((user) => {
-      if (!(user)) return Response.notFound(res, 'user not found');
-      Response.success(res, user);
-    })
-    .catch(error => Response
-      .badRequest(res, error.message));
+        where: {
+          id,
+        },
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'updatedAt', 'roleID'],
+      })
+      .then((user) => {
+        if (!(user)) return Response.notFound(res, 'user not found');
+        Response.success(res, user);
+      })
+      .catch(error => Response
+        .badRequest(res, error.message));
   },
 
   /**
@@ -136,7 +158,9 @@ export default {
    * @param {any} res
    */
   update(req, res) {
-    const fieldsToUpdate = lodash.pick(req.body, ['firstname', 'lastname', 'username', 'email', 'password', 'roleID']);
+    const fieldsToUpdate = lodash.pick(req.body, ['firstname', 'lastname',
+      'username', 'email', 'password', 'roleID'
+    ]);
     req.locals.userToUpdate.update(fieldsToUpdate)
       .then(updatedUser => Response.success(res, updatedUser))
       .catch(error => Response.badRequest(res, error.message));
@@ -161,18 +185,22 @@ export default {
    * @param {any} res
    */
   documentsByUser(req, res) {
-    const { id } = req.params;
+    const {
+      id
+    } = req.params;
     Documents.findAndCountAll({
-      where: {
-        ownerID: id,
-      },
-      include: {
-        model: Users,
-      }
-    })
+        where: {
+          ownerID: id,
+        },
+        include: {
+          model: Users,
+        }
+      })
       .then((response) => {
         if (response.count < 1) return Response.notFound(res, 'no document found');
-        Response.success(res, { response });
+        Response.success(res, {
+          response
+        });
       })
       .catch(error => Response.badRequest(res, error.message));
   },
