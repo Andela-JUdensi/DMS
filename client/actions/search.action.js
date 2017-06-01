@@ -6,8 +6,8 @@ export const getSearchSuccess = search => ({
   search
 });
 
-export const searchAction = (searchToken, access = undefined) =>
-  dispatch => axios.get(`/api/search/documents/?q=${searchToken}&a=${access}`)
+export const searchAction = (searchToken, offset = 0, access = 'all') =>
+  dispatch => axios.get(`/api/search/documents/?q=${searchToken}&offset=0&a=${access}`)
     .then((response) => {
       dispatch(getSearchSuccess(response.data));
     })
