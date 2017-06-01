@@ -7,8 +7,6 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -21,34 +19,21 @@ import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import Book from 'material-ui/svg-icons/action/book';
 import Avatar from 'material-ui/Avatar';
 import ListItem from 'material-ui/List/ListItem';
-
 import NavigationMenu from './NavigationBar';
 import { signOut } from '../../actions/authentication.action';
+import styles from '../../assets/styles';
 
-
-const style = {
-  paper: {
-    display: 'inline-block',
-    width: '100%'
-  },
-  rightIcon: {
-    textAlign: 'center',
-    lineHeight: '24px',
-  },
-  Avatar: {
-    width: '70px',
-    margin: '0 auto',
-    position: 'relative',
-    top: 0,
-    bottom: '20px',
-    height: '70px',
-    fontSize: '50px',
-    background: 'white'
-  }
-};
-
+/**
+ * render side drawer menu
+ * @class SideMenu
+ * @extends {React.Component}
+ */
 class SideMenu extends React.Component {
-
+  /**
+   * Creates an instance of SideMenu.
+   * @param {object} props 
+   * @memberof SideMenu
+   */
   constructor(props) {
     super(props);
     this.state = { open: false };
@@ -56,26 +41,41 @@ class SideMenu extends React.Component {
     this.signOut = this.signOut.bind(this);
   }
 
+  /**
+   * toggles side drawer menu open/close
+   * @memberof SideMenu
+   */
   toggleSideMenu() {
     this.setState({ open: !this.state.open });
   }
 
+  /**
+   * call signout dispatch action
+   * @memberof SideMenu
+   */
   signOut() {
     this.props.signOut();
   }
 
+  /**
+   * renders sider menu drawer to dom
+   * 
+   * @returns {Object}
+   * 
+   * @memberof SideMenu
+   */
   render() {
     const { isAuthenticated } = this.props.state.authentication;
     let user = 'Guest';
-    let userid = 0;
+    let userId = 0;
     if (isAuthenticated) {
       const { username, userID } = this.props.state.authentication.user;
       user = `${username}`;
-      userid = userID;
+      userId = userID;
     }
 
     const userLinks = (
-      <Paper style={style.paper}>
+      <Paper style={styles.paper}>
         <Menu className="side-menu">
           <Link to="/"><MenuItem primaryText="Home" rightIcon={<HomeIcon />} /></Link>
           <Divider />
@@ -92,7 +92,7 @@ class SideMenu extends React.Component {
     );
 
     const guestLinks = (
-      <Paper style={style.paper}>
+      <Paper style={styles.paper}>
         <Menu className="side-menu">
           <Link to="/"><MenuItem primaryText="Home" rightIcon={<HomeIcon />} /></Link>
           <Link to="/signup"><MenuItem primaryText="Sign Up" rightIcon={<PersonAddIcon />} /></Link>
@@ -120,10 +120,13 @@ class SideMenu extends React.Component {
             onTouchTap={this.toggleSideMenu}
             className="drawerHeader"
           />
-          <Link to={`/profile/${userid}`}>
+          <Link to={{
+            pathname: '/profile',
+            state: { id: userId }
+          }} >
             <ListItem
               disabled
-              leftAvatar={<Avatar style={style.Avatar}>{ user.charAt(0) }</Avatar>}
+              leftAvatar={<Avatar style={styles.sideAvatar}>{ user.charAt(0) }</Avatar>}
               className="drawerUsername"
             />
           </Link>
@@ -138,6 +141,11 @@ SideMenu.propTypes = {
   state: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
 };
+
+/**
+ * 
+ * @param {object} state -redux state
+ */
 
 const mapStateToProps = state => ({
   state,

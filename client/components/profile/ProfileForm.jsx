@@ -12,6 +12,10 @@ import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import FormElements from '../common/FormTextFields';
 import styles from '../../assets/styles';
 
+/**
+ * render update profile form
+ * @param {object} props 
+ */
 const ProfileForm = props => (
   <div className="mui-col-md-12 edit-profile-container">
     <MuiThemeProvider>
@@ -71,7 +75,7 @@ const ProfileForm = props => (
           <SelectField
             floatingLabelText="Priviledge"
             value={props.roleID}
-            name="userRole"
+            name="roleID"
             type="select"
             onChange={props.handleChange}
             className="profile-select-role"
@@ -121,18 +125,8 @@ ProfileForm.propTypes = {
 };
 
 ProfileForm.defaultProps = {
-  // onSubmit: () => {},
-  // onChange: () => {},
-  // handleChange: () => {},
   snackBarOpen: false,
   isLoading: false,
-  // errors: '',
-  // firstname: '',
-  // lastname: '',
-  // username: '',
-  // email: '',
-  // roleID: '',
-  // password: ''
 };
 
 export default ProfileForm;

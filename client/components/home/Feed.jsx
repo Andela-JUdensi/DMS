@@ -9,7 +9,7 @@ import { getDocumentsAction } from '../../actions/documents.action';
 
 /**
  * 
- * 
+ * renders lastest documents on homepage
  * @class Feed
  * @extends {React.Component}
  */
@@ -17,19 +17,26 @@ class Feed extends React.Component {
 
   /**
    * Creates an instance of Feed.
-   * @param {any} props 
+   * @param {object} props 
    * 
    * @memberof Feed
    */
   constructor(props) {
     super(props);
-    this.props.dispatch(getDocumentsAction(8));
+
+    const numberOfDocuments = 8;
+    const offset = 0;
+    const order = 'DESC';
+
+    this.props.dispatch(
+      getDocumentsAction(numberOfDocuments, offset, order)
+      );
   }
 
   /**
    * 
-   * 
-   * @param {any} nextProps 
+   * determine of component will update
+   * @param {object} nextProps 
    * @returns 
    * 
    * @memberof Feed
@@ -43,7 +50,7 @@ class Feed extends React.Component {
   /**
    * 
    * 
-   * @returns 
+   * @returns {Object}
    * 
    * @memberof Feed
    */
@@ -75,6 +82,10 @@ Feed.defaultProps = {
   isAuthenticated: false,
 };
 
+/**
+ * 
+ * @param {object} state - redux state 
+ */
 const mapStateToProps = state => ({
   documents: state.documents,
 });

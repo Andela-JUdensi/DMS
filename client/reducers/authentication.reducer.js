@@ -3,7 +3,7 @@ import { SET_CURRENT_USER } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
-  userDetails: {},
+  user: {},
 };
 
 const authReducer = (state = [], action = {}) => {

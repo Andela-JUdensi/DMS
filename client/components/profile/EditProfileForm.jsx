@@ -12,7 +12,6 @@ import { updateUserAction, getUserAction } from '../../actions/users.action';
 import styles from '../../assets/styles';
 import ProfileForm from './ProfileForm';
 
-
 /**
  * 
  * 
@@ -22,7 +21,7 @@ import ProfileForm from './ProfileForm';
 class EditProfileForm extends React.Component {
   /**
    * Creates an instance of EditProfileForm.
-   * @param {any} props 
+   * @param {object} props 
    * 
    * @memberof EditProfileForm
    */
@@ -48,10 +47,10 @@ class EditProfileForm extends React.Component {
 
   /**
    * 
-   * 
-   * @param {any} event 
-   * @param {any} index 
-   * @param {any} roleID 
+   * update state user role on change
+   * @param {object} event 
+   * @param {integer} index 
+   * @param {integer} roleID 
    * 
    * @memberof EditProfileForm
    */
@@ -61,8 +60,8 @@ class EditProfileForm extends React.Component {
 
   /**
    * 
-   * 
-   * 
+   * determine if component will mount
+   * set state properties before component mounts
    * @memberof EditProfileForm
    */
   componentWillMount() {
@@ -79,9 +78,10 @@ class EditProfileForm extends React.Component {
   }
 
   /**
+   * call update user action
+   * update user information
    * 
-   * 
-   * @param {any} event 
+   * @param {object} event 
    * 
    * @memberof EditProfileForm
    */
@@ -92,9 +92,9 @@ class EditProfileForm extends React.Component {
       isLoading: true,
     });
 
-    const selectedUserInfo = lodash(this.state)
-      .omitBy(lodash.isEmpty)
-      .omitBy(lodash.isNull).value();
+    let selectedUserInfo = lodash.pickBy(this.state, lodash.identity);
+
+    selectedUserInfo = lodash.omit(selectedUserInfo, ['userID']);
 
     this.props.updateUserAction(this.props.match.params.id, selectedUserInfo)
       .then(() => {
@@ -111,9 +111,9 @@ class EditProfileForm extends React.Component {
   }
 
   /**
+   * set state change of user properties
    * 
-   * 
-   * @param {any} event 
+   * @param {object} event 
    * 
    * @memberof EditProfileForm
    */
@@ -124,7 +124,7 @@ class EditProfileForm extends React.Component {
   /**
    * 
    * 
-   * @returns 
+   * @returns {Object}
    * 
    * @memberof EditProfileForm
    */
@@ -167,6 +167,10 @@ EditProfileForm.defaultProps = {
   user: {},
 };
 
+/**
+ * 
+ * @param {object} state - redux state 
+ */
 const mapStateToProps = state => {
   return {
     user: state.user,

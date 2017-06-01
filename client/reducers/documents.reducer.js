@@ -2,7 +2,9 @@ import {
   GET_DOCUMENTS_SUCCESS,
   ADD_DOCUMENT_SUCCESS,
   SHOW_ONLY_PUBLIC_DOCUMENTS,
-  DELETE_DOCUMENT_SUCCESS
+  DELETE_DOCUMENT_SUCCESS,
+  GET_SEARCH_SUCCESS,
+  GET_DOCUMENTS_BY_USER_SUCCESS,
 } from '../actions/types';
 
 let newState;
@@ -31,6 +33,11 @@ const documentReducer = (state = {}, action = {}) => {
         totalCount: state.totalCount
       });
       return newState;
+    case GET_SEARCH_SUCCESS:
+      return Object.assign({}, state, action.search);
+    case GET_DOCUMENTS_BY_USER_SUCCESS:
+      // return Object.assign({}, state, action.userDocuments);
+      return action.userDocuments;
     default: return state;
   }
 };

@@ -8,7 +8,7 @@ import UserInfo from './ProfileInfo';
 import UserDocs from './UserDocuments';
 
 /**
- * 
+ * render user profile tabs
  * 
  * @class ProfileTabs
  * @extends {React.Component}
@@ -30,7 +30,7 @@ class ProfileTabs extends React.Component {
   /**
    * 
    * 
-   * @param {any} username 
+   * @param {string} username 
    * 
    * @memberof ProfileTabs
    */
@@ -41,7 +41,7 @@ class ProfileTabs extends React.Component {
   /**
    * 
    * 
-   * @returns 
+   * @returns {Object}
    * 
    * @memberof ProfileTabs
    */
@@ -50,9 +50,6 @@ class ProfileTabs extends React.Component {
       <Tabs className="profile-tabs">
         <Tab label="User">
           <UserInfo setUsername={username => this.setUserName(username)} />
-        </Tab>
-        <Tab label="Documents">
-          <UserDocs />
         </Tab>
         {
           parseInt(this.props.stateUser.userID, 10) === parseInt(this.props.match.params.id, 10)

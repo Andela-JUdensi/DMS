@@ -4,14 +4,24 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
 import Helpers from '../../utils/Helpers';
 
 export default (user, index) => (
   <TableRow key={index} displayBorder>
     <TableRowColumn>{index + 1}</TableRowColumn>
-    <TableRowColumn><Link to={`/profile/${user.id}`}>{user.username}</Link></TableRowColumn>
+    <TableRowColumn>{user.username}</TableRowColumn>
     <TableRowColumn>{user.email}</TableRowColumn>
     <TableRowColumn>{Helpers.getRoleName(user.roleID)}</TableRowColumn>
+    <TableRowColumn>
+      <Link to={{
+        pathname: 'profile',
+        state: { id: user.id }
+      }}
+      >
+        <RaisedButton label="View profile" />
+      </Link>
+    </TableRowColumn>
   </TableRow>
 );
 
