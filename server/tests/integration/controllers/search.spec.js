@@ -55,8 +55,8 @@ describe('The Search API', () => {
         chai.request(server)
           .get('/api/search/users/?q=ajudensi')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userid', authenticatedUser.user.id)
-          .set('x-roleid', authenticatedUser.user.roleID)
+          .set('x-userId', authenticatedUser.user.id)
+          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(200);
             res.should.be.an('object');
@@ -72,8 +72,8 @@ describe('The Search API', () => {
         chai.request(server)
           .get('/api/search/documents/?q=cheese')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userid', authenticatedUser.user.id)
-          .set('x-roleid', authenticatedUser.user.roleID)
+          .set('x-userId', authenticatedUser.user.id)
+          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.not.have.status(401);
             res.body.should.be.an('object');

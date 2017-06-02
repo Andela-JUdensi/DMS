@@ -8,66 +8,56 @@ export default class Helpers {
    *
    *
    * @static
-   * @param {any} userID
-   * @param {any} userRoleID
+   * @param {any} userId
+   * @param {any} userroleId
    * @returns
    *
    * @memberOf Helpers
    */
-  static determineDocsforUser(userID, userRoleID, searchAccess) {
-    if (!(userID)) {
+  static determineDocsforUser(userId, userroleId, searchAccess) {
+    if (!(userId)) {
       return [{ access: 'public' }];
-    } else if (userRoleID <= 2 && searchAccess) {
-      return [{ access: searchAccess }, { ownerID: userID }];
-    } else if (userRoleID <= 2 && !searchAccess) {
-      return [{ access: 'private' }, { access: 'public' }, { access: 'role' }, { ownerID: userID }];
+    } else if (userroleId <= 2 && searchAccess !== 'all') {
+      return [{ access: searchAccess }];
+    } else if (userroleId <= 2 && searchAccess === 'all') {
+      return [{ access: 'private' }, { access: 'public' }, { access: 'role' }, { ownerID: userId }];
     }
-    return [{ access: 'public' }, { access: 'role' }, { ownerID: userID }];
+    return [{ access: 'public' }, { access: 'role' }, { ownerID: userId }];
   }
 
   /**
    *
    *
    * @static
-   * @param {any} userID
-   * @param {any} roleID
+   * @param {any} userId
+   * @param {any} roleId
    * @returns
    *
    * @memberof Helpers
    */
-  static getUserFromHeaders(userID, roleID) {
-    if (!(userID) || !(roleID)) {
+  static getUserFromHeaders(userId, roleId) {
+    if (!(userId) || !(roleId)) {
       return {
-        userID: 0,
-        roleID: 0
+        userId: 0,
+        roleId: 0
       };
     }
-    const uID = userID.split(' ')[1];
-    const rID = roleID.split(' ')[1];
+    const uID = userId.split(' ')[1];
+    const rID = roleId.split(' ')[1];
     return {
-      userID: uID,
-      roleID: rID
+      userId: uID,
+      roleId: rID
     };
   }
 
 
-  static determineSearchQuery(searchAccess, searchTokens, userID, roleID) {
+  static determineSearchQuery(searchTokens, userId, roleId) {
     let query = '';
-    if (searchAccess === 'undefined') {
-      query = {
-        title: {
-          $iLike: { $any: searchTokens },
-        },
-        $or: this.determineDocsforUser(userID, roleID)
-      };
-      return query;
-    }
     query = {
       title: {
         $ilike: { $any: searchTokens },
       },
-      access: searchAccess,
-      $or: this.determineDocsforUser(userID, roleID, searchAccess)
+      $or: this.determineDocsforUser(userId, roleId, 'all')
     };
     return query;
   }
@@ -81,8 +71,6 @@ export default class Helpers {
         resolve(true);
       });
     });
-    // .then(() => )
-    // .catch(() => )
   }
 
   static TokenIsBlacklisted(authorizationToken) {
@@ -102,6 +90,15 @@ export default class Helpers {
       });
     });
     // .catch();
+  }
+
+  static paginate(containerObject, offset, limit) {
+    return {
+      totalCount: containerObject.count,
+      pages: Math.ceil(containerObject.count / limit),
+      currentPage: Math.floor(offset / limit) + 1,
+      pageSize: containerObject.rows.length,
+    } || null;
   }
 }
 

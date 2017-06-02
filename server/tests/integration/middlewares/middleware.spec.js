@@ -105,8 +105,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: regular.roleID,
-              userID: regular.userID
+              roleId: regular.roleId,
+              userId: regular.userId
             }
           }
         }
@@ -132,8 +132,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: admin.roleID,
-              userID: admin.userID
+              roleId: admin.roleId,
+              userId: admin.userId
             }
           }
         }
@@ -159,8 +159,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: superAdmin.roleID,
-              userID: superAdmin.userID
+              roleId: superAdmin.roleId,
+              userId: superAdmin.userId
             }
           }
         }
@@ -261,13 +261,13 @@ describe('Middlewares', () => {
       middlewares.validateUserInput(request, response, middlewareStub.callback);
     });
 
-    it('should return `bad request` when roleID is 1', (done) => {
+    it('should return `bad request` when roleId is 1', (done) => {
       const response = responseEvent();
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/api/users/',
         body: {
-          roleID: 1,
+          roleId: 1,
         }
       });
       const middlewareStub = {
@@ -390,7 +390,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
-            decoded: { roleID: regular.roleID, userID: regular.userID }
+            decoded: { roleId: regular.roleId, userId: regular.userId }
           }
         }
       });
@@ -418,7 +418,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
-            decoded: { roleID: regular.roleID, userID: regular.userID }
+            decoded: { roleId: regular.roleId, userId: regular.userId }
           }
         }
       });

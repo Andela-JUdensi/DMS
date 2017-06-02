@@ -7,7 +7,7 @@ export default [
     lastname: 'Udensi',
     email: 'silicon@valley.com',
     password: 'password123',
-    roleID: 2,
+    roleId: 2,
   },
   {
     username: 'New Silicon',
@@ -15,7 +15,7 @@ export default [
     lastname: 'Udensi',
     email: 'ajudensi@breed101.com',
     password: 'password123',
-    roleID: 2,
+    roleId: 2,
   },
   {
     username: 'shawn michaels',
@@ -23,7 +23,7 @@ export default [
     lastname: 'michaels',
     email: 'shawn@michaels.com',
     password: 'password123',
-    roleID: 2,
+    roleId: 2,
   },
   {
     username: 'shawn michaels',
@@ -31,7 +31,7 @@ export default [
     lastname: 'michaels',
     email: 'shawn@michaels.com',
     password: 'password123',
-    roleID: 2,
+    roleId: 2,
   },
   {
     username: 'shawn michaels',
@@ -39,7 +39,7 @@ export default [
     lastname: '',
     email: 'shawn@michaels.com',
     password: 'password123',
-    roleID: 2,
+    roleId: 2,
   },
   {
     username: 'shawn michaels',
@@ -47,7 +47,7 @@ export default [
     lastname: 12345,
     email: 'shawn@michaels.com',
     password: 'password123',
-    roleID: 3,
+    roleId: 3,
   },
   {
     username: 'irishpotato',
@@ -55,7 +55,7 @@ export default [
     lastname: 'Potato',
     email: 'fake@email',
     password: 'password123',
-    roleID: 3,
+    roleId: 3,
   },
   {
     username: 'irishpotato',
@@ -63,7 +63,7 @@ export default [
     lastname: 'Potato',
     email: 'irish@potato.com',
     password: 'pass',
-    roleID: 3,
+    roleId: 3,
   },
   {
     username: 'irishpotato',
@@ -71,7 +71,7 @@ export default [
     lastname: 'Potato',
     email: 'irish@potato.com',
     password: 'password123',
-    roleID: 50,
+    roleId: 50,
   },
   {
     username: 'irishpotato',
@@ -79,6 +79,6 @@ export default [
     lastname: 'Potato',
     email: 'irish@potato.com',
     password: 'password123',
-    roleID: 3,
+    roleId: 3,
   }
 ];

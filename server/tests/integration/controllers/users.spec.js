@@ -52,7 +52,7 @@ describe('Users controller', () => {
       const data = JSON.parse(response._getData());
       data.message.should.eql('account created successfully');
       data.user.firstname.should.eql('kakashi');
-      data.user.roleID.should.eql(3);
+      data.user.roleId.should.eql(3);
       done();
     });
     usersCtrl.create(request, response);
