@@ -16,8 +16,8 @@ export default class RolesController {
    * create a new role
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof RolesController
@@ -39,8 +39,8 @@ export default class RolesController {
    * fetch all roles
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof RolesController
@@ -67,8 +67,8 @@ export default class RolesController {
    * fetch one role
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof RolesController
@@ -92,8 +92,8 @@ export default class RolesController {
    * update role information
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof RolesController
@@ -125,8 +125,8 @@ export default class RolesController {
    *
    * delete a role
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof RolesController

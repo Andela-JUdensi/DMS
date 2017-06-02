@@ -17,8 +17,8 @@ export default class SearchController {
    * search for a user
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof SearchController
@@ -33,7 +33,7 @@ export default class SearchController {
       offset,
       where: {
         username: {
-          $ilike: { $any: query }
+          $ilike: { $object: query }
         }
       },
       attributes: ['id', 'username', 'email', 'roleId'],
@@ -57,8 +57,8 @@ export default class SearchController {
    * search for a document
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof SearchController

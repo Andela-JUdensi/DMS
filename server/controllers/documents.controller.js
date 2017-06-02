@@ -18,8 +18,8 @@ export default class DocumentsController {
    * creates new document
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -41,8 +41,8 @@ export default class DocumentsController {
   * fetch all documents
   *
   * @static
-  * @param {any} req
-  * @param {any} res
+  * @param {object} req
+  * @param {object} res
   * @returns {Object} - response
   *
   * @memberof DocumentsController
@@ -91,8 +91,8 @@ export default class DocumentsController {
    * fetch one document
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof DocumentsController
@@ -129,8 +129,8 @@ export default class DocumentsController {
    * updates a document
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof DocumentsController
@@ -146,8 +146,8 @@ export default class DocumentsController {
    * deletes a document
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof DocumentsController

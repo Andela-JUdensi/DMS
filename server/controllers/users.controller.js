@@ -53,8 +53,8 @@ export default class UsersController {
    * login a user
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {object} - response
    *
    * @memberof UsersController
@@ -98,8 +98,8 @@ export default class UsersController {
    *logout a user
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -124,8 +124,8 @@ export default class UsersController {
    * fetch all users
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -158,8 +158,8 @@ export default class UsersController {
    * fetch one user
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -187,8 +187,8 @@ export default class UsersController {
    * upate user information
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -208,8 +208,8 @@ export default class UsersController {
    * delete a user
    *
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
@@ -224,8 +224,8 @@ export default class UsersController {
    *
    * fetch documents by a user
    * @static
-   * @param {any} req
-   * @param {any} res
+   * @param {object} req
+   * @param {object} res
    * @returns {Object} - response
    *
    * @memberof UsersController
