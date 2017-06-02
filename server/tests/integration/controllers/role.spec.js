@@ -49,8 +49,6 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/')
         .set('authorization', 'bearer abcdefghijklmnop1234567890')
-        .set('x-roleId', 2)
-        .set('x-userId', 17)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.an('object');
@@ -80,8 +78,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userId', authenticatedUser.user.id)
-        .set('x-roleId', authenticatedUser.user.roleId)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           done();
@@ -92,8 +90,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/1')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userId', authenticatedUser.user.id)
-        .set('x-roleId', authenticatedUser.user.roleId)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('Object');
@@ -105,8 +103,8 @@ describe('Role API', () => {
       chai.request(server)
       .get('/api/roles/1000')
       .set('authorization', `bearer ${authenticatedUser.token}`)
-      .set('x-userId', authenticatedUser.user.id)
-      .set('x-roleId', authenticatedUser.user.roleId)
+      
+      
       .end((err, res) => {
         res.should.have.status(404);
         done();
@@ -117,8 +115,8 @@ describe('Role API', () => {
       chai.request(server)
         .post('/api/roles/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userId', authenticatedUser.user.id)
-        .set('x-roleId', authenticatedUser.user.roleId)
+        
+        
         .send({
           roleName: faker.commerce.department(),
           description: faker.lorem.sentence(),
@@ -133,8 +131,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/50')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userId', authenticatedUser.user.id)
-        .set('x-roleId', authenticatedUser.user.roleId)
+        
+        
         .end((err, res) => {
           res.should.have.status(404);
           done();
@@ -145,8 +143,8 @@ describe('Role API', () => {
       chai.request(server)
         .delete('/api/roles/4')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userId', authenticatedUser.user.id)
-        .set('x-roleId', authenticatedUser.user.roleId)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           done();

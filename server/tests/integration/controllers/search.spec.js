@@ -22,13 +22,34 @@ describe('The Search API', () => {
     });
 
     describe('searching for a document', () => {
-      it('should not return `not signed in` for unauthenticated users', (done) => {
+      it('should return public documents for unauthenticated users', (done) => {
         chai.request(server)
           .get('/api/search/documents/?q=a very random title')
           .end((err, res) => {
-            res.should.not.have.status(200);
+            res.should.have.status(200);
             res.body.should.be.an('object');
-            res.body.message.should.eql('no match found for a very random title');
+            res.body.count.should.be.gte(1);
+            res.body.rows.should.be.an('array');
+            done();
+          });
+      });
+
+      it('should return `0 count` searching for a private document by unauthenticated user', (done) => {
+        chai.request(server)
+          .get('/api/search/documents/?q=zero')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.count.should.eql(0);
+            done();
+          });
+      });
+
+      it('should return `0 count` searching for a role document by unauthenticated user', (done) => {
+        chai.request(server)
+          .get('/api/search/documents/?q=cheese')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.count.should.eql(0);
             done();
           });
       });
@@ -55,8 +76,6 @@ describe('The Search API', () => {
         chai.request(server)
           .get('/api/search/users/?q=ajudensi')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userId', authenticatedUser.user.id)
-          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(200);
             res.should.be.an('object');
@@ -72,11 +91,22 @@ describe('The Search API', () => {
         chai.request(server)
           .get('/api/search/documents/?q=cheese')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userId', authenticatedUser.user.id)
-          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.not.have.status(401);
             res.body.should.be.an('object');
+            done();
+          });
+      });
+
+      it('should not return priviledged documents for authenticated users', (done) => {
+        chai.request(server)
+          .get('/api/search/documents/?q=cheese')
+          .set('authorization', `bearer ${authenticatedUser.token}`)
+          .end((err, res) => {
+            res.body.count.should.be.gte(1);
+            res.body.rows[0].title.should.eql('who moved my cheese');
+            res.should.not.have.status(401);
+            res.body.rows.should.be.an('array');
             done();
           });
       });

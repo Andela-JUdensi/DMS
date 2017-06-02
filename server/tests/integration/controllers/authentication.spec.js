@@ -1,4 +1,4 @@
-// import sinon from 'sinon';
+import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../server';
@@ -34,9 +34,8 @@ describe('The user authentication API', () => {
           .end((err, res) => {
             authenticatedUser = res.body;
             res.should.have.status(200);
-            res.body.should.have.property('user');
-            res.body.message.should.eql('welcome SiliconValley');
-            res.body.user.roleId.should.eql(2);
+            res.body.status.should.eql('true');
+            jwt.decode(res.body.token).roleId.should.eql(2);
             done();
           });
       });
@@ -77,8 +76,6 @@ describe('The user authentication API', () => {
         chai.request(server)
           .post('/api/users/logout/')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userId', authenticatedUser.user.id)
-          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.eql('logout successful');
@@ -89,8 +86,6 @@ describe('The user authentication API', () => {
         chai.request(server)
           .get('/api/search/users/')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userId', authenticatedUser.user.id)
-          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(401);
             res.body.message.should.eql('you are not signed in');

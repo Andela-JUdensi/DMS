@@ -11,7 +11,7 @@ describe('Model for Blacklists table', () => {
       where: {
         authorizationToken: authToken,
       }
-    }).then(success => done());
+    }).then(() => done());
   });
   describe('case of valid Token.', () => {
     it('should save a token', (done) => {
