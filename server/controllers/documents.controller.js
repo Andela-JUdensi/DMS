@@ -103,7 +103,8 @@ export default class DocumentsController {
       return Response.badRequest(res, 'provide a valid document id');
     }
     const { userId, roleId } = req.locals.user.decoded;
-    const query = Helpers.determineDocsforUser(userId, roleId);
+    const query = Helpers.determineDocsforUser(userId, roleId, 'all');
+
     Documents.findOne({
       include: {
         model: Users,

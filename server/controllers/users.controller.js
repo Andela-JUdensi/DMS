@@ -235,12 +235,20 @@ export default class UsersController {
     const {
       id
     } = req.params;
+    const {
+      userId,
+      roleId
+    } = req.locals.user.decoded;
+    const query = Helpers.determineDocsforUser(userId, roleId);
+
     Documents.findAndCountAll({
       where: {
         ownerID: id,
+        $or: query,
       },
       include: {
         model: Users,
+        attributes: ['id', 'username', 'roleId']
       }
     })
     .then((allDocuments) => {
