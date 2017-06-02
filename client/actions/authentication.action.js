@@ -15,30 +15,25 @@ export const showOnlyPublicDocuments = () => ({
 
 export const signOut = () => (dispatch) => {
   localStorage.removeItem('hermesToken');
-  localStorage.removeItem('hermesUserID');
-  localStorage.removeItem('hermesRoleID');
+  localStorage.removeItem('hermesuserId');
+  localStorage.removeItem('hermesroleId');
   return axios.post('/api/users/logout')
     .then(() => {
       dispatch(setCurrentUser({}));
       dispatch(showOnlyPublicDocuments());
       setAuthorizationToken(false);
-    })
-    .catch(() => {
     });
 };
 
-export const signInAction = userInput => dispatch => new Promise((resolve, reject) => {
-  axios.post('/api/users/login/', userInput)
-    .then((response) => {
-      const { token } = response.data;
-      const { id, roleID } = response.data.user;
-      localStorage.setItem('hermesToken', token);
-      localStorage.setItem('hermesUserID', id);
-      localStorage.setItem('hermesRoleID', roleID);
-      setAuthorizationToken(token, id, roleID);
-      dispatch(setCurrentUser(jwt.decode(token)));
-      resolve(response);
-    })
-    .catch(error => reject(error.response.data.message));
+export const signInAction = userInput =>
+  dispatch => new Promise((resolve, reject) => {
+    axios.post('/api/users/login/', userInput)
+      .then((response) => {
+        const { token } = response.data;
+        const decoded =  jwt.decode(token);
+        dispatch(setCurrentUser(jwt.decode(token)));
+        resolve({token, decoded});
+      })
+      .catch(error => reject(error.response.data.message));
 });
 
