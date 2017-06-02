@@ -7,6 +7,12 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('Role API', () => {
+  // beforeEach((done) => {
+  //   setTimeout(() => {
+  //     done();
+  //   }, 2000);
+  // });
+
   it('should not create role if user is not signed in', (done) => {
     chai.request(server)
       .post('/api/roles/')

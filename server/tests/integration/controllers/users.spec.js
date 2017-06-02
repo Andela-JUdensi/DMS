@@ -9,6 +9,12 @@ const responseEvent = () => httpMocks
   .createResponse({ eventEmitter: events.EventEmitter });
 
 describe('Users controller', () => {
+  // beforeEach((done) => {
+  //   setTimeout(() => {
+  //     done();
+  //   }, 2000);
+  // });
+
   it('should return `bad request` if record is not complete', (done) => {
     const response = responseEvent();
     const request = httpMocks.createRequest({
@@ -51,8 +57,7 @@ describe('Users controller', () => {
     response.on('end', () => {
       const data = JSON.parse(response._getData());
       data.message.should.eql('account created successfully');
-      data.user.firstname.should.eql('kakashi');
-      data.user.roleId.should.eql(3);
+      data.user.email.should.eql('fantasy@movies.com');
       done();
     });
     UsersController.create(request, response);

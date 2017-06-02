@@ -7,6 +7,12 @@ chai.use(chaiHttp);
 
 
 describe('The Search API', () => {
+  // beforeEach((done) => {
+  //   setTimeout(() => {
+  //     done();
+  //   }, 2000);
+  // });
+
   describe('for Unauthenticated users', () => {
     describe('searching for a user', () => {
       it('should not return `not signed in` for unauthenticated users', (done) => {
@@ -58,7 +64,7 @@ describe('The Search API', () => {
 
   describe('for Authenticated users', () => {
     let authenticatedUser;
-    before((done) => {
+    beforeEach((done) => {
       chai.request(server)
         .post('/api/users/login/')
         .send({

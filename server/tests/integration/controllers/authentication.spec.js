@@ -8,6 +8,13 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('The user authentication API', () => {
+
+  beforeEach((done) => {
+    setTimeout(() => {
+      done();
+    }, 2000);
+  });
+
   let authenticatedUser;
   describe('the login route', () => {
     describe('for valid users', () => {
@@ -78,7 +85,7 @@ describe('The user authentication API', () => {
           .set('authorization', `bearer ${authenticatedUser.token}`)
           .end((err, res) => {
             res.should.have.status(200);
-            res.body.should.eql('logout successful');
+            res.body.message.should.eql('logout successful');
             done();
           });
       });

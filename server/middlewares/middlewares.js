@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import SERVER from '../configs';
+import { SERVER } from '../configs/';
 import { Helpers, Response } from '../utils/';
 import models from '../models/';
 
@@ -9,10 +9,8 @@ const Documents = models.Documents;
 const auth = {
   verifyAuthentication(req, res, next) {
     req.locals = {};
-    // const uid = req.headers['x-userId'];
-    // const rid = req.headers['x-roleId'];
     const authorizationToken = req.headers.authorization;
-    const userId = 0, roleId = 0; // = Helpers.getUserFromHeaders(uid, rid);
+    const userId = 0, roleId = 0;
     Helpers.TokenIsBlacklisted(authorizationToken)
     .then((tokenIsBlacklisted) => {
       if (authorizationToken) {
@@ -22,11 +20,17 @@ const auth = {
             req.locals.user = { decoded, isAuthenticated: true };
             return next();
           }
-          req.locals.user = { decoded: { userId, roleId }, isAuthenticated: false };
+          req.locals.user = {
+            decoded: { userId, roleId },
+            isAuthenticated: false
+          };
           return next();
         });
       } else {
-        req.locals.user = { decoded: { userId, roleId }, isAuthenticated: false };
+        req.locals.user = {
+          decoded: { userId, roleId },
+          isAuthenticated: false
+        };
         return next();
       }
     });
@@ -66,27 +70,23 @@ const auth = {
     if (parseInt(req.body.roleId, 10) === 1) {
       return Response.badRequest(res, 'you cannot signup with this priviledge');
     }
-    const username = /\w+/g.test(req.body.username);
-    const firstname = /\w+/g.test(req.body.firstname);
-    const lastname = /\w+/g.test(req.body.lastname);
-    const email = /\S+@\S+\.\S+/.test(req.body.email);
-    const password = /\w+/g.test(req.body.password);
 
-    if (!firstname) {
-      return Response.badRequest(res, 'enter a valid firstname');
+    let field;
+    try {
+      ['firstname',
+        'lastname',
+        'email',
+        'username',
+        'password'].forEach((eachField) => {
+          if (!req.body[eachField]) {
+            field = eachField;
+            throw new Error();
+          }
+        });
+    } catch (e) {
+      return Response.badRequest(res, `enter a valid ${field}`);
     }
-    if (!lastname) {
-      return Response.badRequest(res, 'enter a valid lastname');
-    }
-    if (!email) {
-      return Response.badRequest(res, 'enter a valid email');
-    }
-    if (!username) {
-      return Response.badRequest(res, 'enter a valid username');
-    }
-    if (!password) {
-      return Response.badRequest(res, 'enter a valid password');
-    }
+
     if (req.body.password && req.body.password.length < 7) {
       return Response.badRequest(res, 'password must be greater than 7 characters');
     }
@@ -199,7 +199,6 @@ const auth = {
         next();
       });
   }
-
 };
 
 export default auth;

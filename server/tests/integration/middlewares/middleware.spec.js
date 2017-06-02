@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import chai from 'chai';
 import sinon from 'sinon';
 import server from '../../../server';
-import middlewares from '../../../configs/middlewares/';
+import middlewares from '../../../middlewares/';
 
 chai.use(chaiHttp);
 chai.should();
@@ -14,8 +14,13 @@ const responseEvent = () => httpMocks
 describe('Middlewares', () => {
   let superAdminToken, adminToken, regularToken;
   let superAdmin, admin, regular;
-  // let publicDocument, privateDocument, roleDocument;
   let request;
+
+  beforeEach((done) => {
+    setTimeout(() => {
+      done();
+    }, 2000);
+  });
 
   before((done) => {
     chai.request(server)
@@ -78,6 +83,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
+            decoded: { userId: 0, roleId: 0 },
             isAuthenticated: false
           }
         }
@@ -182,7 +188,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users',
         body: {
-          firstname: 'thePiper',
+          username: 'kingsLanding',
+          email: '',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -204,7 +214,10 @@ describe('Middlewares', () => {
         url: '/api/users/',
         body: {
           username: '',
-          email: 'test@test.com'
+          email: 'test@test.com',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -225,7 +238,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users/',
         body: {
+          username: 'kingsLanding',
+          email: 'test@test.com',
           firstname: '',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -246,7 +263,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users/',
         body: {
+          username: 'kingsLanding',
+          email: 'test@test.com',
+          firstname: 'tyrion',
           lastname: '',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -268,6 +289,11 @@ describe('Middlewares', () => {
         url: '/api/users/',
         body: {
           roleId: 1,
+          username: 'kingsLanding',
+          email: 'test@test.com',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
