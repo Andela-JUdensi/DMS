@@ -52,8 +52,8 @@ class ProfileTabs extends React.Component {
           <UserInfo setUsername={username => this.setUserName(username)} />
         </Tab>
         {
-          parseInt(this.props.stateUser.userID, 10) === parseInt(this.props.match.params.id, 10)
-          || this.props.stateUser.roleID === 1
+          parseInt(this.props.stateUser.userId, 10) === parseInt(this.props.match.params.id, 10)
+          || this.props.stateUser.roleId === 1
             ?
               <Tab label="Preference">
                 <EditProfile />

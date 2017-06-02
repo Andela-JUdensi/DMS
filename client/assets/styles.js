@@ -38,7 +38,7 @@ export default {
   content: {
     padding: '5px 10px',
     marginLeft: 90,
-    height: 80
+    height: 40
   },
   number: {
     display: 'block',
@@ -52,9 +52,9 @@ export default {
     color: grey800
   },
   icon: {
-    height: 48,
+    height: 30,
     width: 48,
-    marginTop: 20,
+    marginTop: 10,
     maxWidth: '100%'
   },
   documentStack: {
@@ -64,5 +64,37 @@ export default {
     padding: 5,
     textAlign: 'center',
     display: 'inline-block',
+  },
+  selectDocuments: {
+    background: 'white',
+    height: 10,
+    padding: 10,
+    paddingBottom: 30,
+    color: 'black',
+  },
+  selectDocumentsButton: {
+    color: 'black',
+    marginTop: 0,
+  },
+  toolbar: {
+    background: 'transparent'
+  },
+  paper: {
+    display: 'inline-block',
+    width: '100%'
+  },
+  rightIcon: {
+    textAlign: 'center',
+    lineHeight: '24px',
+  },
+  sideAvatar: {
+    width: '70px',
+    margin: '0 auto',
+    position: 'relative',
+    top: 0,
+    bottom: '20px',
+    height: '70px',
+    fontSize: '50px',
+    background: 'white'
   }
 };

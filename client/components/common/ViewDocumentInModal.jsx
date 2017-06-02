@@ -69,12 +69,12 @@ class ViewDocumentInModal extends React.Component {
 
   render() {
     const { ownerID, access, id } = this.props.documentToView;
-    const { documentOwnerRoleID } = this.props.documentToView.User;
+    const { documentOwnerroleId } = this.props.documentToView.User;
     const userLinks = (
       <div>
         {
           (this.state.isAuthenticated)
-          ? (ownerID === this.state.user.userID || [1, 2].includes(this.state.user.roleID))
+          ? (ownerID === this.state.user.userId || [1, 2].includes(this.state.user.roleId))
             ? <div>
               <MenuItem primaryText="Edit" onTouchTap={() => this.openEditDialog()} />
               <MenuItem primaryText="Delete" onTouchTap={() => this.toggleDeleteDialog()} />

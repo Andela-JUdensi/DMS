@@ -59,7 +59,7 @@ export default (sequelize, DataTypes) => {
         },
       }
     },
-    roleID: {
+    roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 3,

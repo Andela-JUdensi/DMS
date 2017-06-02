@@ -40,7 +40,12 @@ class DocumentForm extends React.Component {
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value, success: '', errors: '', snackBarOpen: false });
+    this.setState({
+      [event.target.name]: event.target.value,
+      success: '',
+      errors: '',
+      snackBarOpen: false
+    });
   }
 
   onSubmit(event) {
@@ -152,8 +157,10 @@ DocumentForm.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  ownerID: state.authentication.user.userID,
+  ownerID: state.authentication.user.userId,
   newDocument: state.documents.data,
 });
 
-export default withRouter(connect(mapStateToProps, { addDocumentAction, getDocumentsAction })(DocumentForm));
+export default withRouter(connect(mapStateToProps, {
+  addDocumentAction, getDocumentsAction
+})(DocumentForm));

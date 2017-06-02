@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
     if (['all', 'private', 'role', 'public'].includes(selectedView)) {
       return this.props.dispatch(getDocumentsAction(12, 0, 'ASC', selectedView));
     } else if (selectedView === 'own') {
-      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userID));
+      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userId));
     }
     return this.props.dispatch(getDocumentsAction(12, 0));
   }
@@ -96,7 +96,7 @@ class Dashboard extends React.Component {
    */
   getMoreDocuments(offset) {
     if (this.state.selectedView === 'own') {
-      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userID), offset);
+      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userId), offset);
     }
     if (this.state.inputData === '') {
       return this.props.dispatch(getDocumentsAction(12, offset, 'ASC', this.state.selectedView));
@@ -140,97 +140,99 @@ class Dashboard extends React.Component {
       const { rows } = this.props.documents;
       const { currentUser, documents } = this.props;
 
-      return (
-        <MuiThemeProvider>
-          <div className="mui-row">
-            <div className="mui-container">
-              <div className="mui-col-md-12">
-                <h3 className="app-breadcum">
-                  <span>
-                  Application / Dashboard
-                </span>
-                </h3>
+      if (currentUser.username) {
+        return (
+          <MuiThemeProvider>
+            <div className="mui-row">
+              <div className="mui-container">
+                <div className="mui-col-md-12">
+                  <h3 className="app-breadcum">
+                    <span>
+                    Application / Dashboard
+                  </span>
+                  </h3>
 
-                <div className="mui-col-md-3">
-                <Link to={{
-                  pathname: 'profile',
-                  state: { id: currentUser.userID }
-                }}
-                >
-                    <InfoBox
-                      Icon={GroupIcon}
-                      color={cyan600}
-                      title={currentUser.username.toUpperCase()}
-                      value={Helpers.getRoleName(currentUser.roleID)}
-                    />
-                  </Link>
-                </div>
-
-                <div className="mui-col-md-3">
-                  <InfoBox
-                    Icon={DescriptionIcon}
-                    color={pink600}
-                    title="Documents access"
-                    value={count}
-                  />
-                </div>
-
-                <div className="mui-col-md-3">
-                  <InfoBox
-                    Icon={Assessment}
-                    color={purple600}
-                    title="My Documents"
-                    value={Helpers.countUserDocuments(documents, currentUser.userID)}
-                  />
-                </div>
-
-                <div className="mui-col-md-3">
-                <div> 
-                  <SelectField
-                    value={this.state.selectedView}
-                    onChange={this.handleChange}
-                    style={styles.selectDocuments}
-                    hintText="Categorize by"
-                    underlineStyle={{display: 'none', }}
-                    selectedMenuItemStyle={{color: 'crimson'}}
+                  <div className="mui-col-md-3">
+                  <Link to={{
+                    pathname: 'profile',
+                    state: { id: currentUser.userId }
+                  }}
                   >
-                    <MenuItem value="all" primaryText="All documents" />
-                    <MenuItem value="own" primaryText="Own documents" />
-                    <MenuItem value="private" primaryText="Private" />
-                    <MenuItem value="role" primaryText="Role" />
-                    <MenuItem value="public" primaryText="Public" />
-                  </SelectField>
+                      <InfoBox
+                        Icon={GroupIcon}
+                        color={cyan600}
+                        title={currentUser.username.toUpperCase()}
+                        value={Helpers.getRoleName(currentUser.roleId)}
+                      />
+                    </Link>
+                  </div>
+
+                  <div className="mui-col-md-3">
+                    <InfoBox
+                      Icon={DescriptionIcon}
+                      color={pink600}
+                      title="Documents access"
+                      value={count}
+                    />
+                  </div>
+
+                  <div className="mui-col-md-3">
+                    <InfoBox
+                      Icon={Assessment}
+                      color={purple600}
+                      title="My Documents"
+                      value={Helpers.countUserDocuments(documents, currentUser.userId)}
+                    />
+                  </div>
+
+                  <div className="mui-col-md-3">
+                  <div> 
+                    <SelectField
+                      value={this.state.selectedView}
+                      onChange={this.handleChange}
+                      style={styles.selectDocuments}
+                      hintText="Categorize by"
+                      underlineStyle={{display: 'none', }}
+                      selectedMenuItemStyle={{color: 'crimson'}}
+                    >
+                      <MenuItem value="all" primaryText="All documents" />
+                      <MenuItem value="own" primaryText="Own documents" />
+                      <MenuItem value="private" primaryText="Private" />
+                      <MenuItem value="role" primaryText="Role" />
+                      <MenuItem value="public" primaryText="Public" />
+                    </SelectField>
+                  </div>
+                  </div>
                 </div>
+              </div>
+              <br /><br /><br />
+              <div className="mui-container">
+                <div className="dashboard-search">
+                  <TextField
+                    onChange={this.onUpdateInput}
+                    id="documentsSearch"
+                    fullWidth
+                    hintText="Search for a user"
+                    floatingLabelText="Search for a document"
+                    ref={(input) => { this.searchInput = input; }}
+                  />
+                </div>
+                {rows.map(documentStack)}
+              </div>
+              <div className="mui-container">
+                <div className="pagination">
+                  <Pagination
+                    total={documents.pages}
+                    current={documents.currentPage}
+                    display={documents.pages}
+                    onChange={number => this.getMoreDocuments((number - 1) * 12)}
+                  />
                 </div>
               </div>
             </div>
-            <br /><br /><br />
-            <div className="mui-container">
-              <div className="dashboard-search">
-                <TextField
-                  onChange={this.onUpdateInput}
-                  id="documentsSearch"
-                  fullWidth
-                  hintText="Search for a user"
-                  floatingLabelText="Search for a document"
-                  ref={(input) => { this.searchInput = input; }}
-                />
-              </div>
-              {rows.map(documentStack)}
-            </div>
-            <div className="mui-container">
-              <div className="pagination">
-                <Pagination
-                  total={documents.pages}
-                  current={documents.currentPage}
-                  display={documents.pages}
-                  onChange={number => this.getMoreDocuments((number - 1) * 12)}
-                />
-              </div>
-            </div>
-          </div>
-        </MuiThemeProvider>
-      );
+          </MuiThemeProvider>
+        );
+      }
     }
     return (
       <h1>Dashboard</h1>

@@ -52,12 +52,12 @@ class ProfileInfo extends React.Component {
    * call deleteUserAction
    * 
    * 
-   * @param {integer} userID 
+   * @param {integer} userId 
    * 
    * @memberof ProfileInfo
    */
-  deleteUser(userID) {
-    this.props.deleteUserAction(userID)
+  deleteUser(userId) {
+    this.props.deleteUserAction(userId)
       .then((success) => {
       })
       .catch((error) => {
@@ -79,7 +79,7 @@ class ProfileInfo extends React.Component {
       firstname,
       lastname,
       email,
-      roleID,
+      roleId,
       createdAt,
     } = this.props.user;
     return (
@@ -110,7 +110,7 @@ class ProfileInfo extends React.Component {
                   <span>Email:</span> {email}
                 </p>
                 <p>
-                  <span>Role:</span> {Helpers.getRoleName(roleID)}
+                  <span>Role:</span> {Helpers.getRoleName(roleId)}
                 </p>
                 <p>
                   <span>Joined: </span>{Helpers.readDate(createdAt)}
@@ -118,8 +118,8 @@ class ProfileInfo extends React.Component {
               </div>
               {
                 this.props.user.id > 3 &&
-                (this.props.stateUser.roleID === 1
-                || this.props.user.roleID === this.props.stateUser.roleID)
+                (this.props.stateUser.roleId === 1
+                || this.props.user.roleId === this.props.stateUser.roleId)
                 ?
                   <div className="profile-delete-button mui--pull-right">
                     <Alerts errors={this.state.errors} />

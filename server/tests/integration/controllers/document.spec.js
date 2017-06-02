@@ -25,8 +25,8 @@ describe('The document API', () => {
       chai.request(server)
         .post('/api/documents/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({
           title: `Introduction to common sense ${Date.now()}`,
           body: 'Rene Descartes wrote “common sense is the most widely shared commodity.',
@@ -41,8 +41,8 @@ describe('The document API', () => {
       chai.request(server)
         .post('/api/documents/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({
           title: 'Int',
           body: 'Rene Descartes wrote “common sense is the most widely shared commodity.',
@@ -58,8 +58,8 @@ describe('The document API', () => {
       chai.request(server)
         .get('/api/documents/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.count.should.be.a('number');
@@ -71,8 +71,8 @@ describe('The document API', () => {
       chai.request(server)
         .get('/api/documents/1')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.access.should.eql('public');
@@ -83,8 +83,8 @@ describe('The document API', () => {
       chai.request(server)
         .get('/api/documents/100')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.message.should.eql('document not found');
@@ -95,8 +95,8 @@ describe('The document API', () => {
       chai.request(server)
         .get('/api/documents/abcde')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .end((err, res) => {
           res.should.have.status(400);
           res.body.message.should.eql('provide a valid document id');
@@ -107,8 +107,8 @@ describe('The document API', () => {
       chai.request(server)
         .put('/api/documents/3')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({ title: 'A Place Called Zero' })
         .end((err, res) => {
           // res.should.have.status(401);
@@ -120,8 +120,8 @@ describe('The document API', () => {
       chai.request(server)
         .put('/api/documents/100')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({ title: 'A Discuss about Unexistence' })
         .end((err, res) => {
           // res.should.have.status(404);
@@ -134,8 +134,8 @@ describe('The document API', () => {
         .put('/api/documents/1')
         .set('authorization', `bearer ${authenticatedUser.token}`)
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({ title: `The Bounds of Reason ${Date.now()}` })
         .end((err, res) => {
           res.should.have.status(200);
@@ -146,8 +146,8 @@ describe('The document API', () => {
       chai.request(server)
         .put('/api/documents/100')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        .set('x-userId', authenticatedUser.user.id)
+        .set('x-roleId', authenticatedUser.user.roleId)
         .send({ title: 'A Discuss about Unexistence' })
         .end((err, res) => {
           // res.should.have.status(404);

@@ -121,14 +121,14 @@ class DocumentOptions extends React.Component {
    */
   render() {
     const { ownerID, access, id } = this.props.documentToView;
-    const { roleID } = this.props.documentToView.User;
+    const { roleId } = this.props.documentToView.User;
     const userLinks = (
       <div>
         {
           (this.state.isAuthenticated)
-          ? (ownerID === this.state.user.userID
+          ? (ownerID === this.state.user.userId
             || (['role', 'public'].includes(access)
-            || this.state.user.roleID <= roleID))
+            || this.state.user.roleId <= roleId))
             ? <div>
               <MenuItem primaryText="Edit" onTouchTap={() => this.openEditDialog()} />
               <MenuItem primaryText="Delete" onTouchTap={() => this.toggleDeleteDialog()} />

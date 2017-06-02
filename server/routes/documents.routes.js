@@ -1,18 +1,20 @@
 import {
-  documentsCtrl,
+  DocumentsController,
   middlewares
 } from './dependencies';
+
+// console.log(DocumentsController.findAll);
 
 const documentRoute = (router) => {
   router
     .route('/documents')
-    .post(middlewares.validateDocumentInput, documentsCtrl.create)
-    .get(documentsCtrl.findAll);
+    .post(middlewares.validateDocumentInput, DocumentsController.create)
+    .get(DocumentsController.findAll);
   router
     .route('/documents/:id')
-    .get(documentsCtrl.findOne)
-    .put(middlewares.validateUserUpdateAccess, documentsCtrl.update)
-    .delete(documentsCtrl.delete);
+    .get(DocumentsController.findOne)
+    .put(middlewares.validateUserUpdateAccess, DocumentsController.update)
+    .delete(DocumentsController.delete);
 };
 
 export default documentRoute;

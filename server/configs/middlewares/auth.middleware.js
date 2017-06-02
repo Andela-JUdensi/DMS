@@ -9,10 +9,10 @@ const Documents = models.Documents;
 const auth = {
   verifyAuthentication(req, res, next) {
     req.locals = {};
-    const uid = req.headers['x-userid'];
-    const rid = req.headers['x-roleid'];
+    const uid = req.headers['x-userId'];
+    const rid = req.headers['x-roleId'];
     const authorizationToken = req.headers.authorization;
-    const { userID, roleID } = Helpers.getUserFromHeaders(uid, rid);
+    const { userId, roleId } = Helpers.getUserFromHeaders(uid, rid);
     Helpers.TokenIsBlacklisted(authorizationToken)
     .then((tokenIsBlacklisted) => {
       if (authorizationToken) {
@@ -22,11 +22,11 @@ const auth = {
             req.locals.user = { decoded, isAuthenticated: true };
             return next();
           }
-          req.locals.user = { decoded: { userID, roleID }, isAuthenticated: false };
+          req.locals.user = { decoded: { userId, roleId }, isAuthenticated: false };
           return next();
         });
       } else {
-        req.locals.user = { decoded: { userID, roleID }, isAuthenticated: false };
+        req.locals.user = { decoded: { userId, roleId }, isAuthenticated: false };
         return next();
       }
     });
@@ -63,7 +63,7 @@ const auth = {
   },
 
   validateUserInput(req, res, next) {
-    if (parseInt(req.body.roleID, 10) === 1) {
+    if (parseInt(req.body.roleId, 10) === 1) {
       return Response.badRequest(res, 'you cannot signup with this priviledge');
     }
     const username = /\w+/g.test(req.body.username);
@@ -119,9 +119,9 @@ const auth = {
     if ([1, 2, 3].indexOf(parseInt(req.params.id, 10)) > 0) {
       return Response.badRequest(res, 'you cannot modify this user');
     }
-    if (parseInt(req.locals.user.decoded.userID, 10)
+    if (parseInt(req.locals.user.decoded.userId, 10)
         === parseInt(req.params.id, 10) ||
-        (parseInt(req.locals.user.decoded.roleID, 10) === 1)) {
+        (parseInt(req.locals.user.decoded.roleId, 10) === 1)) {
       Users.findById(req.params.id)
         .then((userToUpdate) => {
           if (!userToUpdate) {
@@ -136,8 +136,8 @@ const auth = {
   },
 
   validateDeleteUser(req, res, next) {
-    if ((req.locals.user.decoded.roleID) !== 1
-      && req.locals.user.decoded.userID !== parseInt(req.params.id, 10)) {
+    if ((req.locals.user.decoded.roleId) !== 1
+      && req.locals.user.decoded.userId !== parseInt(req.params.id, 10)) {
       return Response.forbidden(res, 'you cannot perform this action');
     }
     Users.findById(req.params.id)
@@ -145,7 +145,7 @@ const auth = {
         if (!user) {
           return Response.notFound(res, 'user not found');
         }
-        if (parseInt(user.roleID, 10) === 1 || [1, 2, 3].includes(user.id)) {
+        if (parseInt(user.roleId, 10) === 1 || [1, 2, 3].includes(user.id)) {
           return Response.forbidden(res, 'you can not perform this action');
         }
         req.locals.userToBeDeleted = user;
@@ -160,14 +160,14 @@ const auth = {
       },
       include: {
         model: Users,
-        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
+        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleId'],
       }
     })
       .then((documentToUpdate) => {
         if (!(documentToUpdate)) return Response.notFound(res, 'document not found');
-        if (parseInt(req.locals.user.decoded.roleID, 10)
-          < parseInt(documentToUpdate.dataValues.User.roleID, 10)
-          || parseInt(req.locals.user.decoded.userID, 10)
+        if (parseInt(req.locals.user.decoded.roleId, 10)
+          < parseInt(documentToUpdate.dataValues.User.roleId, 10)
+          || parseInt(req.locals.user.decoded.userId, 10)
           === parseInt(documentToUpdate.ownerID, 10)) {
           req.locals.documentToUpdate = documentToUpdate;
           return next();

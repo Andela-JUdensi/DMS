@@ -1,27 +1,27 @@
 import {
-  usersCtrl,
+  UsersController,
   middlewares
 } from './dependencies';
 
 const userRoute = (router) => {
   router
     .route('/users')
-    .post(middlewares.validateUserInput, usersCtrl.create)
-    .get(usersCtrl.findAll);
+    .post(middlewares.validateUserInput, UsersController.create)
+    .get(UsersController.findAll);
   router
     .route('/users/:id')
-    .get(usersCtrl.findOne)
-    .put(middlewares.validateUserUpdate, usersCtrl.update)
-    .delete(middlewares.validateDeleteUser, usersCtrl.delete);
+    .get(UsersController.findOne)
+    .put(middlewares.validateUserUpdate, UsersController.update)
+    .delete(middlewares.validateDeleteUser, UsersController.delete);
   router
     .route('/users/login')
-    .post(middlewares.validateLoginInput, usersCtrl.login);
+    .post(middlewares.validateLoginInput, UsersController.login);
   router
     .route('/users/logout')
-    .post(usersCtrl.logout);
+    .post(UsersController.logout);
   router
     .route('/users/:id/documents')
-    .get(usersCtrl.documentsByUser);
+    .get(UsersController.documentsByUser);
 };
 
 export default userRoute;

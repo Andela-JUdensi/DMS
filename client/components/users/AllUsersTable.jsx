@@ -12,7 +12,7 @@ export default (user, index) => (
     <TableRowColumn>{index + 1}</TableRowColumn>
     <TableRowColumn>{user.username}</TableRowColumn>
     <TableRowColumn>{user.email}</TableRowColumn>
-    <TableRowColumn>{Helpers.getRoleName(user.roleID)}</TableRowColumn>
+    <TableRowColumn>{Helpers.getRoleName(user.roleId)}</TableRowColumn>
     <TableRowColumn>
       <Link to={{
         pathname: 'profile',

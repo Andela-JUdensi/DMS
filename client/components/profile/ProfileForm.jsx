@@ -74,8 +74,8 @@ const ProfileForm = props => (
         <div className="mui-col-md-6">
           <SelectField
             floatingLabelText="Priviledge"
-            value={props.roleID}
-            name="roleID"
+            value={props.roleId}
+            name="roleId"
             type="select"
             onChange={props.handleChange}
             className="profile-select-role"
@@ -121,7 +121,7 @@ ProfileForm.propTypes = {
   username: PropTypes.string,
   email: PropTypes.string,
   password: PropTypes.string,
-  roleID: PropTypes.any
+  roleId: PropTypes.any
 };
 
 ProfileForm.defaultProps = {

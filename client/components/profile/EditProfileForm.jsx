@@ -37,8 +37,8 @@ class EditProfileForm extends React.Component {
       email: '',
       username: '',
       password: '',
-      roleID: '',
-      userID: '',
+      roleId: '',
+      userId: '',
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -50,12 +50,12 @@ class EditProfileForm extends React.Component {
    * update state user role on change
    * @param {object} event 
    * @param {integer} index 
-   * @param {integer} roleID 
+   * @param {integer} roleId 
    * 
    * @memberof EditProfileForm
    */
-  handleChange(event, index, roleID) {
-    this.setState({ roleID });
+  handleChange(event, index, roleId) {
+    this.setState({ roleId });
   }
 
   /**
@@ -71,8 +71,8 @@ class EditProfileForm extends React.Component {
         lastname: this.props.user.lastname,
         email: this.props.user.email,
         username: this.props.user.username,
-        roleID: this.props.user.roleID,
-        userID: this.props.user.id,
+        roleId: this.props.user.roleId,
+        userId: this.props.user.id,
       });
     }, 500);
   }
@@ -94,7 +94,7 @@ class EditProfileForm extends React.Component {
 
     let selectedUserInfo = lodash.pickBy(this.state, lodash.identity);
 
-    selectedUserInfo = lodash.omit(selectedUserInfo, ['userID']);
+    selectedUserInfo = lodash.omit(selectedUserInfo, ['userId']);
 
     this.props.updateUserAction(this.props.match.params.id, selectedUserInfo)
       .then(() => {
@@ -103,7 +103,7 @@ class EditProfileForm extends React.Component {
           isLoading: false,
           snackBarOpen: true
         });
-        this.props.getUserAction(this.state.userID);
+        this.props.getUserAction(this.state.userId);
       })
       .catch((error) => {
         this.setState({ errors: error, isLoading: false });
@@ -143,7 +143,7 @@ class EditProfileForm extends React.Component {
           username={this.state.username}
           email={this.state.email}
           password={this.state.password}
-          roleID={this.state.roleID}
+          roleId={this.state.roleId}
         />
       );
     }

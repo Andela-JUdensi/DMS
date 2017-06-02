@@ -3,8 +3,8 @@ export default {
     const dateInstance = new Date(dataString);
     return dateInstance.toDateString();
   },
-  getRoleName: (roleID) => {
-    switch (roleID) {
+  getRoleName: (roleId) => {
+    switch (roleId) {
       case 1:
         return 'Superadmin';
       case 2:
@@ -12,9 +12,14 @@ export default {
       default: return 'Regular';
     }
   },
-  countUserDocuments: (documents, userID) => {
+  countUserDocuments: (documents, userId) => {
     return documents.rows
-      .filter(document => document.ownerID === userID)
+      .filter(document => document.ownerID === userId)
         .length;
+  },
+  saveToLocalStorage: (token, userId, roleId) => {
+    localStorage.setItem('hermesToken', token);
+    localStorage.setItem('hermesuserId', userId);
+    localStorage.setItem('hermesroleId', roleId);
   }
 }

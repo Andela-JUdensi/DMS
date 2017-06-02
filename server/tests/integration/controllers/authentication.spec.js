@@ -36,7 +36,7 @@ describe('The user authentication API', () => {
             res.should.have.status(200);
             res.body.should.have.property('user');
             res.body.message.should.eql('welcome SiliconValley');
-            res.body.user.roleID.should.eql(2);
+            res.body.user.roleId.should.eql(2);
             done();
           });
       });
@@ -77,8 +77,8 @@ describe('The user authentication API', () => {
         chai.request(server)
           .post('/api/users/logout/')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userid', authenticatedUser.user.id)
-          .set('x-roleid', authenticatedUser.user.roleID)
+          .set('x-userId', authenticatedUser.user.id)
+          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.eql('logout successful');
@@ -89,8 +89,8 @@ describe('The user authentication API', () => {
         chai.request(server)
           .get('/api/search/users/')
           .set('authorization', `bearer ${authenticatedUser.token}`)
-          .set('x-userid', authenticatedUser.user.id)
-          .set('x-roleid', authenticatedUser.user.roleID)
+          .set('x-userId', authenticatedUser.user.id)
+          .set('x-roleId', authenticatedUser.user.roleId)
           .end((err, res) => {
             res.should.have.status(401);
             res.body.message.should.eql('you are not signed in');

@@ -11,6 +11,8 @@ import FormTextFields from '../common/FormTextFields';
 import { signInAction } from '../../actions/authentication.action';
 import Alerts from '../common/alerts';
 import styles from '../../assets/styles';
+import setAuthorizationToken from '../../utils/setAuthorizationToken';
+import Helpers from '../../utils/Helpers';
 
 /**
  * render signin form
@@ -53,7 +55,13 @@ class SignInForm extends React.Component {
       isLoading: true,
     });
     this.props.signInAction(this.state)
-      .then(() => {
+      .then((response) => {
+        Helpers.saveToLocalStorage(
+          response.token,
+          response.decoded.userId,
+          response.decoded.roleId
+        );
+        setAuthorizationToken(response.token);
         this.setState({ redirect: true });
       })
       .catch((errors) => {

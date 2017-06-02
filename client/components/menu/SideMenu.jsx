@@ -69,9 +69,9 @@ class SideMenu extends React.Component {
     let user = 'Guest';
     let userId = 0;
     if (isAuthenticated) {
-      const { username, userID } = this.props.state.authentication.user;
+      let { username, userId } = this.props.state.authentication.user;
       user = `${username}`;
-      userId = userID;
+      userId = userId;
     }
 
     const userLinks = (

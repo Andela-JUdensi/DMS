@@ -1,17 +1,17 @@
 import {
-  rolesCtrl,
+  RolesController,
 } from './dependencies';
 
 const rolesRoute = (router) => {
   router
     .route('/roles')
-    .post(rolesCtrl.create)
-    .get(rolesCtrl.findAll);
+    .post(RolesController.create)
+    .get(RolesController.findAll);
   router
     .route('/roles/:id')
-    .get(rolesCtrl.findOne)
-    .put(rolesCtrl.update)
-    .delete(rolesCtrl.delete);
+    .get(RolesController.findOne)
+    .put(RolesController.update)
+    .delete(RolesController.delete);
 };
 
 export default rolesRoute;
