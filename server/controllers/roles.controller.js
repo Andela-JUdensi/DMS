@@ -1,32 +1,57 @@
-import { Roles, Response, lodash } from './dependencies';
+import {
+  Roles,
+  Response,
+  lodash
+} from './dependencies';
 
-export default {
+/**
+ * defines controller for /roles/ route
+ *
+ * @export
+ * @class RolesController
+ */
+export default class RolesController {
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * create a new role
+   *
+   * @static
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} - response
+   *
+   * @memberof RolesController
    */
-  create(req, res) {
-    const { roleID } = req.locals.user.decoded;
-    if (roleID !== 1) {
+  static create(req, res) {
+    const { roleId } = req.locals.user.decoded;
+    if (roleId !== 1) {
       Response.unAuthorized(res, 'you are not authorized');
     }
-    const roleData = lodash.pick(req.body, ['roleName', 'description']);
+    const roleData =
+      lodash.pick(req.body, ['roleName', 'description']);
+
     Roles.create(roleData)
       .then(role => Response.created(res, role))
       .catch(error => Response.badRequest(res, error));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * fetch all roles
+   *
+   * @static
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} - response
+   *
+   * @memberof RolesController
    */
-  findAll(req, res) {
-    const { limit = 10, offset = 0, orderBy = 'roleName' } = req.query;
+  static findAll(req, res) {
+    const {
+      limit = 10,
+      offset = 0,
+      orderBy = 'roleName'
+    } = req.query;
+
     Roles.findAndCountAll({
       limit,
       offset,
@@ -36,15 +61,19 @@ export default {
       .then(role => Response.success(res, role))
       .catch(error => Response
         .badRequest(res, error.message));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * fetch one role
+   *
+   * @static
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} - response
+   *
+   * @memberof RolesController
    */
-  findOne(req, res) {
+  static findOne(req, res) {
     const { id } = req.params;
     Roles.findOne({
       where: {
@@ -57,17 +86,21 @@ export default {
     })
     .catch(error => Response
       .badRequest(res, error.message));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * update role information
+   *
+   * @static
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} - response
+   *
+   * @memberof RolesController
    */
-  update(req, res) {
-    const { roleID } = req.locals.user.decoded;
-    if (roleID !== 1) {
+  static update(req, res) {
+    const { roleId } = req.locals.user.decoded;
+    if (roleId !== 1) {
       Response.unAuthorized(res, 'you are not authorized');
     }
     const { id } = req.params;
@@ -78,23 +111,29 @@ export default {
     })
       .then((roleToUpdate) => {
         if (!(roleToUpdate)) return Response.notFound(res, 'role not found');
-        const fieldsToUpdate = lodash.pick(req.body, ['roleName', 'description']);
+        const fieldsToUpdate =
+          lodash.pick(req.body, ['roleName', 'description']);
+
         roleToUpdate.updateAttributes(fieldsToUpdate)
           .then(updatedRole => Response.success(res, updatedRole))
           .catch(error => Response.internalError(res, error.message));
       })
         .catch(error => Response.badRequest(res, error.message));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   *
+   * delete a role
+   * @static
+   * @param {any} req
+   * @param {any} res
+   * @returns {Object} - response
+   *
+   * @memberof RolesController
    */
-  delete(req, res) {
-    const { roleID } = req.locals.user.decoded;
-    if (roleID !== 1) {
+  static delete(req, res) {
+    const { roleId } = req.locals.user.decoded;
+    if (roleId !== 1) {
       Response.unAuthorized(res, 'you are not authorized');
     }
     const { id } = req.params;
@@ -105,5 +144,5 @@ export default {
     })
       .then(roleToDelete => Response.success(res, roleToDelete))
       .catch(error => Response.badRequest(res, error.message));
-  },
-};
+  }
+}
