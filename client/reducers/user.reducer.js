@@ -3,7 +3,9 @@ import {
   DELETE_USER_SUCCESS,
 } from '../actions/types';
 
-const userReducer = (state = [], action = {}) => {
+const initialState = [];
+
+const userReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case GET_USER_INFO_SUCCESS:
       return action.userInfo;

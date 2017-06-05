@@ -7,9 +7,13 @@ import {
   GET_DOCUMENTS_BY_USER_SUCCESS,
 } from '../actions/types';
 
+const initialState = {
+  documents: {},
+};
+
 let newState;
 let rows;
-const documentReducer = (state = {}, action = {}) => {
+const documentReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case GET_DOCUMENTS_SUCCESS:
       return action.documents;
@@ -36,8 +40,7 @@ const documentReducer = (state = {}, action = {}) => {
     case GET_SEARCH_SUCCESS:
       return Object.assign({}, state, action.search);
     case GET_DOCUMENTS_BY_USER_SUCCESS:
-      // return Object.assign({}, state, action.userDocuments);
-      return action.userDocuments;
+      return Object.assign({}, action.userDocuments);
     default: return state;
   }
 };

@@ -17,17 +17,18 @@ describe('The home', () => {
     });
 
     it('should display call to action button', () => {
-      expect(
-        shallow(
-          <Home />
-        ).contains(
-          <button className="call-to-action-button">Read docs...</button>)
-          ).toEqual(true);
+      const component = shallow(
+        <Home />
+      );
+
+      const button = component.find('.call-to-action-button');
+      expect(button.length).toEqual(1);
     });
 
     it('should display call to action header', () => {
       expect(
-        component.find('h1').text()).toBe('Create something awesome');
+        component.find('h1').text()
+        ).toBe('Create something awesome')
     });
   });
 
