@@ -27,13 +27,14 @@ export default class SearchController {
     const query = req.query.q.split(' ')
       .map(element => `%${element}%`);
     const { limit = 5, offset = 0 } = req.query;
+    console.log(query);
 
     Users.findAndCountAll({
       limit,
       offset,
       where: {
         username: {
-          $ilike: { $object: query }
+          $ilike: { $any: query }
         }
       },
       attributes: ['id', 'username', 'email', 'roleId'],
