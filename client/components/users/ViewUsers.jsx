@@ -129,7 +129,11 @@ class ViewUsers extends React.Component {
               </div>
 
 
-              <Table selectable={false} adjustForCheckbox={false}>
+              <Table
+                selectable={false}
+                adjustForCheckbox={false}
+                className="users-list-table"
+              >
                 <TableHeader>
                   <TableRow>
                     <TableHeaderColumn tooltip="S/No">S/No</TableHeaderColumn>

@@ -9,8 +9,8 @@ const Home = () => (
         <div className="call-to-action">
           <h1>Create something awesome</h1>
         </div>
-        <Link to="#" target="_blank">
-          <button className="call-to-action-button">Read docs...</button>
+        <Link to="https://hermes-dms-develop.herokuapp.com/documentation/" target="_blank">
+          <button className="call-to-action-button">Try API's here...</button>
         </Link>
       </div>
       <div className="mui-col-md-8">

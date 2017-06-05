@@ -47,13 +47,13 @@ export const addDocumentSuccess = document => ({
  */
 export const addDocumentAction = documentInformation =>
   dispatch => new Promise((resolve, reject) => {
-    axios.post('/api/documents/', documentData)
+    axios.post('/api/documents/', documentInformation)
       .then((response) => {
         dispatch(addDocumentSuccess(response.data));
         resolve(response);
       })
       .catch((error) => {
-        reject();
+        reject(error.response.data.message);
       });
   });
 
@@ -74,7 +74,8 @@ export const deleteDocumentAction = documentId =>
   dispatch => new Promise((resolve, reject) => {
     axios.delete(`/api/documents/${documentId}`)
       .then(() => {
-        resolve(dispatch(deleteDocumentSuccess(documentId)));
+        dispatch(deleteDocumentSuccess(documentId));
+        resolve(documentId);
       })
       .catch((error) => {
         reject(error.response.data.message);
@@ -88,7 +89,7 @@ export const deleteDocumentAction = documentId =>
  */
 export const editDocumentAction = (documentId, documentInformation) =>
   dispatch => new Promise((resolve, reject) => {
-    axios.put(`/api/documents/${documentId}`, documentInformation)
+    axios.put(`/api/documents/${documentId}/`, documentInformation)
       .then(() => {
         resolve(dispatch(getDocumentsAction()));
       })

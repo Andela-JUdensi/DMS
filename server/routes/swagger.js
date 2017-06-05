@@ -7,7 +7,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'API documentation for to create, manage and edit documents',
   },
-  host: 'localhost:9090',
+  host: 'hermes-dms-develop.herokuapp.com',
   basePath: '/'
 };
 

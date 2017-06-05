@@ -23,7 +23,7 @@ const documentReducer = (state = {}, action = {}) => {
       });
       return newState;
     case DELETE_DOCUMENT_SUCCESS:
-      rows = state.rows.filter(document => document.id !== action.documentID);
+      rows = state.rows.filter(document => document.id !== action.documentId);
       newState = Object.assign({}, state.documents, {
         count: rows.length,
         rows,

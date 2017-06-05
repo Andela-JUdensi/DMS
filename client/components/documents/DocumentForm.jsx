@@ -123,7 +123,7 @@ class DocumentForm extends React.Component {
                   <MenuItem value="public" primaryText="Public" rightIcon={<AccessibilityIcon />} />
                 </SelectField>
               </div>
-              <div className="mui-col-md-12 markdown-editor">
+              <div className="mui-col-md-12 markdown-editor-add">
                 <MarkdownEditor
                   initialContent="Start a new document here..."
                   iconsSet="font-awesome"
