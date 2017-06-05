@@ -19,14 +19,12 @@ if (isDeveloping) {
     noInfo: true,
   }));
   app.use(webpackHotMiddleware(compiler));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-  });
 } else {
   app.use(require('express').static('lib/client'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-  });
 }
+
+app.all('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
