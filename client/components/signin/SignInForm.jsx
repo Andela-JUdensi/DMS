@@ -109,6 +109,7 @@ class SignInForm extends React.Component {
                 id="input-identifier"
                 fullWidth
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -120,6 +121,7 @@ class SignInForm extends React.Component {
                 id="input-password"
                 fullWidth
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-12">

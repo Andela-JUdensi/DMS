@@ -37,6 +37,12 @@ class ProfileInfo extends React.Component {
     this.deleteUser = this.deleteUser.bind(this);
   }
 
+  componentWillUpdate(nextProps) {
+    if (this.props.location.state.id !== nextProps.location.state.id) {
+      this.props.getUserAction(nextProps.location.state.id);
+    }
+  }
+
   /**
    * 
    * call getUserAction
@@ -117,9 +123,8 @@ class ProfileInfo extends React.Component {
                 </p>
               </div>
               {
-                this.props.user.id > 3 &&
                 (this.props.stateUser.roleId === 1
-                || this.props.user.roleId === this.props.stateUser.roleId)
+                || this.props.location.state.id === this.props.stateUser.userId)
                 ?
                   <div className="profile-delete-button mui--pull-right">
                     <Alerts errors={this.state.errors} />

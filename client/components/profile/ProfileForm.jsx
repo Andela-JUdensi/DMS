@@ -19,7 +19,9 @@ import styles from '../../assets/styles';
 const ProfileForm = props => (
   <div className="mui-col-md-12 edit-profile-container">
     <MuiThemeProvider>
-      <form className="profile-update-form" style={styles.formStyle}>
+      <form onSubmit={(event) => props.onSubmit(event)}
+        className="profile-update-form" style={styles.formStyle}>
+
         <h1 id="updateProfile">Update Profile</h1>
         {(props.errors) ? <p> {props.errors} </p> : ''}
         <div className="mui-col-md-6">
@@ -96,7 +98,7 @@ const ProfileForm = props => (
             fullWidth
             className="button"
             id="update-profile"
-            onClick={props.onSubmit}
+            type="submit"
           />
         </div>
         <Snackbar
