@@ -23,7 +23,12 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use([middleware.verifyAuthentication, middleware.verifyRouteAndMethod]);
 app.use(morgan(format));
 
-app.use('/documentation', express.static(path.join(__dirname, './swagger/')));
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/documentation', express.static(path.join(__dirname, './swagger/')));
+} else {
+  app.use('/documentation', express.static(
+    path.join(__dirname, '../../server/swagger/')));
+}
 
 routes(router);
 swagger(router);
