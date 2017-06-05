@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import SelectField from 'material-ui/SelectField';
@@ -70,7 +71,7 @@ class EditDialog extends React.Component {
   render() {
     const { isLoading } = this.state;
     const editDialogActions = [
-      <RaisedButton
+      <FlatButton
         label="Cancel"
         primary
         onTouchTap={() => this.props.closeEditDialog()}
@@ -107,7 +108,7 @@ class EditDialog extends React.Component {
                   <MenuItem value="public" primaryText="Public" rightIcon={<AccessibilityIcon />} />
                 </SelectField>
               </div>
-              <div className="mui-col-md-12">
+              <div className="mui-col-md-12 markdown-editor-edit">
                 <MarkdownEditor
                   initialContent="Start a new document here..."
                   iconsSet="font-awesome"

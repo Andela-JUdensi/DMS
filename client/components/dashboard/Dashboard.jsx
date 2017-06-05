@@ -16,7 +16,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import SelectField from 'material-ui/SelectField';
 import IconButton from 'material-ui/IconButton';
 import FilterIcon from 'material-ui/svg-icons/action/swap-vert';
-import RaisedButton from 'material-ui/RaisedButton';
 import InfoBox from './InfoBox';
 import documentStack from '../common/documentsStack';
 import  * as documentActions from '../../actions/documents.action';

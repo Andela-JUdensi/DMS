@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import store from '../../store/configureStore';
 import DocumentViewDialog from '../common/DocumentViewDialog';
 import { deleteDocumentAction } from '../../actions/documents.action';
@@ -165,14 +165,14 @@ class DocumentOptions extends React.Component {
     }
 
     const deleteDocumentActions = [
-      <RaisedButton
+      <FlatButton
         label="Cancel"
         keyboardFocused
         className="toggle-delete-dialog-close"
         onTouchTap={() => this.toggleDeleteDialog()}
         primary
       />,
-      <RaisedButton
+      <FlatButton
         label="Delete"
         keyboardFocused
         onTouchTap={() => this.deleteDocument(id)}

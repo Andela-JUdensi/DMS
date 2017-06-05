@@ -67,11 +67,11 @@ class SideMenu extends React.Component {
   render() {
     const { isAuthenticated } = this.props.state.authentication;
     let user = 'Guest';
-    let userId = 0;
+    let currentUserId;
     if (isAuthenticated) {
       let { username, userId } = this.props.state.authentication.user;
       user = `${username}`;
-      userId = userId;
+      currentUserId = userId;
     }
 
     const userLinks = (
@@ -84,7 +84,6 @@ class SideMenu extends React.Component {
           <Link to="/new-document">
             <MenuItem primaryText="New Document" rightIcon={<FileUpload />} />
           </Link>
-          <MenuItem primaryText="Make a copy" rightIcon={<ContentCopy />} />
           <Divider />
           <MenuItem primaryText="Sign out" onTouchTap={this.signOut} rightIcon={<ContentLink />} />
         </Menu>
@@ -122,7 +121,7 @@ class SideMenu extends React.Component {
           />
           <Link to={{
             pathname: '/profile',
-            state: { id: userId }
+            state: { id: currentUserId }
           }} >
             <ListItem
               disabled

@@ -20,7 +20,7 @@ const InfoBox = (props) => {
     backgroundColor: color
   };
   return (
-    <MuiThemeProvider>
+    <div>
       <Paper>
         <span style={iconSpan} >
           <Icon
@@ -34,7 +34,7 @@ const InfoBox = (props) => {
           <span style={styles.number}>{value}</span>
         </div>
       </Paper>
-    </MuiThemeProvider>
+    </div>
   );
 };
 

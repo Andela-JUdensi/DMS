@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton';
-import SearchBox from '../search/SearchBox';
 import styles from '../../assets/styles';
 
 /**

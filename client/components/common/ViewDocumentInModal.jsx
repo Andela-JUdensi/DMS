@@ -11,15 +11,25 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import store from '../../store/configureStore';
 import DocumentViewDialog from '../common/DocumentViewDialog';
 import { deleteDocumentAction, getDocumentsAction } from '../../actions/documents.action';
 import EditDialog from './EditDialog';
 
-
+/**
+ * renders options to view a document
+ * 
+ * @class ViewDocumentInModal
+ * @extends {React.Component}
+ */
 class ViewDocumentInModal extends React.Component {
-
+  /**
+   * Creates an instance of ViewDocumentInModal.
+   * @param {object} props 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   constructor(props) {
     super(props);
     const storeState = store.getState();
@@ -39,34 +49,86 @@ class ViewDocumentInModal extends React.Component {
     this.closeEditDialog = this.closeEditDialog.bind(this);
   }
 
+  /**
+   * open modal to view document
+   * 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   openDocumentView() {
     this.setState({ openDocumentView: true });
   }
 
+  /**
+   * close document modal
+   * 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   closeDocumentView() {
     this.setState({ openDocumentView: false });
   }
 
+  /**
+   * toggle delete modal option
+   * 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   toggleDeleteDialog() {
     this.setState({ openDeleteDialog: !this.state.openDeleteDialog });
   }
 
+  /**
+   * open edit document modal
+   * 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   openEditDialog() {
     this.setState({ openEditDialog: true });
   }
+
+  /**
+   * close edit document modal
+   * 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   closeEditDialog() {
     this.setState({ openEditDialog: false });
   }
 
+  /**
+   * 
+   * 
+   * @param {integer} documentID 
+   * 
+   * @memberof ViewDocumentInModal
+   */
   deleteDocument(documentID) {
-    this.props.dispatch(deleteDocumentAction(documentID))
+    this.props.deleteDocumentAction(documentID)
       .then(() => {
+        console.log('success');
         this.toggleDeleteDialog();
-        this.setState({ openSnackbar: true });
+        this.setState({ message: 'document delete successfully' }, () => {
+          this.setState({ openSnackbar: true });
+        });
+      })
+      .catch((errors) => {
+        this.setState({ message: errors }, () => {
+          this.setState({ openSnackbar: true });
+        })
       });
-      // .catch(() => console.log('delete error'));
   }
 
+  /**
+   * renders options to viewDocument
+   * 
+   * @returns {Object}
+   * 
+   * @memberof ViewDocumentInModal
+   */
   render() {
     const { ownerID, access, id } = this.props.documentToView;
     const { documentOwnerroleId } = this.props.documentToView.User;
@@ -94,13 +156,13 @@ class ViewDocumentInModal extends React.Component {
     );
 
     const deleteDocumentActions = [
-      <RaisedButton
+      <FlatButton
         label="Cancel"
         keyboardFocused
         onTouchTap={() => this.toggleDeleteDialog()}
         primary
       />,
-      <RaisedButton
+      <FlatButton
         label="Delete"
         keyboardFocused
         onTouchTap={() => this.deleteDocument(id)}
@@ -114,7 +176,7 @@ class ViewDocumentInModal extends React.Component {
 
           <Snackbar
             open={this.state.openSnackbar}
-            message="Document deleted successfully"
+            message={this.state.message}
             autoHideDuration={40000}
           />
 
@@ -161,4 +223,6 @@ class ViewDocumentInModal extends React.Component {
 }
 
 
-export default withRouter(connect()(ViewDocumentInModal));
+export default withRouter(connect(null, {
+  deleteDocumentAction
+})(ViewDocumentInModal));
