@@ -2,76 +2,85 @@ import models from '../models';
 
 const Blacklists = models.Blacklists;
 
+/**
+ * Helper class for controllers
+ * middlewares
+ *
+ * @export
+ * @class Helpers
+ */
 export default class Helpers {
 
   /**
-   *
+   * determine document query for a user
+   * based on userId and roleId
    *
    * @static
-   * @param {any} userID
-   * @param {any} userRoleID
-   * @returns
+   * @param {integer} userId - user identity
+   * @param {integer} userRoleId - user role identity
+   * @param {string} access - document access
+   * @returns {Object} - database query query
    *
    * @memberOf Helpers
    */
-  static determineDocsforUser(userID, userRoleID, searchAccess) {
-    if (!(userID)) {
-      return [{ access: 'public' }];
-    } else if (userRoleID <= 2 && searchAccess) {
-      return [{ access: searchAccess }, { ownerID: userID }];
-    } else if (userRoleID <= 2 && !searchAccess) {
-      return [{ access: 'private' }, { access: 'public' }, { access: 'role' }, { ownerID: userID }];
+  static determineDocsforUser(userId, userRoleId, access) {
+    if (!(userId)) {
+      return { $or: [{ access: 'public' }] };
+    } else if (userRoleId > 2 && access === 'private') {
+      return { $and: [{ access }, { ownerID: userId }] };
+    } else if (userRoleId > 2 && ['public', 'role'].includes(access)) {
+      return { $or: [{ access }] };
+    } else if (userRoleId <= 2 && access !== 'all') {
+      return { $or: [{ access }] };
+    } else if (userRoleId <= 2 && access === 'all') {
+      return {
+        $or: [
+          { access: 'private' },
+          { access: 'public' },
+          { access: 'role' },
+          { ownerID: userId }
+        ]
+      };
     }
-    return [{ access: 'public' }, { access: 'role' }, { ownerID: userID }];
+    return { $or: [
+      { access: 'public' },
+      { access: 'role' },
+      { ownerID: userId }
+    ] };
   }
 
   /**
-   *
+   * determine search query for a user
+   * based on userId and roleId
    *
    * @static
-   * @param {any} userID
-   * @param {any} roleID
-   * @returns
+   * @param {array} searchTokens - search query
+   * @param {integer} userId - user identity
+   * @param {integer} roleId - role identity
+   * @returns {Object} - database query
    *
    * @memberof Helpers
    */
-  static getUserFromHeaders(userID, roleID) {
-    if (!(userID) || !(roleID)) {
-      return {
-        userID: 0,
-        roleID: 0
-      };
-    }
-    const uID = userID.split(' ')[1];
-    const rID = roleID.split(' ')[1];
-    return {
-      userID: uID,
-      roleID: rID
-    };
-  }
-
-
-  static determineSearchQuery(searchAccess, searchTokens, userID, roleID) {
+  static determineSearchQuery(searchTokens, userId, roleId) {
     let query = '';
-    if (searchAccess === 'undefined') {
-      query = {
-        title: {
-          $iLike: { $any: searchTokens },
-        },
-        $or: this.determineDocsforUser(userID, roleID)
-      };
-      return query;
-    }
     query = {
       title: {
         $ilike: { $any: searchTokens },
       },
-      access: searchAccess,
-      $or: this.determineDocsforUser(userID, roleID, searchAccess)
+      $or: this.determineDocsforUser(userId, roleId, 'all')
     };
     return query;
   }
 
+  /**
+   * adds token to database Blacklist table
+   *
+   * @static
+   * @param {string} authorizationToken - jwt token
+   * @returns {Promise} - result of database action
+   *
+   * @memberof Helpers
+   */
   static BlacklistToken(authorizationToken) {
     return new Promise((resolve) => {
       Blacklists.create({
@@ -81,10 +90,17 @@ export default class Helpers {
         resolve(true);
       });
     });
-    // .then(() => )
-    // .catch(() => )
   }
 
+  /**
+   * verifies if token is blacklisted
+   *
+   * @static
+   * @param {string} authorizationToken - jwt token
+   * @returns {Promise} - result of database action
+   *
+   * @memberof Helpers
+   */
   static TokenIsBlacklisted(authorizationToken) {
     return new Promise((resolve) => {
       if (!authorizationToken) { resolve(false); }
@@ -101,7 +117,26 @@ export default class Helpers {
         return resolve(true);
       });
     });
-    // .catch();
+  }
+
+  /**
+   * creates pagination of database result
+   *
+   * @static
+   * @param {object} containerObject - database result
+   * @param {integer} offset - point to begin database fetch
+   * @param {any} limit - maximum number of documents per call
+   * @returns {Object} - pagination metadata
+   *
+   * @memberof Helpers
+   */
+  static paginate(containerObject, offset, limit) {
+    return {
+      totalCount: containerObject.count,
+      pages: Math.ceil(containerObject.count / limit),
+      currentPage: Math.floor(offset / limit) + 1,
+      pageSize: containerObject.rows.length,
+    } || null;
   }
 }
 

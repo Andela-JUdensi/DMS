@@ -5,8 +5,9 @@ import morgan from 'morgan';
 import mJson from 'morgan-json';
 import winston from 'winston';
 import routes from './routes';
-import { SERVER } from './configs/configs';
-import middleware from './configs/middlewares/';
+import swagger from './routes/swagger';
+import { SERVER } from './configs';
+import middleware from './middlewares/';
 
 const app = express();
 const router = express.Router();
@@ -22,8 +23,14 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use([middleware.verifyAuthentication, middleware.verifyRouteAndMethod]);
 app.use(morgan(format));
 
+app.use('/documentation', express.static(path.join(__dirname, './swagger/')));
+
 routes(router);
+swagger(router);
+
 app.use('/api', router);
-app.listen(SERVER.PORT, () => winston.info(`Hermes is Awakened ON PORT ${SERVER.PORT}`));
+
+app.listen(SERVER.PORT, () =>
+  winston.info(`Hermes is Awakened ON PORT ${SERVER.PORT}`));
 
 export default app;

@@ -15,7 +15,7 @@ module.exports = {
       lastname: 'Udensi',
       email: 'ajudensi@breed101.com',
       password: bcrypt.hashSync('password123', salt),
-      roleID: 2,
+      roleId: 2,
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
@@ -24,7 +24,7 @@ module.exports = {
       lastname: 'Piper',
       email: 'peter@piper.com',
       password: bcrypt.hashSync('password123', salt),
-      roleID: 3,
+      roleId: 3,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -34,7 +34,7 @@ module.exports = {
       lastname: 'Udensi',
       email: 'joshua.udensi@andela.com',
       password: bcrypt.hashSync('password123', salt),
-      roleID: 1,
+      roleId: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     }], ...arr.map(num => ({
@@ -43,7 +43,7 @@ module.exports = {
       lastname: faker.name.firstName(),
       email: faker.internet.email(),
       password: bcrypt.hashSync('password123', salt),
-      roleID: 3,
+      roleId: 3,
       createdAt: new Date(),
       updatedAt: new Date(),
     }))];

@@ -7,6 +7,12 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('Role API', () => {
+  // beforeEach((done) => {
+  //   setTimeout(() => {
+  //     done();
+  //   }, 2000);
+  // });
+
   it('should not create role if user is not signed in', (done) => {
     chai.request(server)
       .post('/api/roles/')
@@ -49,8 +55,6 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/')
         .set('authorization', 'bearer abcdefghijklmnop1234567890')
-        .set('x-roleid', 2)
-        .set('x-userid', 17)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.an('object');
@@ -80,8 +84,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           done();
@@ -92,8 +96,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/1')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('Object');
@@ -105,8 +109,8 @@ describe('Role API', () => {
       chai.request(server)
       .get('/api/roles/1000')
       .set('authorization', `bearer ${authenticatedUser.token}`)
-      .set('x-userid', authenticatedUser.user.id)
-      .set('x-roleid', authenticatedUser.user.roleID)
+      
+      
       .end((err, res) => {
         res.should.have.status(404);
         done();
@@ -117,8 +121,8 @@ describe('Role API', () => {
       chai.request(server)
         .post('/api/roles/')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        
+        
         .send({
           roleName: faker.commerce.department(),
           description: faker.lorem.sentence(),
@@ -133,8 +137,8 @@ describe('Role API', () => {
       chai.request(server)
         .get('/api/roles/50')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        
+        
         .end((err, res) => {
           res.should.have.status(404);
           done();
@@ -145,8 +149,8 @@ describe('Role API', () => {
       chai.request(server)
         .delete('/api/roles/4')
         .set('authorization', `bearer ${authenticatedUser.token}`)
-        .set('x-userid', authenticatedUser.user.id)
-        .set('x-roleid', authenticatedUser.user.roleID)
+        
+        
         .end((err, res) => {
           res.should.have.status(200);
           done();

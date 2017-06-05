@@ -1,12 +1,17 @@
-import { SERVER } from '../configs/configs';
-import { usersCtrl, documentsCtrl, searchCtrl, rolesCtrl } from '../controllers';
-import middlewares from '../configs/middlewares';
+import { SERVER } from '../configs';
+import {
+  UsersController,
+  DocumentsController,
+  SearchController,
+  RolesController
+} from '../controllers';
+import middlewares from '../middlewares';
 
 export {
   SERVER,
-  usersCtrl,
-  documentsCtrl,
-  rolesCtrl,
-  searchCtrl,
+  UsersController,
+  DocumentsController,
+  RolesController,
+  SearchController,
   middlewares,
 };

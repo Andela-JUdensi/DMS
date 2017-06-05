@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import marked from 'marked';
 import Paper from 'material-ui/Paper';
 import Helpers from '../../utils/Helpers';
 
@@ -25,27 +26,27 @@ class DocumentViewDialog extends React.Component {
   }
 
   render() {
-    const document = this.props.documentToView;
+    const documentToView = this.props.documentToView;
 
     const actions = [
       <FlatButton
         label="Toggle Zen mode"
         primary
         onTouchTap={this.toggleZenMode}
-        className="button"
+        className="toggle-zen-mode-button"
       />,
       <FlatButton
         label="Done"
         primary
         onTouchTap={this.props.closeDocumentView}
-        className="button"
+        className="close-document-view-button"
       />
     ];
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider>
         <Paper zDepth={3}>
           <Dialog
-            title={document.title}
+            title={documentToView.title}
             actions={actions}
             modal={false}
             open={this.props.openDocumentView}
@@ -53,14 +54,16 @@ class DocumentViewDialog extends React.Component {
             className="document-view-dialog"
             style={this.state.style}
           >
-            <hr />
-            { document.body }
+            <div
+              className="document-view-body"
+              dangerouslySetInnerHTML={{ __html: marked(documentToView.body)}}
+            />
             <hr />
             <span className="document-date">
-              { Helpers.readDate(document.createdAt)} { Helpers.readDate(document.updatedAt)}
+              { Helpers.readDate(documentToView.createdAt)}
             </span>
             <span className="document-user">
-              { document.User.username } { document.User.email }
+              { documentToView.User.username } | { documentToView.User.email }
             </span>
           </Dialog>
         </Paper>

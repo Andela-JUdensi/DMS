@@ -6,13 +6,28 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
-import PersonAdd from 'material-ui/svg-icons/social/person-add';
+import PersonIcon from 'material-ui/svg-icons/social/person';
 import FormTextFields from '../common/FormTextFields';
 import { signInAction } from '../../actions/authentication.action';
 import Alerts from '../common/alerts';
 import styles from '../../assets/styles';
+import setAuthorizationToken from '../../utils/setAuthorizationToken';
+import Helpers from '../../utils/Helpers';
 
+/**
+ * render signin form
+ * 
+ * @class SignInForm
+ * @extends {React.Component}
+ */
 class SignInForm extends React.Component {
+
+  /**
+   * Creates an instance of SignInForm.
+   * @param {object} props 
+   * 
+   * @memberof SignInForm
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -22,18 +37,31 @@ class SignInForm extends React.Component {
       isLoading: false,
       redirect: false,
     };
-
+  
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  /**
+   * 
+   * submit sigin form details
+   * @param {object} event 
+   * 
+   * @memberof SignInForm
+   */
   onSubmit(event) {
     event.preventDefault();
     this.setState({
       isLoading: true,
     });
     this.props.signInAction(this.state)
-      .then(() => {
+      .then((response) => {
+        Helpers.saveToLocalStorage(
+          response.token,
+          response.decoded.userId,
+          response.decoded.roleId
+        );
+        setAuthorizationToken(response.token);
         this.setState({ redirect: true });
       })
       .catch((errors) => {
@@ -41,10 +69,24 @@ class SignInForm extends React.Component {
       });
   }
 
+  /**
+   * 
+   * update state change
+   * @param {object} event 
+   * 
+   * @memberof SignInForm
+   */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value, errors: '' });
   }
 
+  /**
+   * 
+   * 
+   * @returns {Object}
+   * 
+   * @memberof SignInForm
+   */
   render() {
     const { errors, isLoading, redirect } = this.state;
     if (redirect) {
@@ -67,6 +109,7 @@ class SignInForm extends React.Component {
                 id="input-identifier"
                 fullWidth
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -78,13 +121,14 @@ class SignInForm extends React.Component {
                 id="input-password"
                 fullWidth
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-12">
               <RaisedButton
-                label="Signup"
+                label="Signin"
                 labelPosition="before"
-                icon={<PersonAdd />}
+                icon={<PersonIcon />}
                 default
                 type="submit"
                 disabled={isLoading}

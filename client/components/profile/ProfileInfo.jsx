@@ -11,10 +11,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Helpers from '../../utils/Helpers';
 import { getUserAction, deleteUserAction } from '../../actions/users.action';
 import styles from '../../assets/styles';
+import Alerts from '../common/alerts';
 
 
 /**
- * 
+ * displays user profile
  * 
  * @class ProfileInfo
  * @extends {React.Component}
@@ -23,25 +24,58 @@ class ProfileInfo extends React.Component {
 
   /**
    * Creates an instance of ProfileInfo.
-   * @param {any} props 
+   * @param {object} props 
    * 
    * @memberof ProfileInfo
    */
   constructor(props) {
     super(props);
-    this.props.getUserAction(this.props.match.params.id);
+
+    this.state = {
+      errors: ''
+    };
     this.deleteUser = this.deleteUser.bind(this);
   }
 
-  deleteUser(userID) {
-    this.props.deleteUserAction(userID);
+  componentWillUpdate(nextProps) {
+    if (this.props.location.state.id !== nextProps.location.state.id) {
+      this.props.getUserAction(nextProps.location.state.id);
+    }
+  }
+
+  /**
+   * 
+   * call getUserAction
+   * before component mounts
+   * 
+   * @memberof ProfileInfo
+   */
+  componentDidMount() {
+    this.props.getUserAction(this.props.location.state.id);
+  }
+
+  /**
+   * call deleteUserAction
+   * 
+   * 
+   * @param {integer} userId 
+   * 
+   * @memberof ProfileInfo
+   */
+  deleteUser(userId) {
+    this.props.deleteUserAction(userId)
+      .then((success) => {
+      })
+      .catch((error) => {
+        this.setState({ errors:  error.message });
+      });
   }
 
 
   /**
    * 
    * 
-   * @returns 
+   * @returns {Object}
    * 
    * @memberof ProfileInfo
    */
@@ -51,10 +85,9 @@ class ProfileInfo extends React.Component {
       firstname,
       lastname,
       email,
-      roleID,
+      roleId,
       createdAt,
     } = this.props.user;
-
     return (
       <div>
         {
@@ -83,17 +116,18 @@ class ProfileInfo extends React.Component {
                   <span>Email:</span> {email}
                 </p>
                 <p>
-                  <span>Role:</span> {Helpers.getRoleName(roleID)}
+                  <span>Role:</span> {Helpers.getRoleName(roleId)}
                 </p>
                 <p>
                   <span>Joined: </span>{Helpers.readDate(createdAt)}
                 </p>
               </div>
               {
-                this.props.stateUser.roleID === 1
-                || this.props.user.roleID === this.props.stateUser.roleID
+                (this.props.stateUser.roleId === 1
+                || this.props.location.state.id === this.props.stateUser.userId)
                 ?
                   <div className="profile-delete-button mui--pull-right">
+                    <Alerts errors={this.state.errors} />
                     <RaisedButton
                       label="Delete user"
                       labelPosition="before"
@@ -136,6 +170,10 @@ ProfileInfo.defaultProps = {
   getUserAction: () => {},
 };
 
+/**
+ * 
+ * @param {object} state - redux state 
+ */
 const mapStateToProps = state => ({
   stateUser: state.authentication.user,
   user: state.user,

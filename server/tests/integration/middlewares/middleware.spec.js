@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import chai from 'chai';
 import sinon from 'sinon';
 import server from '../../../server';
-import middlewares from '../../../configs/middlewares/';
+import middlewares from '../../../middlewares/';
 
 chai.use(chaiHttp);
 chai.should();
@@ -14,8 +14,13 @@ const responseEvent = () => httpMocks
 describe('Middlewares', () => {
   let superAdminToken, adminToken, regularToken;
   let superAdmin, admin, regular;
-  // let publicDocument, privateDocument, roleDocument;
   let request;
+
+  beforeEach((done) => {
+    setTimeout(() => {
+      done();
+    }, 2000);
+  });
 
   before((done) => {
     chai.request(server)
@@ -78,6 +83,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
+            decoded: { userId: 0, roleId: 0 },
             isAuthenticated: false
           }
         }
@@ -105,8 +111,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: regular.roleID,
-              userID: regular.userID
+              roleId: regular.roleId,
+              userId: regular.userId
             }
           }
         }
@@ -132,8 +138,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: admin.roleID,
-              userID: admin.userID
+              roleId: admin.roleId,
+              userId: admin.userId
             }
           }
         }
@@ -159,8 +165,8 @@ describe('Middlewares', () => {
         locals: {
           user: {
             decoded: {
-              roleID: superAdmin.roleID,
-              userID: superAdmin.userID
+              roleId: superAdmin.roleId,
+              userId: superAdmin.userId
             }
           }
         }
@@ -182,7 +188,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users',
         body: {
-          firstname: 'thePiper',
+          username: 'kingsLanding',
+          email: '',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -204,7 +214,10 @@ describe('Middlewares', () => {
         url: '/api/users/',
         body: {
           username: '',
-          email: 'test@test.com'
+          email: 'test@test.com',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -225,7 +238,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users/',
         body: {
+          username: 'kingsLanding',
+          email: 'test@test.com',
           firstname: '',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -246,7 +263,11 @@ describe('Middlewares', () => {
         method: 'POST',
         url: '/api/users/',
         body: {
+          username: 'kingsLanding',
+          email: 'test@test.com',
+          firstname: 'tyrion',
           lastname: '',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -261,13 +282,18 @@ describe('Middlewares', () => {
       middlewares.validateUserInput(request, response, middlewareStub.callback);
     });
 
-    it('should return `bad request` when roleID is 1', (done) => {
+    it('should return `bad request` when roleId is 1', (done) => {
       const response = responseEvent();
       request = httpMocks.createRequest({
         method: 'POST',
         url: '/api/users/',
         body: {
-          roleID: 1,
+          roleId: 1,
+          username: 'kingsLanding',
+          email: 'test@test.com',
+          firstname: 'tyrion',
+          lastname: 'lannister',
+          password: 'terribleLannister'
         }
       });
       const middlewareStub = {
@@ -390,7 +416,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
-            decoded: { roleID: regular.roleID, userID: regular.userID }
+            decoded: { roleId: regular.roleId, userId: regular.userId }
           }
         }
       });
@@ -418,7 +444,7 @@ describe('Middlewares', () => {
         },
         locals: {
           user: {
-            decoded: { roleID: regular.roleID, userID: regular.userID }
+            decoded: { roleId: regular.roleId, userId: regular.userId }
           }
         }
       });
