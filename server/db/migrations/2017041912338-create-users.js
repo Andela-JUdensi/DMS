@@ -29,7 +29,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      roleID: {
+      roleId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

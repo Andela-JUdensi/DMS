@@ -94,6 +94,7 @@ class SignUpForm extends React.Component {
                 label="Firstname"
                 type="text"
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -103,6 +104,7 @@ class SignUpForm extends React.Component {
                 label="Lastname"
                 type="text"
                 onChange={this.onChange}
+                required
               />
             </div>
 
@@ -113,6 +115,7 @@ class SignUpForm extends React.Component {
                 label="Email"
                 type="text"
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -122,6 +125,7 @@ class SignUpForm extends React.Component {
                 label="Username"
                 type="text"
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -131,6 +135,7 @@ class SignUpForm extends React.Component {
                 label="Password"
                 type="password"
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-6">
@@ -140,6 +145,7 @@ class SignUpForm extends React.Component {
                 label="Confirm password"
                 type="password"
                 onChange={this.onChange}
+                required
               />
             </div>
             <div className="mui-col-md-12">

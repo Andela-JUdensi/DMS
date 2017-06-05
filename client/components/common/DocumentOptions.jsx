@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import VisibilityIcon from 'material-ui/svg-icons/action/visibility';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import store from '../../store/configureStore';
 import DocumentViewDialog from '../common/DocumentViewDialog';
 import { deleteDocumentAction } from '../../actions/documents.action';
@@ -109,7 +109,7 @@ class DocumentOptions extends React.Component {
    * @memberof DocumentOptions
    */
   deleteDocument(documentID) {
-    this.props.dispatch(deleteDocumentAction(documentID));
+    this.props.deleteDocumentAction(documentID);
   }
 
   /**
@@ -120,41 +120,59 @@ class DocumentOptions extends React.Component {
    * @memberof DocumentOptions
    */
   render() {
-    const { ownerID, access, id } = this.props.documentToView;
-    const { roleID } = this.props.documentToView.User;
-    const userLinks = (
-      <div>
-        {
-          (this.state.isAuthenticated)
-          ? (ownerID === this.state.user.userID
-            || (['role', 'public'].includes(access)
-            || this.state.user.roleID <= roleID))
-            ? <div>
-              <MenuItem primaryText="Edit" onTouchTap={() => this.openEditDialog()} />
-              <MenuItem primaryText="Delete" onTouchTap={() => this.toggleDeleteDialog()} />
-            </div>
-            :
-            <MenuItem primaryText="Email" />
-            :
-            <MenuItem primaryText="Email" />
-        }
-      </div>
-    );
+    const {
+      ownerID,
+      access,
+      id,
+      User: { roleId }
+    } = this.props.documentToView;
 
-    const guestLinks = (
-      <div>
-        <MenuItem primaryText="Email" />
-      </div>
-    );
+    let userLinks = <MenuItem primaryText="Email" />;
+
+    if (this.state.isAuthenticated) {
+      const editLink = (
+        <div>
+          <MenuItem
+            primaryText="Edit"
+            onTouchTap={() => this.openEditDialog()}
+            className="edit-document"
+          />
+        </div>
+      );
+
+      const deleteLink = (
+        <MenuItem
+          primaryText="Delete"
+          onTouchTap={() => this.toggleDeleteDialog()}
+          className="delete-document"
+        />
+      );
+
+      if(ownerID === this.state.user.userId) {
+        userLinks = (
+          <div>
+            {editLink}
+            {deleteLink}
+          </div>
+        )
+      } else if ([1, 2].includes(this.state.user.roleId)){
+        userLinks = (
+          <div>
+            {deleteLink}
+          </div>
+        )
+      }
+    }
 
     const deleteDocumentActions = [
-      <RaisedButton
+      <FlatButton
         label="Cancel"
         keyboardFocused
+        className="toggle-delete-dialog-close"
         onTouchTap={() => this.toggleDeleteDialog()}
         primary
       />,
-      <RaisedButton
+      <FlatButton
         label="Delete"
         keyboardFocused
         onTouchTap={() => this.deleteDocument(id)}
@@ -180,12 +198,15 @@ class DocumentOptions extends React.Component {
 
           <Dialog
             title="Delete Document"
+            className="open-delete-dialog"
             modal={false}
             open={this.state.openDeleteDialog}
             actions={deleteDocumentActions}
             autoScrollBodyContent
           >
-            Are you sure you want to delete this document<br />
+            <p className="delete-document-warning">
+              Are you sure you want to delete this document<br />
+            </p>
             <h4>
               {this.props.documentToView.title}
             </h4>
@@ -202,18 +223,13 @@ class DocumentOptions extends React.Component {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {
-              (this.state.isAuthenticated)
-              ?
-                userLinks
-              :
-              guestLinks
-            }
+            {userLinks}
           </IconMenu>
 
           <IconButton
             tooltip="View document"
             tooltipPosition="bottom-right"
+            className="open-document-view"
             onTouchTap={this.openDocumentView}
           >
             <VisibilityIcon />
@@ -226,8 +242,11 @@ class DocumentOptions extends React.Component {
 
 DocumentOptions.propTypes = {
   documentToView: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 
-export default withRouter(connect()(DocumentOptions));
+export default withRouter(connect(null, {
+  deleteDocumentAction
+})(DocumentOptions));
+
+export { DocumentOptions }

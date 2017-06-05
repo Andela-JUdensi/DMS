@@ -19,11 +19,24 @@ import TextField from 'material-ui/TextField';
 import { getAllUsersAction, searchUserAction } from '../../actions/users.action';
 import AllUsersTable from './AllUsersTable';
 
+/**
+ * render users on table
+ * 
+ * @class ViewUsers
+ * @extends {React.Component}
+ */
 class ViewUsers extends React.Component {
+  /**
+   * Creates an instance of ViewUsers.
+   * @param {any} props 
+   * 
+   * @memberof ViewUsers
+   */
   constructor(props) {
     super(props);
     this.state = {
-      username: ''
+      username: '',
+      inputData: ''
     };
 
     this.props.getAllUsersAction(0);
@@ -32,10 +45,32 @@ class ViewUsers extends React.Component {
     this.onUpdateInput = this.onUpdateInput.bind(this);
   }
 
+  /**
+   * calls getAllUsersAction
+   * to get more users on pagination
+   * 
+   * @param {integer} offset 
+   * @returns 
+   * 
+   * @memberof ViewUsers
+   */
   getMoreUsers(offset) {
-    this.props.getAllUsersAction(offset);
+    if (this.state.inputData === '') {
+      return this.props.getAllUsersAction(offset);
+    }
+    return this.props.searchUserAction(this.state.inputData, offset);
+
   }
 
+  /**
+   * determine if component will update
+   * 
+   * @param {object} nextProps 
+   * @param {object} nextState 
+   * @returns 
+   * 
+   * @memberof ViewUsers
+   */
   componentWillUpdate(nextProps, nextState) {
     if (this.props.allUsers !== nextProps.allUsers) {
       return true;
@@ -44,19 +79,35 @@ class ViewUsers extends React.Component {
     }
   }
 
+  /**
+   * calls searchUserAction
+   * makes live search
+   * set focus on input field
+   * 
+   * @param {object} event 
+   * 
+   * @memberof ViewUsers
+   */
   onUpdateInput(event) {
     this.setState({ inputData: event.target.value }, () => {
       this.props.searchUserAction(this.state.inputData);
     });
-    setInterval(() => {
+    setTimeout(() => {
       if ((this.state.inputData.length > 0 || document.activeElement['id'] === 'usersSearch') && this.searchInput !== null) {
         this.searchInput.focus();
       } else if (this.searchInput !== null) {
         this.searchInput.blur();
       }
-    }, 500);
+    }, 250);
   }
 
+  /**
+   * 
+   * 
+   * @returns {Object}
+   * 
+   * @memberof ViewUsers
+   */
   render() {
     const { allUsers } = this.props;
     return (
@@ -78,13 +129,18 @@ class ViewUsers extends React.Component {
               </div>
 
 
-              <Table selectable={false} adjustForCheckbox={false}>
+              <Table
+                selectable={false}
+                adjustForCheckbox={false}
+                className="users-list-table"
+              >
                 <TableHeader>
                   <TableRow>
                     <TableHeaderColumn tooltip="S/No">S/No</TableHeaderColumn>
                     <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
                     <TableHeaderColumn tooltip="Email">Email</TableHeaderColumn>
                     <TableHeaderColumn tooltip="Role">Role</TableHeaderColumn>
+                    <TableHeaderColumn tooltip="Visit user profile">Profile</TableHeaderColumn>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

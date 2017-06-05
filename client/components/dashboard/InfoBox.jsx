@@ -6,18 +6,21 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import styles from '../../assets/styles';
 
 
-
+/**
+ * renders data boxes on dashboard
+ * @param {object} props 
+ */
 const InfoBox = (props) => {
   const { color, title, value, Icon } = props;
   const iconSpan = {
     float: 'left',
-    height: 90,
-    width: 90,
+    height: 50,
+    width: 50,
     textAlign: 'center',
     backgroundColor: color
   };
   return (
-    <MuiThemeProvider>
+    <div>
       <Paper>
         <span style={iconSpan} >
           <Icon
@@ -27,11 +30,11 @@ const InfoBox = (props) => {
         </span>
 
         <div style={styles.content}>
-          <span style={styles.text}>{title}</span>
+          <span style={styles.title}>{title}</span>
           <span style={styles.number}>{value}</span>
         </div>
       </Paper>
-    </MuiThemeProvider>
+    </div>
   );
 };
 

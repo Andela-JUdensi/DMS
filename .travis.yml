@@ -6,6 +6,7 @@ language:
 
 node_js:
   - node
+  - "6"
 
 services:
   - postgresql

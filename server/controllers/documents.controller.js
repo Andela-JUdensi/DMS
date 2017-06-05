@@ -1,15 +1,31 @@
-import { Documents, Response, lodash, Users, Helpers } from './dependencies';
+import {
+  Documents,
+  Response,
+  lodash,
+  Users,
+  Helpers
+} from './dependencies';
 
-export default {
+/**
+ * define controllers for /documents/ route
+ *
+ * @export
+ * @class UsersController
+ */
+export default class DocumentsController {
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * creates new document
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof UsersController
    */
-  create(req, res) {
-    const ownerID = req.locals.user.decoded.userID;
+  static create(req, res) {
+    const ownerID = req.locals.user.decoded.userId;
     const { title, body, access } = req.locals.documentInput;
     Documents.create({
       title,
@@ -19,70 +35,79 @@ export default {
     })
       .then(document => Response.created(res, document))
       .catch(error => Response.badRequest(res, error.message));
-  },
+  }
 
-  /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
-   */
-  findAll(req, res) {
-    const { limit = 12, offset = 0, orderBy = 'createdAt' } = req.query;
-    const { userID, roleID } = req.locals.user.decoded;
-    const query = Helpers.determineDocsforUser(userID, roleID);
+ /**
+  * fetch all documents
+  *
+  * @static
+  * @param {object} req
+  * @param {object} res
+  * @returns {Object} - response
+  *
+  * @memberof DocumentsController
+  */
+  static findAll(req, res) {
+    const {
+      limit = 12,
+      offset = 0,
+      orderBy = 'createdAt',
+      order = 'ASC',
+      access = 'all'
+    } = req.query;
+
+    const { userId, roleId } = req.locals.user.decoded;
+    const query = Helpers.determineDocsforUser(userId, roleId, access);
     Documents.findAndCountAll({
       limit,
       offset,
-      order: [[orderBy, 'ASC']],
+      order: [[orderBy, order]],
       include: {
         model: Users,
-        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
+        attributes: ['id', 'username', 'roleId'],
         where: {
-          roleID: { $gte: roleID },
+          roleId: { $gte: roleId },
         }
       },
-      where: {
-        $or: query,
-      }
+      where: query
     })
       .then((allDocuments) => {
         if (allDocuments.length < 1) {
           return Response.notFound(res, 'no document found');
         }
-        const pagination = limit && offset ? {
-          totalCount: allDocuments.count,
-          pages: Math.ceil(allDocuments.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: allDocuments.rows.length,
-        } : null;
+
+        const pagination = Helpers.paginate(allDocuments, offset, limit);
         const result = Object.assign(allDocuments, pagination);
+
         Response.success(res, result);
       })
       .catch(error => Response.badRequest(res, error.message));
-  },
-
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
-   * @returns 
+   * fetch one document
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof DocumentsController
    */
-  findOne(req, res) {
+  static findOne(req, res) {
     const { id } = req.params;
     if (!(parseInt(id, 10))) {
       return Response.badRequest(res, 'provide a valid document id');
     }
-    const { userID, roleID } = req.locals.user.decoded;
-    const query = Helpers.determineDocsforUser(userID, roleID);
+    const { userId, roleId } = req.locals.user.decoded;
+    const query = Helpers.determineDocsforUser(userId, roleId, 'all');
+
     Documents.findOne({
       include: {
         model: Users,
-        attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
+        attributes: ['id', 'username', 'roleId'],
         where: {
-          roleID: { $gte: roleID },
+          roleId: { $gte: roleId },
         }
       },
       where: {
@@ -95,47 +120,45 @@ export default {
         return Response.success(res, document);
       })
       .catch(error => Response.badRequest(res, error.message));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * updates a document
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof DocumentsController
    */
-  update(req, res) {
-    req.locals.documentToUpdate.update(lodash.pick(req.body, ['title', 'body']))
-      .then(updatedDocument => Response.success(res, updatedDocument))
-      .catch(error => Response.badRequest(res, error.message));
-  },
+  static update(req, res) {
+    req.locals.documentToUpdate
+      .update(lodash.pick(req.body, ['title', 'body']))
+        .then(updatedDocument => Response.success(res, updatedDocument))
+        .catch(error => Response.badRequest(res, error.message));
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * deletes a document
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof DocumentsController
    */
-  delete(req, res) {
-    const { id } = req.params;
-    const { userID, roleID } = req.locals.user.decoded;
-    const query = Helpers.determineDocsforUser(userID, roleID);
-    Documents.destroy({
-      include: {
-        model: Users,
-        where: {
-          roleID: { $gte: roleID },
-        }
-      },
+  static delete(req, res) {
+    req.locals.documentToBeDeleted.destroy({
       where: {
-        id,
-        $or: query,
+        id: req.locals.documentToBeDeleted.id,
       }
     })
       .then((document) => {
         if (!(document)) return Response.notFound(res, 'document not found');
-        
-        return Response.success(res, document);
+        return Response.success(res, { status: 'deleted' });
       })
       .catch(error => Response.badRequest(res, error.message));
-  },
-};
+  }
+}

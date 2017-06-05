@@ -11,7 +11,12 @@ import DocumentOptions from './DocumentOptions';
 import Helpers from '../../utils/Helpers';
 import styles from '../../assets/styles';
 
-
+/**
+ * maps through documents array
+ * display documents in custom cards
+ * @param {*} document - each document in array
+ * @param {*} index - index of each document
+ */
 const documentStack = (document, index) => (
   <div key={document.id} >
     {
@@ -33,11 +38,17 @@ const documentStack = (document, index) => (
                 </div>
                 <div className="each-document-in-stack-title">
                   <h4 data-tip={document.title}>
-                    {(document.title.length > 28) ? `${document.title.substring(0, 28)}...` : document.title }
+                    {(document.title.length > 28) 
+                      ? `${document.title.substring(0, 28)}...` 
+                      : document.title 
+                    }
                   </h4>
                 </div>
                 <p>
-                  <Link to={`/profile/${document.User.id}`}>
+                  <Link to={{
+                    pathname: 'profile',
+                    state: { id: document.User.id}
+                  }}>
                     {document.User.username}
                   </Link>
                 </p>

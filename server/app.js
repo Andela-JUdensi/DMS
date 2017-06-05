@@ -1,5 +1,5 @@
 import path from 'path';
-import favicon from 'serve-favicon';
+// import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import webpackMiddleWare from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -19,20 +19,12 @@ if (isDeveloping) {
     noInfo: true,
   }));
   app.use(webpackHotMiddleware(compiler));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-  });
 } else {
   app.use(require('express').static('lib/client'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-  });
 }
 
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.all('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 
-// app.get('/', (req, res) => {
-//   res.render('index', {
-//     title: 'Hermes | Document Management System'
-//   });
-// });
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

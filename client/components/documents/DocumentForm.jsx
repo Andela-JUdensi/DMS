@@ -15,10 +15,22 @@ import RoleIcon from 'material-ui/svg-icons/action/group-work';
 import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import Snackbar from 'material-ui/Snackbar';
 import FormTextFields from '../common/FormTextFields';
-import { getDocumentsAction, addDocumentAction } from '../../actions/documents.action';
+import Editor from 'react-markdown-editor';
+import {
+  getDocumentsAction,
+  addDocumentAction
+} from '../../actions/documents.action';
 import styles from '../../assets/styles';
 import Alerts from '../common/alerts';
 
+const MarkdownEditor = Editor.MarkdownEditor;
+
+/**
+ * 
+ * 
+ * @class DocumentForm
+ * @extends {React.Component}
+ */
 class DocumentForm extends React.Component {
 
   constructor(props) {
@@ -37,18 +49,27 @@ class DocumentForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onContentChange = this.onContentChange.bind(this);
   }
 
   onChange(event) {
-    this.setState({ [event.target.name]: event.target.value, success: '', errors: '', snackBarOpen: false });
+    this.setState({
+      [event.target.name]: event.target.value,
+      success: '',
+      errors: '',
+      snackBarOpen: false
+    });
+  }
+  onContentChange(body) {
+    this.setState({ body });
   }
 
   onSubmit(event) {
     event.preventDefault();
     this.setState({ error: '', isLoading: true });
     this.props.addDocumentAction(this.state)
-      .then(() => {
-        const { title, id } = this.props.newDocument;
+      .then((success) => {
+        const { title, id } = success.data;
         this.setState({
           title: '',
           body: '',
@@ -85,6 +106,7 @@ class DocumentForm extends React.Component {
                   label="Document title"
                   type="text"
                   onChange={this.onChange}
+                  required
                 />
               </div>
               <div className="mui-col-md-6">
@@ -94,31 +116,26 @@ class DocumentForm extends React.Component {
                   onChange={this.handleChange}
                   className="app-select-dropdown"
                   style={{color: "#fff"}} 
+                  required
                 >
                   <MenuItem value="private" primaryText="Private" rightIcon={<LockIcon />} />
                   <MenuItem value="role" primaryText="Role" rightIcon={<RoleIcon />} />
                   <MenuItem value="public" primaryText="Public" rightIcon={<AccessibilityIcon />} />
                 </SelectField>
               </div>
-              <div className="mui-col-md-12">
-                <TextField
+              <div className="mui-col-md-12 markdown-editor-add">
+                <MarkdownEditor
+                  initialContent="Start a new document here..."
+                  iconsSet="font-awesome"
                   name="body"
-                  fullWidth
-                  hintText="Document body/content"
+                  onContentChange={this.onContentChange}
                   value={this.state.body}
-                  label="Document body"
-                  floatingLabelText="Body of document goes here"
-                  multiLine
-                  rows={10}
-                  onChange={this.onChange}
-                  className="app-textarea"
                 />
               </div>
               <div className="mui-col-md-12">
                 <RaisedButton
                   label="Save"
                   labelPosition="before"
-                  icon={<PersonAdd />}
                   style={styles.button}
                   default
                   type="submit"
@@ -152,8 +169,10 @@ DocumentForm.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  ownerID: state.authentication.user.userID,
+  ownerID: state.authentication.user.userId,
   newDocument: state.documents.data,
 });
 
-export default withRouter(connect(mapStateToProps, { addDocumentAction, getDocumentsAction })(DocumentForm));
+export default withRouter(connect(mapStateToProps, {
+  addDocumentAction, getDocumentsAction
+})(DocumentForm));

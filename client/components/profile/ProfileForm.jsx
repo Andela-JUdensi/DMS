@@ -12,10 +12,16 @@ import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import FormElements from '../common/FormTextFields';
 import styles from '../../assets/styles';
 
+/**
+ * render update profile form
+ * @param {object} props 
+ */
 const ProfileForm = props => (
   <div className="mui-col-md-12 edit-profile-container">
     <MuiThemeProvider>
-      <form className="profile-update-form" style={styles.formStyle}>
+      <form onSubmit={(event) => props.onSubmit(event)}
+        className="profile-update-form" style={styles.formStyle}>
+
         <h1 id="updateProfile">Update Profile</h1>
         {(props.errors) ? <p> {props.errors} </p> : ''}
         <div className="mui-col-md-6">
@@ -70,8 +76,8 @@ const ProfileForm = props => (
         <div className="mui-col-md-6">
           <SelectField
             floatingLabelText="Priviledge"
-            value={props.roleID}
-            name="userRole"
+            value={props.roleId}
+            name="roleId"
             type="select"
             onChange={props.handleChange}
             className="profile-select-role"
@@ -92,7 +98,7 @@ const ProfileForm = props => (
             fullWidth
             className="button"
             id="update-profile"
-            onClick={props.onSubmit}
+            type="submit"
           />
         </div>
         <Snackbar
@@ -117,22 +123,12 @@ ProfileForm.propTypes = {
   username: PropTypes.string,
   email: PropTypes.string,
   password: PropTypes.string,
-  roleID: PropTypes.any
+  roleId: PropTypes.any
 };
 
 ProfileForm.defaultProps = {
-  // onSubmit: () => {},
-  // onChange: () => {},
-  // handleChange: () => {},
   snackBarOpen: false,
   isLoading: false,
-  // errors: '',
-  // firstname: '',
-  // lastname: '',
-  // username: '',
-  // email: '',
-  // roleID: '',
-  // password: ''
 };
 
 export default ProfileForm;

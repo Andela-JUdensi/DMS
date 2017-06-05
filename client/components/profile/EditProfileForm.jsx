@@ -12,7 +12,6 @@ import { updateUserAction, getUserAction } from '../../actions/users.action';
 import styles from '../../assets/styles';
 import ProfileForm from './ProfileForm';
 
-
 /**
  * 
  * 
@@ -22,7 +21,7 @@ import ProfileForm from './ProfileForm';
 class EditProfileForm extends React.Component {
   /**
    * Creates an instance of EditProfileForm.
-   * @param {any} props 
+   * @param {object} props 
    * 
    * @memberof EditProfileForm
    */
@@ -38,8 +37,8 @@ class EditProfileForm extends React.Component {
       email: '',
       username: '',
       password: '',
-      roleID: '',
-      userID: '',
+      roleId: '',
+      userId: '',
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -48,21 +47,21 @@ class EditProfileForm extends React.Component {
 
   /**
    * 
-   * 
-   * @param {any} event 
-   * @param {any} index 
-   * @param {any} roleID 
+   * update state user role on change
+   * @param {object} event 
+   * @param {integer} index 
+   * @param {integer} roleId 
    * 
    * @memberof EditProfileForm
    */
-  handleChange(event, index, roleID) {
-    this.setState({ roleID });
+  handleChange(event, index, roleId) {
+    this.setState({ roleId });
   }
 
   /**
    * 
-   * 
-   * 
+   * determine if component will mount
+   * set state properties before component mounts
    * @memberof EditProfileForm
    */
   componentWillMount() {
@@ -72,16 +71,17 @@ class EditProfileForm extends React.Component {
         lastname: this.props.user.lastname,
         email: this.props.user.email,
         username: this.props.user.username,
-        roleID: this.props.user.roleID,
-        userID: this.props.user.id,
+        roleId: this.props.user.roleId,
+        userId: this.props.user.id,
       });
     }, 500);
   }
 
   /**
+   * call update user action
+   * update user information
    * 
-   * 
-   * @param {any} event 
+   * @param {object} event 
    * 
    * @memberof EditProfileForm
    */
@@ -92,18 +92,18 @@ class EditProfileForm extends React.Component {
       isLoading: true,
     });
 
-    const selectedUserInfo = lodash(this.state)
-      .omitBy(lodash.isEmpty)
-      .omitBy(lodash.isNull).value();
+    let selectedUserInfo = lodash.pickBy(this.state, lodash.identity);
 
-    this.props.updateUserAction(this.props.match.params.id, selectedUserInfo)
+    selectedUserInfo = lodash.omit(selectedUserInfo, ['userId']);
+
+    this.props.updateUserAction(this.props.location.state.id, selectedUserInfo)
       .then(() => {
         this.setState({
           errors: '',
           isLoading: false,
           snackBarOpen: true
         });
-        this.props.getUserAction(this.state.userID);
+        this.props.getUserAction(this.state.userId);
       })
       .catch((error) => {
         this.setState({ errors: error, isLoading: false });
@@ -111,9 +111,9 @@ class EditProfileForm extends React.Component {
   }
 
   /**
+   * set state change of user properties
    * 
-   * 
-   * @param {any} event 
+   * @param {object} event 
    * 
    * @memberof EditProfileForm
    */
@@ -124,7 +124,7 @@ class EditProfileForm extends React.Component {
   /**
    * 
    * 
-   * @returns 
+   * @returns {Object}
    * 
    * @memberof EditProfileForm
    */
@@ -143,7 +143,7 @@ class EditProfileForm extends React.Component {
           username={this.state.username}
           email={this.state.email}
           password={this.state.password}
-          roleID={this.state.roleID}
+          roleId={this.state.roleId}
         />
       );
     }
@@ -167,6 +167,10 @@ EditProfileForm.defaultProps = {
   user: {},
 };
 
+/**
+ * 
+ * @param {object} state - redux state 
+ */
 const mapStateToProps = state => {
   return {
     user: state.user,

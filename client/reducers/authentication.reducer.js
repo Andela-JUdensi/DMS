@@ -1,12 +1,12 @@
 import isEmpty from 'lodash/isEmpty';
 import { SET_CURRENT_USER } from '../actions/types';
 
-const initialState = {
+const initialState = [{
   isAuthenticated: false,
-  userDetails: {},
-};
+  user: {},
+}];
 
-const authReducer = (state = [], action = {}) => {
+const authReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_CURRENT_USER:
       return {

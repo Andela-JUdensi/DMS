@@ -1,7 +1,7 @@
 import httpMocks from 'node-mocks-http';
 import chai from 'chai';
 import events from 'events';
-import { usersCtrl } from '../../../controllers';
+import { UsersController } from '../../../controllers';
 
 chai.should();
 
@@ -9,6 +9,12 @@ const responseEvent = () => httpMocks
   .createResponse({ eventEmitter: events.EventEmitter });
 
 describe('Users controller', () => {
+  // beforeEach((done) => {
+  //   setTimeout(() => {
+  //     done();
+  //   }, 2000);
+  // });
+
   it('should return `bad request` if record is not complete', (done) => {
     const response = responseEvent();
     const request = httpMocks.createRequest({
@@ -30,7 +36,7 @@ describe('Users controller', () => {
       response._getStatusCode().should.eql(400);
       done();
     });
-    usersCtrl.create(request, response);
+    UsersController.create(request, response);
   });
 
   it('should return `success` if record is complete', (done) => {
@@ -51,11 +57,10 @@ describe('Users controller', () => {
     response.on('end', () => {
       const data = JSON.parse(response._getData());
       data.message.should.eql('account created successfully');
-      data.user.firstname.should.eql('kakashi');
-      data.user.roleID.should.eql(3);
+      data.user.email.should.eql('fantasy@movies.com');
       done();
     });
-    usersCtrl.create(request, response);
+    UsersController.create(request, response);
   });
 
   it('findAll method should accept limit query', (done) => {
@@ -73,7 +78,7 @@ describe('Users controller', () => {
       data.should.have.property('count');
       done();
     });
-    usersCtrl.findAll(request, response);
+    UsersController.findAll(request, response);
   });
 
   it('findAll return error for wrong query limit', (done) => {
@@ -91,7 +96,7 @@ describe('Users controller', () => {
       response.statusCode.should.eql(400);
       done();
     });
-    usersCtrl.findAll(request, response);
+    UsersController.findAll(request, response);
   });
 
   it('findOne return one user', (done) => {
@@ -109,7 +114,7 @@ describe('Users controller', () => {
       response.statusCode.should.eql(200);
       done();
     });
-    usersCtrl.findOne(request, response);
+    UsersController.findOne(request, response);
   });
 
   it('findOne return `404` if user is not found', (done) => {
@@ -127,7 +132,7 @@ describe('Users controller', () => {
       response.statusCode.should.eql(404);
       done();
     });
-    usersCtrl.findOne(request, response);
+    UsersController.findOne(request, response);
   });
 
   it('findOne return `bad request` for wrong params', (done) => {
@@ -145,33 +150,51 @@ describe('Users controller', () => {
       response.statusCode.should.eql(400);
       done();
     });
-    usersCtrl.findOne(request, response);
+    UsersController.findOne(request, response);
   });
 
   it('documentsByUser return documents by one User', (done) => {
     const response = responseEvent();
     const request = httpMocks.createRequest({
       method: 'GET',
-      url: '/api/users/10/documents/',
+      url: '/api/users/:id/documents/',
       params: {
-        id: 10
-      }
+        id: 1
+      },
+      locals: {
+        user: {
+          decoded: {
+            userId: 0,
+            roleId: 0
+          }
+        }
+      },
     });
     response.on('end', () => {
       const data = JSON.parse(response._getData());
-      data.response.should.be.an('object');
-      data.response.count.should.be.a('number');
+      data.count.should.be.gte(1);
       response.statusCode.should.eql(200);
       done();
     });
-    usersCtrl.documentsByUser(request, response);
+    UsersController.documentsByUser(request, response);
   });
 
   it('documentsByUser return `404` if no document found', (done) => {
     const response = responseEvent();
     const request = httpMocks.createRequest({
       method: 'GET',
-      url: '/users/10/documents/'
+      url: '/api/users/:id/documents/',
+      params: {
+        id: 21
+      },
+      locals: {
+        user: {
+          decoded: {
+            userId: 0,
+            roleId: 0
+          }
+        }
+      }
     });
     response.on('end', () => {
       const data = JSON.parse(response._getData());
@@ -179,6 +202,6 @@ describe('Users controller', () => {
       response.statusCode.should.eql(404);
       done();
     });
-    usersCtrl.documentsByUser(request, response);
+    UsersController.documentsByUser(request, response);
   });
 });

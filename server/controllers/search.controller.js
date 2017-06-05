@@ -1,16 +1,34 @@
-import { Documents, Users, Response, Helpers } from './dependencies';
+import {
+  Documents,
+  Users,
+  Response,
+  Helpers
+} from './dependencies';
 
-export default {
+/**
+ * defines controllers for /search/ route
+ *
+ * @export
+ * @class searchController
+ */
+export default class SearchController {
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * search for a user
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof SearchController
    */
-  searchForAUser(req, res) {
-    const query = req.query.q.split(' ').map(element => `%${element}%`);
+  static searchForAUser(req, res) {
+    const query = req.query.q.split(' ')
+      .map(element => `%${element}%`);
     const { limit = 5, offset = 0 } = req.query;
+    console.log(query);
+
     Users.findAndCountAll({
       limit,
       offset,
@@ -19,53 +37,65 @@ export default {
           $ilike: { $any: query }
         }
       },
-      attributes: ['id', 'username', 'email', 'firstname', 'lastname', 'createdAt', 'roleID'],
+      attributes: ['id', 'username', 'email', 'roleId'],
     })
       .then((searchResult) => {
         if (searchResult.length < 1) {
-          return Response.notFound(res, `no match found for ${req.query.username}`);
+          return Response
+            .notFound(res, `no match found for ${req.query.username}`);
         }
-        const pagination = limit && offset ? {
-          totalCount: searchResult.count,
-          pages: Math.ceil(searchResult.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: searchResult.rows.length,
-        } : null;
-        const result = Object.assign(searchResult, pagination);
+
+        const pagination = Helpers
+          .paginate(searchResult, offset, limit);
+        const result = { ...searchResult, ...pagination };
+
         return Response.success(res, result);
       })
       .catch(error => Response.badRequest(res, error.message));
-  },
+  }
 
   /**
-   * 
-   * 
-   * @param {any} req 
-   * @param {any} res 
+   * search for a document
+   *
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @returns {Object} - response
+   *
+   * @memberof SearchController
    */
-  searchForAdocument(req, res) {
-    const { userID, roleID } = req.locals.user.decoded;
-    const searchTokens = req.query.q.split(' ').map(element => `%${element}%`);
-    const searchAccess = req.query.a;
-    const query = Helpers.determineSearchQuery(searchAccess, searchTokens, userID, roleID);
+  static searchForAdocument(req, res) {
+    const { userId, roleId } = req.locals.user.decoded;
+    const searchTokens = req.query.q.split(' ')
+      .map(element => `%${element}%`);
+    const { limit = 5, offset = 0 } = req.query;
+    const query = Helpers
+      .determineSearchQuery(searchTokens, userId, roleId);
 
-    Documents.findAll({
-      limit: 20,
+    Documents.findAndCountAll({
+      limit,
+      offset,
       include: {
         model: Users,
         where: {
-          roleID: { $gte: roleID },
+          roleId: { $gte: roleId },
         }
       },
       where: query,
     })
       .then((searchResult) => {
-        if (!(searchResult) || (searchResult.length < 1)) {
-          return Response.notFound(res, `no match found for ${req.query.q}`);
+        if (searchResult.length < 1) {
+          return Response
+            .notFound(res, `no match found for ${req.query.q}`);
         }
-        return Response.success(res, searchResult);
+
+        const pagination = Helpers
+          .paginate(searchResult, offset, limit);
+        const result = { ...searchResult, ...pagination };
+
+        return Response.success(res, result);
       })
       .catch(error => Response.badRequest(res, error.message));
-  },
-};
+  }
+}
 
