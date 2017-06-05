@@ -14,7 +14,7 @@ import {
  * action dispatched getting user information
  * @param {object} userInfo - user details
  */
-const getUserInformationSuccess = userInfo => ({
+export const getUserInformationSuccess = userInfo => ({
   type: GET_USER_INFO_SUCCESS,
   userInfo,
 });
@@ -35,7 +35,7 @@ export const getUserAction = userId => dispatch =>
  * action dispatched updating user information on success
  * @param {object} userInfo - user details
  */
-const updateUserInformationSuccess = userInfo => ({
+export const updateUserInformationSuccess = userInfo => ({
   type: UPDATE_USER_INFO_SUCCESS,
   userInfo,
 });
@@ -44,7 +44,7 @@ const updateUserInformationSuccess = userInfo => ({
  * action dispatched getting user information on error
  * @param {string} updateError - error message
  */
-const updateUserInformationError = updateError => ({
+export const updateUserInformationError = updateError => ({
   type: UPDATE_USER_INFO_ERROR,
   updateError,
 });
@@ -67,7 +67,7 @@ export const updateUserAction = (userId, userDetails) =>
  * action dispatched getting a user document(s)
  * @param {object} userDocuments - documents for a user
  */
-const getUserDocumentsSuccess = userDocuments => ({
+export const getUserDocumentsSuccess = userDocuments => ({
   type: GET_DOCUMENTS_BY_USER_SUCCESS,
   userDocuments
 });
@@ -86,7 +86,7 @@ export const userDocumentsAction = userId =>
  * action dispatched listing all users
  * @param {object} allUsers - all users
  */
-const getAllUsersSuccess = allUsers => ({
+export const getAllUsersSuccess = allUsers => ({
   type: GET_ALL_USERS_SUCCESS,
   allUsers
 });
@@ -105,7 +105,7 @@ export const getAllUsersAction = (offset = 0) =>
  * action dispatched searching for user(s)
  * @param {object} usersSearch - user(s) returned
  */
-const searchUserSuccess = usersSearch => ({
+export const searchUserSuccess = usersSearch => ({
   type: GET_SEARCH_USERS_SUCCESS,
   usersSearch,
 });
@@ -130,7 +130,7 @@ export const searchUserAction = (query, offset = 0) =>
  * action dispatch deleting user on success
  * @param {string} status - api success response
  */
-const deleteUserSuccess = status => ({
+export const deleteUserSuccess = status => ({
   type: DELETE_USER_SUCCESS,
   status,
 });
@@ -139,7 +139,7 @@ const deleteUserSuccess = status => ({
  * action dispatch deleting user on error
  * @param {string} status - api failure response
  */
-const deleteUserFailure = status => ({
+export const deleteUserFailure = status => ({
   type: DELETE_USER_FAILURE,
   status,
 });
