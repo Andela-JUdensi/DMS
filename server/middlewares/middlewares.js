@@ -153,6 +153,22 @@ const auth = {
       });
   },
 
+  validateDeleteDocument(req, res, next) {
+    Documents.findById(req.params.id)
+      .then((document) => {
+        if (!document) {
+          return Response.notFound(res, 'document not found');
+        }
+
+        if ([1, 2].includes(req.locals.user.decoded.roleId) === false
+          && req.locals.user.decoded.userId !== parseInt(document.ownerID, 10)) {
+          return Response.unAuthorized(res, 'you cannot perform this action');
+        }
+        req.locals.documentToBeDeleted = document;
+        next();
+      });
+  },
+
   validateUserUpdateAccess(req, res, next) {
     Documents.findOne({
       where: {

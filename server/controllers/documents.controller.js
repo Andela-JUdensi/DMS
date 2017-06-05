@@ -58,7 +58,6 @@ export default class DocumentsController {
 
     const { userId, roleId } = req.locals.user.decoded;
     const query = Helpers.determineDocsforUser(userId, roleId, access);
-
     Documents.findAndCountAll({
       limit,
       offset,
@@ -70,9 +69,7 @@ export default class DocumentsController {
           roleId: { $gte: roleId },
         }
       },
-      where: {
-        $or: query,
-      }
+      where: query
     })
       .then((allDocuments) => {
         if (allDocuments.length < 1) {
@@ -153,29 +150,14 @@ export default class DocumentsController {
    * @memberof DocumentsController
    */
   static delete(req, res) {
-    const { id } = req.params;
-    const {
-      userId,
-      roleId
-    } = req.locals.user.decoded;
-
-    const query = Helpers.determineDocsforUser(userId, roleId);
-
-    Documents.destroy({
-      include: {
-        model: Users,
-        where: {
-          roleId: { $gte: roleId },
-        }
-      },
+    req.locals.documentToBeDeleted.destroy({
       where: {
-        id,
-        $or: query,
+        id: req.locals.documentToBeDeleted.id,
       }
     })
       .then((document) => {
         if (!(document)) return Response.notFound(res, 'document not found');
-        return Response.success(res, document);
+        return Response.success(res, { status: 'deleted' });
       })
       .catch(error => Response.badRequest(res, error.message));
   }
