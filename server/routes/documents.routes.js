@@ -5,11 +5,35 @@ import {
 
 
 const documentRoute = (router) => {
+   /**
+   * @swagger
+   * definitions:
+   *   NewDocument:
+   *     type: object
+   *     required:
+   *        - title
+   *        - body
+   *        - access
+   *     properties:
+   *        title:
+   *           type: string
+   *        body:
+   *           type: string
+   *        access:
+   *            type: string
+   *   Document:
+   *      allOf:
+   *        - $ref: '#definitions/NewDocument'
+   *        - required:
+   *        - id:
+   *              type: integer
+   *              format: int64
+   */
   router
     .route('/documents')
     /**
      * @swagger
-     * /documents:
+     * /api/documents:
      *   post:
      *     description: Creates a new document
      *     tags:
@@ -17,13 +41,18 @@ const documentRoute = (router) => {
      *     produces:
      *      - application/json
      *     parameters:
+     *       - name: Authorization
+     *         in: header
+     *         description: an authorization header
+     *         required: true
+     *         type: string
      *       - name: body
-     *         description: User object
+     *         description: Document object
      *         in:  body
      *         required: true
      *         type: string
      *         schema:
-     *           $ref: '#/definitions/NewDocument'
+     *           $ref: '#/definitions/Document'
      *     responses:
      *       201:
      *         description: documents
@@ -33,7 +62,7 @@ const documentRoute = (router) => {
     .post(middlewares.validateDocumentInput, DocumentsController.create)
     /**
      * @swagger
-     * /documents:
+     * /api/documents:
      *   get:
      *      description: Returns a list of all documents
      *      tags:
@@ -42,9 +71,9 @@ const documentRoute = (router) => {
      *        - application/json
      *      parameters:
      *        - name: Authorization
-     *          description: A valid token
      *          in: header
-     *          required: true
+     *          description: an authorization header
+     *          required: false
      *          type: string
      *      responses:
      *          200:
@@ -59,7 +88,7 @@ const documentRoute = (router) => {
     .route('/documents/:id')
     /**
      * @swagger
-     * /documents/{id}:
+     * /api/documents/{id}:
      *   get:
      *     description: Returns a document by Id
      *     tags:
@@ -72,6 +101,11 @@ const documentRoute = (router) => {
      *          description: an authorization header
      *          required: true
      *          type: string
+     *        - name: id
+     *          description: Document Id
+     *          in:  path
+     *          required: true
+     *          type: integer
      *     responses:
      *        200:
      *          description: documents
@@ -83,11 +117,11 @@ const documentRoute = (router) => {
     .get(DocumentsController.findOne)
     /**
      * @swagger
-     * /documents/{id}:
+     * /api/documents/{id}:
      *   put:
      *     description: Updates a document by Id
      *     tags:
-     *      - Returns a updated document
+     *      - Updates a document by Id
      *     produces:
      *      - application/json
      *     parameters:
@@ -96,6 +130,18 @@ const documentRoute = (router) => {
      *          description: an authorization header
      *          required: true
      *          type: string
+     *        - name: id
+     *          description: Document Id
+     *          in:  path
+     *          required: true
+     *          type: integer
+     *        - name: body
+     *          description: Document object
+     *          in:  body
+     *          required: true
+     *          type: string
+     *          schema:
+     *            $ref: '#/definitions/NewDocument'
      *     responses:
      *        200:
      *          description: documents
@@ -107,7 +153,7 @@ const documentRoute = (router) => {
     .put(middlewares.validateUserUpdateAccess, DocumentsController.update)
     /**
      * @swagger
-     * /documents/{id}:
+     * /api/documents/{id}:
      *   delete:
      *     description: Removes a document by Id
      *     tags:
@@ -120,6 +166,11 @@ const documentRoute = (router) => {
      *          description: an authorization header
      *          required: true
      *          type: string
+     *        - name: id
+     *          description: Document Id
+     *          in:  path
+     *          required: true
+     *          type: integer
      *     responses:
      *        200:
      *          description: documents
@@ -128,7 +179,7 @@ const documentRoute = (router) => {
      *            items:
      *              $ref: '#/definitions/Document'
      */
-    .delete(DocumentsController.delete);
+    .delete(middlewares.validateDeleteDocument, DocumentsController.delete);
 };
 
 export default documentRoute;

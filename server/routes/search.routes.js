@@ -8,11 +8,11 @@ const searchRoute = (router) => {
     .route('/search/users/')
     /**
      * @swagger
-     * /search/users?q={ajudensi}:
+     * /api/search/users?q={username}:
      *    get:
      *      description: Returns the user
      *      tags:
-     *        - Finds a user by email
+     *        - Finds a user by username
      *      produces:
      *        - application/json
      *      parameters:
@@ -23,7 +23,7 @@ const searchRoute = (router) => {
      *          type: string
      *        - in: query
      *          name: q
-     *          description: email of a registred user
+     *          description: username of a registred user
      *          required: true
      *          type: string
      *      responses:
@@ -37,7 +37,7 @@ const searchRoute = (router) => {
     .route('/search/documents/')
     /**
      * @swagger
-     * /search/documents?q={DocumentTitle}:
+     * /api/search/documents?q=documentTitle}:
      *    get:
      *      description: Returns the documents
      *      tags:
@@ -52,7 +52,7 @@ const searchRoute = (router) => {
      *          type: string
      *        - in: query
      *          name: q
-     *          description: email of a registred user
+     *          description: title of a document
      *          required: true
      *          type: string
      *      responses:

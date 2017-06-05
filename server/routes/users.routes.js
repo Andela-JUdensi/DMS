@@ -4,11 +4,44 @@ import {
 } from './dependencies';
 
 const userRoute = (router) => {
+    /**
+     * @swagger
+     * definitions:
+     *   NewUser:
+     *     type: object
+     *     required:
+     *       - firstname
+     *       - lastname
+     *       - username
+     *       - email
+     *       - password
+     *     properties:
+     *       firstname:
+     *         type: string
+     *       lastname:
+     *         type: string
+     *       username:
+     *         type: string
+     *       password:
+     *         type: string
+     *         format: password
+     *       email:
+     *         type: string
+     *   User:
+     *     allOf:
+     *       - $ref: '#/definitions/NewUser'
+     *       - required:
+     *         - id
+     *       - properties:
+     *         id:
+     *           type: integer
+     *           format: int64
+     */
   router
     .route('/users')
     /**
      * @swagger
-     * /users:
+     * /api/users:
      *   post:
      *     description: Creates a user
      *     tags:
@@ -32,7 +65,7 @@ const userRoute = (router) => {
     .post(middlewares.validateUserInput, UsersController.create)
      /**
      * @swagger
-     * /users:
+     * /api/users:
      *   get:
      *     description: Gets a list of all users
      *     tags:
@@ -58,7 +91,7 @@ const userRoute = (router) => {
     .route('/users/:id')
      /**
      * @swagger
-     * /users/{id}:
+     * /api/users/{id}:
      *   get:
      *     description: Return a single user by id
      *     tags:
@@ -66,11 +99,16 @@ const userRoute = (router) => {
      *     produces:
      *      - application/json
      *     parameters:
-     *       - name: body
-     *         description: User object
-     *         in:  body
+     *       - name: Authorization
+     *         in: header
+     *         description: an authorization header
      *         required: true
      *         type: string
+     *       - name: id
+     *         description: User Id
+     *         in:  path
+     *         required: true
+     *         type: integer
      *         schema:
      *           $ref: '#/definitions/User'
      *     responses:
@@ -82,7 +120,7 @@ const userRoute = (router) => {
     .get(UsersController.findOne)
      /**
      * @swagger
-     * /users/{id}:
+     * /api/users/{id}:
      *   put:
      *     description: Updates details of a single user by id
      *     tags:
@@ -90,9 +128,48 @@ const userRoute = (router) => {
      *     produces:
      *      - application/json
      *     parameters:
+     *       - name: Authorization
+     *         in: header
+     *         description: an authorization header
+     *         required: true
+     *         type: string
+     *       - name: id
+     *         description: User Id
+     *         in:  path
+     *         required: true
+     *         type: integer
      *       - name: body
      *         description: User object
      *         in:  body
+     *         required: true
+     *         type: string
+     *         schema:
+     *           $ref: '#/definitions/NewUser'
+     *     responses:
+     *       200:
+     *         description: users
+     *         schema:
+     *          type: array
+     */
+    .put(middlewares.validateUserUpdate, UsersController.update)
+    /**
+     * @swagger
+     * /api/users/{id}:
+     *   delete:
+     *     description: Deletes a user by id
+     *     tags:
+     *      - Deletes a user by id
+     *     produces:
+     *      - application/json
+     *     parameters:
+     *       - name: Authorization
+     *         in: header
+     *         description: an authorization header
+     *         required: true
+     *         type: string
+     *       - name: id
+     *         description: User Id
+     *         in:  path
      *         required: true
      *         type: integer
      *         schema:
@@ -103,36 +180,27 @@ const userRoute = (router) => {
      *         schema:
      *          type: array
      */
-    .put(middlewares.validateUserUpdate, UsersController.update)
+    .delete(middlewares.validateDeleteUser, UsersController.delete);
     /**
      * @swagger
-     * /users/{id}:
-     *   delete:
-     *     description: Deletes a user by id
-     *     tags:
-     *      - Deletes a user by id
-     *     produces:
-     *      - application/json
-     *     parameters:
-     *       - name: body
-     *         description: User object
-     *         in:  body
-     *         required: true
+     * definitions:
+     *   Login:
+     *     type: object
+     *     required:
+     *       - identifier
+     *       - password
+     *     properties:
+     *       password:
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/User'
-     *     responses:
-     *       201:
-     *         description: users
-     *         schema:
-     *          type: array
+     *         format: password
+     *       identifier:
+     *         type: string
      */
-    .delete(middlewares.validateDeleteUser, UsersController.delete);
   router
     .route('/users/login')
       /**
        * @swagger
-       * /users/login:
+       * /api/users/login:
        *   post:
        *     description: Signs in a user
        *     tags:
@@ -148,20 +216,51 @@ const userRoute = (router) => {
        *         schema:
        *           $ref: '#/definitions/Login'
        *     responses:
-       *       201:
+       *       200:
        *         description: users
        *         schema:
        *          type: object
        */
     .post(middlewares.validateLoginInput, UsersController.login);
+    /**
+     * @swagger
+     * definitions:
+     *   Logout:
+     *     type: object
+     *     required:
+     *       - Authorization
+     */
   router
     .route('/users/logout')
+    /**
+     * @swagger
+     * /api/users/logout:
+     *   post:
+     *     description: Logout a user
+     *     tags:
+     *      - Logout in a user
+     *     produces:
+     *      - application/json
+     *     parameters:
+     *       - name: Authorization
+     *         in: header
+     *         description: an authorization header
+     *         required: true
+     *         type: string
+     *         schema:
+     *           $ref: '#/definitions/Logout'
+     *     responses:
+     *       200:
+     *         description: successfully logout
+     *         schema:
+     *          type: object
+     */
     .post(UsersController.logout);
   router
     .route('/users/:id/documents')
     /**
      * @swagger
-     * /users/{id}/documents:
+     * /api/users/{id}/documents:
      *    get:
      *      description: Returns the documents belonging to the user of id
      *      tags:
@@ -174,9 +273,14 @@ const userRoute = (router) => {
      *          description: an authorization header
      *          required: true
      *          type: string
+     *        - name: id
+     *          description: User Id
+     *          in:  path
+     *          required: true
+     *          type: integer
      *      responses:
-     *        200:
-     *          description: user's documents
+     *          200:
+     *            description: user's documents
      *          schema:
      *            type: object
      */
