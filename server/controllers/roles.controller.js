@@ -142,7 +142,7 @@ export default class RolesController {
         id,
       }
     })
-      .then(roleToDelete => Response.success(res, roleToDelete))
+      .then(roleToDelete => Response.success(res, { status: true }))
       .catch(error => Response.badRequest(res, error.message));
   }
 }

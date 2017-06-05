@@ -1,5 +1,9 @@
 import swaggerJSDoc from 'swagger-jsdoc';
+require('dotenv').config();
 
+const hostUrl = process.env.NODE_ENV === 'production'
+  ? 'hermes-dms-develop.herokuapp.com'
+  : 'localhost:9090';
 // swagger definition
 const swaggerDefinition = {
   info: {
@@ -7,7 +11,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'API documentation for to create, manage and edit documents',
   },
-  host: 'hermes-dms-develop.herokuapp.com',
+  host: hostUrl,
   basePath: '/'
 };
 
@@ -20,7 +24,7 @@ const options = {
     './server/routes/documents.routes.js',
     './server/routes/users.routes.js',
     './server/routes/search.routes.js',
-    './server/routes/role.routes.js'
+    './server/routes/roles.routes.js'
   ],
 };
 
