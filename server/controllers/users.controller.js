@@ -43,7 +43,7 @@ export default class UsersController {
 
     Users.create(userData)
       .then(user => Response.created(res, {
-        user,
+        user: lodash.pick(user, ['username', 'email']),
         message: 'account created successfully'
       }))
       .catch(error => Response.badRequest(res, error.message));
@@ -114,9 +114,7 @@ export default class UsersController {
       },
     })
       .then(() => {
-        req.locals.user = {};
-
-        Response.success(res, 'logout successful');
+        Response.success(res, { message: 'logout successful' });
       });
   }
 
@@ -198,8 +196,11 @@ export default class UsersController {
       .pick(req.body, ['firstname', 'lastname',
         'username', 'email', 'password', 'roleId'
       ]);
-
-    req.locals.userToUpdate.update(fieldsToUpdate)
+    req.locals.userToUpdate.update(fieldsToUpdate, {
+      where: {
+        id: req.locals.userToUpdate.id
+      }
+    })
       .then(updatedUser => Response.success(res, updatedUser))
       .catch(error => Response.badRequest(res, error.message));
   }
@@ -216,7 +217,7 @@ export default class UsersController {
    */
   static delete(req, res) {
     req.locals.userToBeDeleted.destroy()
-      .then(userToDelete => Response.success(res, userToDelete))
+      .then(() => Response.success(res, { status: 'true' }))
       .catch(error => Response.badRequest(res, error.message));
   }
 
@@ -239,7 +240,7 @@ export default class UsersController {
       userId,
       roleId
     } = req.locals.user.decoded;
-    const query = Helpers.determineDocsforUser(userId, roleId);
+    const query = Helpers.determineDocsforUser(userId, roleId, 'all');
 
     Documents.findAndCountAll({
       where: {
