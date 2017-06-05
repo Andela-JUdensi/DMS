@@ -52,7 +52,7 @@ const documentRoute = (router) => {
      *         required: true
      *         type: string
      *         schema:
-     *           $ref: '#/definitions/Document'
+     *           $ref: '#/definitions/NewDocument'
      *     responses:
      *       201:
      *         description: documents
@@ -81,7 +81,7 @@ const documentRoute = (router) => {
      *              schema:
      *                  type: array
      *                  items:
-     *                      $ref: '#/definitions/Document'
+     *                      $ref: '#/definitions/NewDocument'
      */
     .get(DocumentsController.findAll);
   router
@@ -112,7 +112,7 @@ const documentRoute = (router) => {
      *          schema:
      *            type: array
      *            items:
-     *              $ref: '#/definitions/Document'
+     *              $ref: '#/definitions/NewDocument'
      */
     .get(DocumentsController.findOne)
     /**
@@ -148,7 +148,7 @@ const documentRoute = (router) => {
      *          schema:
      *            type: array
      *            items:
-     *              $ref: '#/definitions/Document'
+     *              $ref: '#/definitions/NewDocument'
      */
     .put(middlewares.validateUserUpdateAccess, DocumentsController.update)
     /**
@@ -177,7 +177,7 @@ const documentRoute = (router) => {
      *          schema:
      *            type: array
      *            items:
-     *              $ref: '#/definitions/Document'
+     *              $ref: '#/definitions/NewDocument'
      */
     .delete(middlewares.validateDeleteDocument, DocumentsController.delete);
 };

@@ -1,13 +1,37 @@
 import {
   RolesController,
+  middlewares
 } from './dependencies';
 
 const rolesRoute = (router) => {
+   /**
+   * @swagger
+   * definitions:
+   *   NewRole:
+   *     type: object
+   *     required:
+   *       - roleName
+   *       - description
+   *     properties:
+   *       roleName:
+   *         type: string
+   *       description:
+   *         type: string
+   *   Role:
+   *     allOf:
+   *       - $ref: '#/definitions/NewRole'
+   *       - required:
+   *         - id
+   *       - properties:
+   *         id:
+   *           type: integer
+   *           format: int64
+   */
   router
     .route('/roles')
     /**
      * @swagger
-     * /roles:
+     * /api/roles:
      *   post:
      *     description: Creates a role
      *     tags:
@@ -20,21 +44,49 @@ const rolesRoute = (router) => {
      *         description: an authorization token
      *         required: true
      *         type: string
+     *       - name: body
+     *         description: Role object
+     *         in:  body
+     *         required: true
+     *         type: string
      *         schema:
-     *           $ref: '#/definitions/Role'
+     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
      *         schema:
      *          type: object
      */
-    .post(RolesController.create)
+    .post(middlewares.validateRoleChange, RolesController.create)
+    /**
+     * @swagger
+     * /api/roles:
+     *   get:
+     *      description: Returns a list of all roles
+     *      tags:
+     *        - Get Role List
+     *      produces:
+     *        - application/json
+     *      parameters:
+     *        - name: Authorization
+     *          in: header
+     *          description: an authorization header
+     *          required: false
+     *          type: string
+     *      responses:
+     *          200:
+     *              description: roles
+     *              schema:
+     *                  type: array
+     *                  items:
+     *                      $ref: '#/definitions/NewRole'
+     */
     .get(RolesController.findAll);
   router
     .route('/roles/:id')
      /**
      * @swagger
-     * /roles/{id}:
+     * /api/roles/{id}:
      *   get:
      *     description: Returns a role
      *     tags:
@@ -47,8 +99,13 @@ const rolesRoute = (router) => {
      *         description: an authorization token
      *         required: true
      *         type: string
+     *       - name: id
+     *         description: Role Id
+     *         in:  path
+     *         required: true
+     *         type: integer
      *         schema:
-     *           $ref: '#/definitions/Role'
+     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
@@ -58,7 +115,7 @@ const rolesRoute = (router) => {
     .get(RolesController.findOne)
     /**
      * @swagger
-     * /roles/{id}:
+     * /api/roles/{id}:
      *   put:
      *     description: Updates a role
      *     tags:
@@ -71,18 +128,28 @@ const rolesRoute = (router) => {
      *         description: an authorization token
      *         required: true
      *         type: string
+     *       - name: id
+     *         description: Role Id
+     *         in:  path
+     *         required: true
+     *         type: integer
+     *       - name: body
+     *         description: Role object
+     *         in:  body
+     *         required: true
+     *         type: string
      *         schema:
-     *           $ref: '#/definitions/Role'
+     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
      *         schema:
      *          type: object
      */
-    .put(RolesController.update)
+    .put(middlewares.validateRoleChange, RolesController.update)
      /**
      * @swagger
-     * /roles/{id}:
+     * /api/roles/{id}:
      *   delete:
      *     description: Deletes a role
      *     tags:
@@ -95,15 +162,20 @@ const rolesRoute = (router) => {
      *         description: an authorization token
      *         required: true
      *         type: string
+     *       - name: id
+     *         description: Role Id
+     *         in:  path
+     *         required: true
+     *         type: integer
      *         schema:
-     *           $ref: '#/definitions/Role'
+     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
      *         schema:
      *          type: object
      */
-    .delete(RolesController.delete);
+    .delete(middlewares.validateRoleChange, RolesController.delete);
 };
 
 export default rolesRoute;

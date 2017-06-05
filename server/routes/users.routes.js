@@ -84,7 +84,7 @@ const userRoute = (router) => {
      *          schema:
      *            type: array
      *            items:
-     *              $ref: '#/definitions/User'
+     *              $ref: '#/definitions/NewUser'
      */
     .get(UsersController.findAll);
   router
@@ -110,7 +110,7 @@ const userRoute = (router) => {
      *         required: true
      *         type: integer
      *         schema:
-     *           $ref: '#/definitions/User'
+     *           $ref: '#/definitions/NewUser'
      *     responses:
      *       201:
      *         description: users
@@ -173,7 +173,7 @@ const userRoute = (router) => {
      *         required: true
      *         type: integer
      *         schema:
-     *           $ref: '#/definitions/User'
+     *           $ref: '#/definitions/NewUser'
      *     responses:
      *       201:
      *         description: users
@@ -238,7 +238,7 @@ const userRoute = (router) => {
      *   post:
      *     description: Logout a user
      *     tags:
-     *      - Logout in a user
+     *      - Logout a user
      *     produces:
      *      - application/json
      *     parameters:
