@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropType from 'prop-types';
 import Assessment from 'material-ui/svg-icons/action/assessment';
 import GroupIcon from 'material-ui/svg-icons/social/group';
@@ -18,9 +19,9 @@ import FilterIcon from 'material-ui/svg-icons/action/swap-vert';
 import RaisedButton from 'material-ui/RaisedButton';
 import InfoBox from './InfoBox';
 import documentStack from '../common/documentsStack';
-import { getDocumentsAction } from '../../actions/documents.action';
-import { userDocumentsAction } from '../../actions/users.action';
-import { searchAction } from '../../actions/search.action';
+import  * as documentActions from '../../actions/documents.action';
+import * as userActions from '../../actions/users.action';
+import * as searchActions from '../../actions/search.action';
 import Helpers from '../../utils/Helpers';
 import styles from '../../assets/styles';
 
@@ -47,7 +48,8 @@ class Dashboard extends React.Component {
     this.getMoreDocuments = this.getMoreDocuments.bind(this);
     this.onUpdateInput = this.onUpdateInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.props.dispatch(getDocumentsAction(12));
+    this.filterDocuments = this.filterDocuments.bind(this);
+    this.props.documentActions.getDocumentsAction(12);
   }
 
   /**
@@ -60,11 +62,31 @@ class Dashboard extends React.Component {
    * @memberof Dashboard
    */
    componentWillUpdate(nextProps, nextState) {
-    if (!this.props.documents.totalCount || !nextProps.totalCount) {
-      return true;
-    } else {
-      return false;
+     if (!this.props.documents.totalCount || !nextProps.totalCount) {
+       return true;
+      } else {
+        return false;
+      }
     }
+
+  /**
+   * filter document on dashboard
+   * based on selected view
+   * 
+   * @returns 
+   * 
+   * @memberof Dashboard
+   */
+  filterDocuments(selectedView) {
+    if (['all', 'private', 'role', 'public']
+      .includes(selectedView)) {
+      return this.props.documentActions
+        .getDocumentsAction(12, 0, 'ASC', selectedView);
+    } else if (selectedView === 'own') {
+      return this.props.userActions
+        .userDocumentsAction(this.props.currentUser.userId);
+    }
+    return this.props.documentActions.getDocumentsAction(12, 0);
   }
 
   /**
@@ -78,13 +100,9 @@ class Dashboard extends React.Component {
    * @memberof Dashboard
    */
   handleChange(event, index, selectedView) {
-    this.setState({ selectedView });
-    if (['all', 'private', 'role', 'public'].includes(selectedView)) {
-      return this.props.dispatch(getDocumentsAction(12, 0, 'ASC', selectedView));
-    } else if (selectedView === 'own') {
-      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userId));
-    }
-    return this.props.dispatch(getDocumentsAction(12, 0));
+    this.setState({ selectedView }, () => {
+      this.filterDocuments(selectedView);
+    });
   }
 
   /**
@@ -96,12 +114,12 @@ class Dashboard extends React.Component {
    */
   getMoreDocuments(offset) {
     if (this.state.selectedView === 'own') {
-      return this.props.dispatch(userDocumentsAction(this.props.currentUser.userId), offset);
+      return this.props.userActions.userDocumentsAction(this.props.currentUser.userId, offset);
     }
     if (this.state.inputData === '') {
-      return this.props.dispatch(getDocumentsAction(12, offset, 'ASC', this.state.selectedView));
+      return this.props.documentActions.getDocumentsAction(12, offset, 'ASC', this.state.selectedView);
     }
-    return this.props.searchAction(this.state.inputData, offset);
+    return this.props.searchActions.searchAction(this.state.inputData, offset);
   }
 
   /**
@@ -113,7 +131,7 @@ class Dashboard extends React.Component {
    */
   onUpdateInput(event) {
     this.setState({ inputData: event.target.value }, () => {
-      this.props.searchAction(this.state.inputData);
+      this.props.searchActions.searchAction(this.state.inputData);
     });
     setTimeout(() => {
       if ((this.state.inputData.length > 0 
@@ -122,7 +140,7 @@ class Dashboard extends React.Component {
         this.searchInput.focus();
       } else if (this.searchInput !== null) {
         this.searchInput.blur();
-        this.props.dispatch(getDocumentsAction(12));
+        this.props.documentActions.getDocumentsAction(12);
       }
     }, 250);
   }
@@ -153,18 +171,12 @@ class Dashboard extends React.Component {
                   </h3>
 
                   <div className="mui-col-md-3">
-                  <Link to={{
-                    pathname: 'profile',
-                    state: { id: currentUser.userId }
-                  }}
-                  >
-                      <InfoBox
-                        Icon={GroupIcon}
-                        color={cyan600}
-                        title={currentUser.username.toUpperCase()}
-                        value={Helpers.getRoleName(currentUser.roleId)}
-                      />
-                    </Link>
+                    <InfoBox
+                      Icon={GroupIcon}
+                      color={cyan600}
+                      title={currentUser.username.toUpperCase()}
+                      value={Helpers.getRoleName(currentUser.roleId)}
+                    />
                   </div>
 
                   <div className="mui-col-md-3">
@@ -192,6 +204,7 @@ class Dashboard extends React.Component {
                       onChange={this.handleChange}
                       style={styles.selectDocuments}
                       hintText="Categorize by"
+                      className="selected-view"
                       underlineStyle={{display: 'none', }}
                       selectedMenuItemStyle={{color: 'crimson'}}
                     >
@@ -213,6 +226,7 @@ class Dashboard extends React.Component {
                     id="documentsSearch"
                     fullWidth
                     hintText="Search for a user"
+                    value={this.state.inputData}
                     floatingLabelText="Search for a document"
                     ref={(input) => { this.searchInput = input; }}
                   />
@@ -245,6 +259,7 @@ Dashboard.propTypes = {
   rows: PropType.array.isRequired,
   currentUser: PropType.object.isRequired,
   documents: PropType.object.isRequired,
+  // documentActions: PropType.object.isRequired,
 };
 
 Dashboard.defaultProps = {
@@ -263,6 +278,16 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default withRouter(connect(mapStateToProps, {
-  searchAction
-})(Dashboard));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    documentActions: bindActionCreators(documentActions, dispatch),
+    searchActions: bindActionCreators(searchActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
+  }
+} 
+
+export default withRouter(connect(mapStateToProps,
+  mapDispatchToProps)(Dashboard));
+
+export { Dashboard };
+

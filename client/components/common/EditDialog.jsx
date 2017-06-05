@@ -13,25 +13,19 @@ import LockIcon from 'material-ui/svg-icons/action/lock';
 import RoleIcon from 'material-ui/svg-icons/action/group-work';
 import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import Snackbar from 'material-ui/Snackbar';
+import Editor from 'react-markdown-editor';
 import FormTextFields from '../common/FormTextFields';
 import { editDocumentAction } from '../../actions/documents.action';
+import styles from '../../assets/styles';
 
+const MarkdownEditor = Editor.MarkdownEditor;
 
-const styles = {
-  formStyle: {
-    margin: 15,
-  },
-  button: {
-    margin: 1,
-    width: '',
-    display: 'inline-block',
-    position: 'relative',
-  },
-  formElement: {
-    margin: 5,
-  },
-};
-
+/**
+ * 
+ * 
+ * @class EditDialog
+ * @extends {React.Component}
+ */
 class EditDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +40,7 @@ class EditDialog extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onContentChange = this.onContentChange.bind(this);
   }
 
   onChange(event) {
@@ -54,6 +49,10 @@ class EditDialog extends React.Component {
 
   handleChange(event, index, access) {
     this.setState({ access });
+  }
+
+  onContentChange(body) {
+    this.setState({ body });
   }
 
   onSubmit(event) {
@@ -109,23 +108,18 @@ class EditDialog extends React.Component {
                 </SelectField>
               </div>
               <div className="mui-col-md-12">
-                <TextField
+                <MarkdownEditor
+                  initialContent="Start a new document here..."
+                  iconsSet="font-awesome"
                   name="body"
-                  fullWidth
-                  hintText="Document body/content"
+                  onContentChange={this.onContentChange}
                   value={this.state.body}
-                  label="Document body"
-                  floatingLabelText="Body of document goes here"
-                  multiLine
-                  rows={10}
-                  onChange={this.onChange}
                 />
               </div>
               <div className="mui-col-md-12">
                 <RaisedButton
                   label="Update"
                   labelPosition="before"
-                  icon={<PersonAdd />}
                   style={styles.button}
                   primary
                   disabled={isLoading}
