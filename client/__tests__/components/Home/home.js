@@ -13,14 +13,10 @@ describe('The home', () => {
     });
 
     it('renders without crashing', () => {
-      expect(shallow(<Home />).length).toBe(1);
+      expect(component.length).toBe(1);
     });
 
     it('should display call to action button', () => {
-      const component = shallow(
-        <Home />
-      );
-
       const button = component.find('.call-to-action-button');
       expect(button.length).toEqual(1);
     });
