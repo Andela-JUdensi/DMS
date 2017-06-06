@@ -1,7 +1,8 @@
 # Hermes (Document Management System)
 
-travis CI [![Build Status](https://travis-ci.org/Andela-JUdensi/DMS.svg?branch=develop)](https://travis-ci.org/Andela-JUdensi/DMS)
+[![Build Status](https://travis-ci.org/Andela-JUdensi/DMS.svg?branch=develop)](https://travis-ci.org/Andela-JUdensi/DMS)
 [![Coverage Status](https://coveralls.io/repos/github/Andela-JUdensi/DMS/badge.svg?branch=develop)](https://coveralls.io/github/Andela-JUdensi/DMS?branch=develop)
+[![Build Status](https://semaphoreci.com/api/v1/ajudensi/dms/branches/develop/badge.svg)](https://semaphoreci.com/ajudensi/dms)
 
 
 #### About Hermes
