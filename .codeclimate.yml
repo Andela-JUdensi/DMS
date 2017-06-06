@@ -1,11 +1,9 @@
-languages:
-  JavaScript: true
 engines:
-  # ... CONFIG CONTENT ...
-  duplication:
-    # ... CONFIG CONTENT ...
+  duplications:
     enabled: false
-# ... CONFIG CONTENT ...
+    config:
+      languages:
+        - javascript
 exclude_paths:
 - client/__tests__
 - client/e2e
