@@ -33,8 +33,8 @@ body {
   font-size: $body-font;
 }
 
-input {
-  color: $primary-white;
+input, .app-select-dropdown div div {
+  color: $primary-white !important;
 }
 
 .each-document-in-stack {
