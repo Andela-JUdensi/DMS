@@ -17,14 +17,14 @@ const NavigationBar = (props) => {
       <ToolbarTitle />
       <ToolbarSeparator />
       <Link to="/">
-        <RaisedButton label="Home" default className="button" />
+        <RaisedButton label="Home" default className="button-home" />
       </Link>
       <ToolbarSeparator />
       <Link to="/dashboard">
-        <RaisedButton label="Dashboard" default className="button" />
+        <RaisedButton label="Dashboard" default className="button-dashboard" />
       </Link>
       <ToolbarSeparator />
-      <RaisedButton label="Sign out" default onTouchTap={props.signOut} />
+      <RaisedButton label="Sign out" default className="button-out" onTouchTap={props.signOut} />
     </ToolbarGroup>
   );
   const guestLinks = (
@@ -32,15 +32,15 @@ const NavigationBar = (props) => {
       <ToolbarTitle />
       <ToolbarSeparator />
       <Link to="/">
-        <RaisedButton label="Home" default />
+        <RaisedButton label="Home" default className="button-home" />
       </Link>
       <ToolbarSeparator />
       <Link to="/signin">
-        <RaisedButton label="Sign in" default />
+        <RaisedButton label="Sign in" default className="button-signin" />
       </Link>
       <ToolbarSeparator />
       <Link to="/signup">
-        <RaisedButton label="Sign up" default />
+        <RaisedButton label="Sign up" default className="button-signup"/>
       </Link>
     </ToolbarGroup>
     );
