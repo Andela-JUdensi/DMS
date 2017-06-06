@@ -22,7 +22,6 @@
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed",
-    "postinstall": "npm run db:setup && npm run build",
     "e2e-setup": "selenium-standalone install",
     "test-e2e": "nightwatch"
   },
