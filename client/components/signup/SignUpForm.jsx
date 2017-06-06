@@ -44,7 +44,7 @@ class SignUpForm extends React.Component {
       isLoading: true,
     });
 
-    if ((!!Validator.validateSignup(this.state)) === true) {
+    if ((Validator.validateSignup(this.state)) !== undefined) {
      return this.setState({
        errors: Validator.validateSignup(this.state),
        isLoading: false

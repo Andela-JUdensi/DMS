@@ -72,7 +72,7 @@ const auth = {
       return Response.badRequest(res, 'you cannot signup with this priviledge');
     }
 
-    if ((!!Validator.validateSignup(req.body) === true)) {
+    if ((Validator.validateSignup(req.body) !== undefined)) {
       return Response.badRequest(res, Validator.validateSignup(req.body));
     }
 
