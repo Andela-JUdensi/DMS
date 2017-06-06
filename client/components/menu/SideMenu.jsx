@@ -79,9 +79,9 @@ class SideMenu extends React.Component {
         <Menu className="side-menu">
           <Link to="/"><MenuItem primaryText="Home" rightIcon={<HomeIcon />} /></Link>
           <Divider />
-          <Link to="/members"><MenuItem primaryText="View Users" rightIcon={<Book />} /></Link>
+          <Link to="/members" className="view-users-link"><MenuItem primaryText="View Users" rightIcon={<Book />} /></Link>
           <Divider />
-          <Link to="/new-document">
+          <Link to="/new-document" className="new-document-link">
             <MenuItem primaryText="New Document" rightIcon={<FileUpload />} />
           </Link>
           <Divider />

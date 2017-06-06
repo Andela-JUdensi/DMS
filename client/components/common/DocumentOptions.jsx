@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -181,7 +179,7 @@ class DocumentOptions extends React.Component {
     ];
 
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider>
         <div>
 
           <Snackbar
@@ -222,6 +220,7 @@ class DocumentOptions extends React.Component {
             iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             targetOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            className="document-options"
           >
             {userLinks}
           </IconMenu>
@@ -232,7 +231,9 @@ class DocumentOptions extends React.Component {
             className="open-document-view"
             onTouchTap={this.openDocumentView}
           >
-            <VisibilityIcon />
+            <VisibilityIcon
+              className="read-document-icon"
+            />
           </IconButton>
         </div>
       </MuiThemeProvider>

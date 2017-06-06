@@ -207,11 +207,31 @@ class Dashboard extends React.Component {
                       underlineStyle={{display: 'none', }}
                       selectedMenuItemStyle={{color: 'crimson'}}
                     >
-                      <MenuItem value="all" primaryText="All documents" />
-                      <MenuItem value="own" primaryText="Own documents" />
-                      <MenuItem value="private" primaryText="Private" />
-                      <MenuItem value="role" primaryText="Role" />
-                      <MenuItem value="public" primaryText="Public" />
+                      <MenuItem
+                        className="select-view-all"
+                        value="all"
+                        primaryText="All documents"
+                      />
+                      <MenuItem
+                        className="select-view-own"
+                        value="own"
+                        primaryText="Own documents"
+                      />
+                      <MenuItem
+                        className="select-view-private"
+                        value="private"
+                        primaryText="Private"
+                        />
+                      <MenuItem
+                        className="select-view-role"
+                        value="role"
+                        primaryText="Role"
+                      />
+                      <MenuItem
+                        className="select-view-public"
+                        value="public"
+                        primaryText="Public"
+                      />
                     </SelectField>
                   </div>
                   </div>
