@@ -5,6 +5,7 @@ import {
   DELETE_DOCUMENT_SUCCESS,
   GET_SEARCH_SUCCESS,
   GET_DOCUMENTS_BY_USER_SUCCESS,
+  UPDATE_DOCUMENT_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -28,19 +29,22 @@ const documentReducer = (state = initialState, action = {}) => {
       return newState;
     case DELETE_DOCUMENT_SUCCESS:
       rows = state.rows.filter(document => document.id !== action.documentId);
-      newState = Object.assign({}, state.documents, {
-        count: rows.length,
-        rows,
-        currentPage: state.currentPage,
-        pageSize: state.pageSize,
-        pages: state.pages,
-        totalCount: state.totalCount
+      return Object.assign({}, state.documents, {
+        ...state,
+        rows
       });
-      return newState;
     case GET_SEARCH_SUCCESS:
       return Object.assign({}, state, action.search);
     case GET_DOCUMENTS_BY_USER_SUCCESS:
       return Object.assign({}, action.userDocuments);
+    case UPDATE_DOCUMENT_SUCCESS:
+      rows = [action.document,
+        ...state.rows.filter(document =>
+          document.id !== action.document.id)];
+      return (Object.assign({}, {
+        ...state,
+        rows
+      }));
     default: return state;
   }
 };

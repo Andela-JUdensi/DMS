@@ -2,14 +2,15 @@ import axios from 'axios';
 import {
   GET_DOCUMENTS_SUCCESS,
   ADD_DOCUMENT_SUCCESS,
-  DELETE_DOCUMENT_SUCCESS
+  DELETE_DOCUMENT_SUCCESS,
+  UPDATE_DOCUMENT_SUCCESS
 } from '../actions/types';
 
 /**
  * action dispatched getting all dcuments
  * @param {object} documents - returned documents
  */
-export const getDocumentSuccess = documents => ({
+const getDocumentSuccess = documents => ({
   type: GET_DOCUMENTS_SUCCESS,
   documents,
 });
@@ -21,7 +22,7 @@ export const getDocumentSuccess = documents => ({
  * @param {string} order - arrangement of data
  * @param {string} access - role access for documents
  */
-export const getDocumentsAction =
+const getDocumentsAction =
   (limit = 12, offset = 0, order = 'ASC', access = 'all') =>
     dispatch =>
       axios.get(`/api/documents/?limit=${limit}&offset=${offset}&order=${order}&access=${access}`)
@@ -36,7 +37,7 @@ export const getDocumentsAction =
  * action dispatched adding a document
  * @param {object} document - document added
  */
-export const addDocumentSuccess = document => ({
+const addDocumentSuccess = document => ({
   type: ADD_DOCUMENT_SUCCESS,
   document,
 });
@@ -45,7 +46,7 @@ export const addDocumentSuccess = document => ({
  * api post request to add document
  * @param {object} documentInformation - document information
  */
-export const addDocumentAction = documentInformation =>
+const addDocumentAction = documentInformation =>
   dispatch => new Promise((resolve, reject) => {
     axios.post('/api/documents/', documentInformation)
       .then((response) => {
@@ -61,7 +62,7 @@ export const addDocumentAction = documentInformation =>
  * action dispatched deleting document
  * @param {integer} documentId - document id
  */
-export const deleteDocumentSuccess = documentId => ({
+const deleteDocumentSuccess = documentId => ({
   type: DELETE_DOCUMENT_SUCCESS,
   documentId,
 });
@@ -70,7 +71,7 @@ export const deleteDocumentSuccess = documentId => ({
  * api delete request for a document
  * @param {*} documentId - document id
  */
-export const deleteDocumentAction = documentId =>
+const deleteDocumentAction = documentId =>
   dispatch => new Promise((resolve, reject) => {
     axios.delete(`/api/documents/${documentId}`)
       .then(() => {
@@ -82,18 +83,37 @@ export const deleteDocumentAction = documentId =>
       });
   });
 
+
+const updateDocumentSuccess = (document) => {
+  return {
+    type: UPDATE_DOCUMENT_SUCCESS,
+    document
+  }
+}
 /**
  * api put request to update a document
  * @param {*} documentId - document id
  * @param {*} documentInformation - document Information
  */
-export const editDocumentAction = (documentId, documentInformation) =>
+const editDocumentAction = (documentId, documentInformation) =>
   dispatch => new Promise((resolve, reject) => {
     axios.put(`/api/documents/${documentId}/`, documentInformation)
-      .then(() => {
-        resolve(dispatch(getDocumentsAction()));
+      .then((success) => {
+        resolve(dispatch(updateDocumentSuccess(success.data)));
       })
       .catch((error) => {
         reject(error.response.data.message);
       });
   });
+
+
+export {
+  getDocumentSuccess,
+  getDocumentsAction,
+  addDocumentSuccess,
+  addDocumentAction,
+  deleteDocumentSuccess,
+  deleteDocumentAction,
+  updateDocumentSuccess,
+  editDocumentAction
+}

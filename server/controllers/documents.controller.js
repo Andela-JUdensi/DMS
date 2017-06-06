@@ -134,7 +134,7 @@ export default class DocumentsController {
    */
   static update(req, res) {
     req.locals.documentToUpdate
-      .update(lodash.pick(req.body, ['title', 'body']))
+      .update(lodash.pick(req.body, ['title', 'body', 'access']))
         .then(updatedDocument => Response.success(res, updatedDocument))
         .catch(error => Response.badRequest(res, error.message));
   }

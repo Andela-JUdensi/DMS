@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import Snackbar from 'material-ui/Snackbar';
@@ -16,6 +14,7 @@ import FormElements from '../common/FormTextFields';
 import signUpAction from '../../actions/signUp.action';
 import Alerts from '../common/alerts';
 import styles from '../../assets/styles';
+import ValidateInput from '../../../server/shared/validator';
 
 class SignUpForm extends React.Component {
 
@@ -44,6 +43,14 @@ class SignUpForm extends React.Component {
       errors: '',
       isLoading: true,
     });
+
+    if ((!!ValidateInput.validateSignup(this.state)) === true) {
+     return this.setState({
+       errors: ValidateInput.validateSignup(this.state),
+       isLoading: false
+      }); 
+    }
+
     this.props.signUpAction(this.state)
       .then(() => {
         this.setState({
@@ -83,8 +90,12 @@ class SignUpForm extends React.Component {
     const { isLoading } = this.state;
     return (
       <div className="mui-col-md-12 form-container">
-        <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-          <form onSubmit={this.onSubmit} style={styles.formStyle}>
+        <MuiThemeProvider>
+          <form
+            onSubmit={this.onSubmit}
+            style={styles.formStyle}
+            className="signup-form"
+          >
             <h1>Join Hermes</h1>
             <Alerts errors={this.state.errors} />
             <div className="mui-col-md-6">
@@ -156,6 +167,7 @@ class SignUpForm extends React.Component {
                 icon={<PersonAdd />}
                 type="submit"
                 disabled={isLoading}
+                className="submit-signup"
                 fullWidth
               />
             </div>
@@ -173,7 +185,6 @@ class SignUpForm extends React.Component {
 
 SignUpForm.propTypes = {
   signUpAction: PropTypes.func.isRequired,
-  // addFlashMessage: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(null, { signUpAction })(SignUpForm));
