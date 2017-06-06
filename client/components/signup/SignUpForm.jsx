@@ -14,7 +14,7 @@ import FormElements from '../common/FormTextFields';
 import signUpAction from '../../actions/signUp.action';
 import Alerts from '../common/alerts';
 import styles from '../../assets/styles';
-import Validator from '../../../server/shared/validator';
+import Validator from '../../shared/validator';
 
 class SignUpForm extends React.Component {
 
