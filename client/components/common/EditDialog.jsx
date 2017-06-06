@@ -87,7 +87,10 @@ class EditDialog extends React.Component {
       >
         <MuiThemeProvider>
           <div>
-            <form style={styles.formStyle}>
+            <form
+              style={styles.formStyle}
+              className="edit-document-form"
+            >
               <div className="mui-col-md-6">
                 <FormTextFields
                   field="title"

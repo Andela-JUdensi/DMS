@@ -142,6 +142,9 @@ input, .app-select-dropdown div div {
 }
 
 .markdown-editor-add {
+  input, .app-select-dropdown div div {
+    color: $primary-white !important;
+  }
   textarea.md-editor-textarea {
     background: transparent !important;
     border: 1px solid whitesmoke !important;
@@ -178,6 +181,9 @@ svg {
   color: $primary-crimson !important;
 }
 
+.edit-document-form input {
+  color: #333 !important;
+}
 .call-to-action {
     margin-top: 20%;
   h1 {
