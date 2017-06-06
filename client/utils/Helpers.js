@@ -21,5 +21,10 @@ export default {
     localStorage.setItem('hermesToken', token);
     localStorage.setItem('hermesuserId', userId);
     localStorage.setItem('hermesroleId', roleId);
+  },
+  clearLocalStorage: () => {
+    localStorage.removeItem('hermesToken');
+    localStorage.removeItem('hermesuserId');
+    localStorage.removeItem('hermesroleId');
   }
 }

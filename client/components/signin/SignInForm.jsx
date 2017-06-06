@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, withRouter } from 'react-router-dom';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import FormTextFields from '../common/FormTextFields';
@@ -96,8 +94,12 @@ class SignInForm extends React.Component {
     }
     return (
       <div className="mui-col-md-12 form-container">
-        <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-          <form onSubmit={this.onSubmit} style={styles.formStyle}>
+        <MuiThemeProvider>
+          <form
+            onSubmit={this.onSubmit}
+            style={styles.formStyle}
+            className="signin-form"
+          >
             <h1><center>Sign in</center></h1>
             <Alerts errors={this.state.errors} />
             <div className="mui-col-md-6">
@@ -133,6 +135,7 @@ class SignInForm extends React.Component {
                 type="submit"
                 disabled={isLoading}
                 fullWidth
+                className="submit-login"
               />
             </div>
           </form>

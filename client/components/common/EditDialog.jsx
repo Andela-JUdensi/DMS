@@ -61,7 +61,7 @@ class EditDialog extends React.Component {
     // this.setState({ error: '', isLoading: true });
     this.props.editDocumentAction(this.props.documentToEdit.id, this.state)
       .then((response) => {
-        this.setState({ open: false });
+        // this.setState({ open: false });
       })
       .catch((error) => {
         console.log('error', error);

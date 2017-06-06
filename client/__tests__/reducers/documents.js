@@ -88,7 +88,7 @@ describe('documents reducer', () => {
       type: DELETE_DOCUMENT_SUCCESS,
       documentId: 1
     }).count)
-    .toEqual(1);
+    .toEqual(2);
 
     expect(reducer(state, {
       type: DELETE_DOCUMENT_SUCCESS,

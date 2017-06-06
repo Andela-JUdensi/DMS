@@ -63,7 +63,7 @@ class DocumentViewDialog extends React.Component {
               { Helpers.readDate(documentToView.createdAt)}
             </span>
             <span className="document-user">
-              { documentToView.User.username } | { documentToView.User.email }
+              { documentToView.User.username }
             </span>
           </Dialog>
         </Paper>

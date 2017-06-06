@@ -10,7 +10,7 @@ import Helpers from '../../utils/Helpers';
 export default (user, index) => (
   <TableRow key={index} displayBorder>
     <TableRowColumn>{index + 1}</TableRowColumn>
-    <TableRowColumn>{user.username}</TableRowColumn>
+    <TableRowColumn className="table-username-row">{user.username}</TableRowColumn>
     <TableRowColumn>{user.email}</TableRowColumn>
     <TableRowColumn>{Helpers.getRoleName(user.roleId)}</TableRowColumn>
     <TableRowColumn>

@@ -2,9 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
 import PersonAdd from 'material-ui/svg-icons/social/person-add';
 import SelectField from 'material-ui/SelectField';
@@ -76,7 +74,7 @@ class DocumentForm extends React.Component {
           access: '',
           errors: '',
           isLoading: false,
-          success: `${title} has been added successfully. View it here ${id}`,
+          success: `Document has been added successfully.`,
           snackBarOpen: true,
         });
         this.props.getDocumentsAction();
@@ -93,8 +91,8 @@ class DocumentForm extends React.Component {
   render() {
     const { errors, isLoading, success } = this.state;
     return (
-      <div className="mui-col-md-12 form-container">
-        <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <div className="mui-col-md-12 form-container add-document-form">
+        <MuiThemeProvider>
           <div>
             <form onSubmit={this.onSubmit} style={styles.formStyle}>
               <h1>Add new Document</h1>
@@ -112,15 +110,16 @@ class DocumentForm extends React.Component {
               <div className="mui-col-md-6">
                 <SelectField
                   floatingLabelText="Access level"
+                  hintText="Access level"
                   value={this.state.access}
                   onChange={this.handleChange}
                   className="app-select-dropdown"
                   style={{color: "#fff"}} 
                   required
                 >
-                  <MenuItem value="private" primaryText="Private" rightIcon={<LockIcon />} />
-                  <MenuItem value="role" primaryText="Role" rightIcon={<RoleIcon />} />
-                  <MenuItem value="public" primaryText="Public" rightIcon={<AccessibilityIcon />} />
+                  <MenuItem className="private" value="private" primaryText="Private" rightIcon={<LockIcon />} />
+                  <MenuItem className="role" value="role" primaryText="Role" rightIcon={<RoleIcon />} />
+                  <MenuItem className="public" value="public" primaryText="Public" rightIcon={<AccessibilityIcon />} />
                 </SelectField>
               </div>
               <div className="mui-col-md-12 markdown-editor-add">
