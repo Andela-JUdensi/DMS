@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { SERVER } from '../configs/';
 import { Helpers, Response } from '../utils/';
 import models from '../models/';
-import ValidateInput from '../shared/validator';
+import Validator from '../shared/validator';
 
 const Users = models.Users;
 const Documents = models.Documents;
@@ -72,8 +72,8 @@ const auth = {
       return Response.badRequest(res, 'you cannot signup with this priviledge');
     }
 
-    if ((!!ValidateInput.validateSignup(req.body) === true)) {
-      return Response.badRequest(res, ValidateInput.validateSignup(req.body));
+    if ((!!Validator.validateSignup(req.body) === true)) {
+      return Response.badRequest(res, Validator.validateSignup(req.body));
     }
 
     if (req.body.password && req.body.password.length < 7) {

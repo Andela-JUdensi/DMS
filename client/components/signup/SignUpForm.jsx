@@ -14,7 +14,7 @@ import FormElements from '../common/FormTextFields';
 import signUpAction from '../../actions/signUp.action';
 import Alerts from '../common/alerts';
 import styles from '../../assets/styles';
-import ValidateInput from '../../../server/shared/validator';
+import Validator from '../../../server/shared/validator';
 
 class SignUpForm extends React.Component {
 
@@ -44,9 +44,9 @@ class SignUpForm extends React.Component {
       isLoading: true,
     });
 
-    if ((!!ValidateInput.validateSignup(this.state)) === true) {
+    if ((!!Validator.validateSignup(this.state)) === true) {
      return this.setState({
-       errors: ValidateInput.validateSignup(this.state),
+       errors: Validator.validateSignup(this.state),
        isLoading: false
       }); 
     }

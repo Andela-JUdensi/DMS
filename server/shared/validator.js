@@ -4,9 +4,9 @@ import checkIt from 'lodash-checkit';
  *
  *
  * @export
- * @class ValidateInput
+ * @class Validator
  */
-export default class ValidateInput {
+export default class Validator {
   /**
    * return validation status
    * for signup
@@ -15,7 +15,7 @@ export default class ValidateInput {
    * @param {any} userInputs - userSignup Info
    * @returns {Object} - status of signup validation
    *
-   * @memberof ValidateInput
+   * @memberof Validator
    */
   static validateSignup(userInputs) {
     try {
