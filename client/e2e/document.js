@@ -4,17 +4,17 @@ const faker = require('faker');
 const document = faker.lorem;
 
 module.exports = {
-  // 'view public document': (browser) => {
-  //   browser
-  //     .url(config.url)
-  //     .waitForElementVisible('body', config.waitFor)
-  //     .click('.read-document-icon')
-  //     .waitForElementVisible('.document-view-dialog', config.pause)
-  //     .assert.elementPresent('.document-view-body')
-  //     .assert.elementPresent('.document-date')
-  //     .assert.elementPresent('.document-user')
-  //     .assert.urlEquals(config.url)
-  // },
+  'view public document': (browser) => {
+    browser
+      .url(config.url)
+      .waitForElementVisible('body', config.waitFor)
+      .click('.read-document-icon')
+      .waitForElementVisible('.document-view-dialog', config.pause)
+      .assert.elementPresent('.document-view-body')
+      .assert.elementPresent('.document-date')
+      .assert.elementPresent('.document-user')
+      .assert.urlEquals(config.url)
+  },
   'add new document successfully': (browser) => {
     browser
       .url(config.url)
