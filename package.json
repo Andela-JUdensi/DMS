@@ -23,7 +23,8 @@
     "db:seed": "sequelize db:seed:all",
     "db:setup": "npm run db:migrate && npm run db:seed",
     "e2e-setup": "selenium-standalone install",
-    "test-e2e": "nightwatch"
+    "test-e2e": "nightwatch",
+    "heroku-postbuild": "npm run db:setup"
   },
   "jest": {
     "transform": {
