@@ -1,0 +1,5 @@
+client/__tests__/*
+client/e2e/*
+server/tests/*
+server/swagger/*
+bin/*

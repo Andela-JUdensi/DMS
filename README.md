@@ -3,6 +3,10 @@
 [![Build Status](https://travis-ci.org/Andela-JUdensi/DMS.svg?branch=develop)](https://travis-ci.org/Andela-JUdensi/DMS)
 [![Coverage Status](https://coveralls.io/repos/github/Andela-JUdensi/DMS/badge.svg?branch=develop)](https://coveralls.io/github/Andela-JUdensi/DMS?branch=develop)
 [![Build Status](https://semaphoreci.com/api/v1/ajudensi/dms/branches/develop/badge.svg)](https://semaphoreci.com/ajudensi/dms)
+[![Code Climate](https://codeclimate.com/github/Andela-JUdensi/DMS/badges/gpa.svg)](https://codeclimate.com/github/Andela-JUdensi/DMS)
+[![Issue Count](https://codeclimate.com/github/Andela-JUdensi/DMS/badges/issue_count.svg)](https://codeclimate.com/github/Andela-JUdensi/DMS)
+[![codebeat badge](https://codebeat.co/badges/79d73144-0e57-47fe-87d7-940b0d11285e)](https://codebeat.co/projects/github-com-andela-judensi-dms-develop)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](hermes-dms-develop.herokuapp.com)
 
 
 #### About Hermes
