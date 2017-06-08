@@ -89,7 +89,7 @@ class SignInForm extends React.Component {
     const { errors, isLoading, redirect } = this.state;
     if (redirect) {
       return (
-        <Redirect to="/" />
+        <Redirect to="/dashboard" />
       );
     }
     return (
