@@ -8,7 +8,7 @@ module.exports = {
   'User sign up without firstname': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', '')
       .setValue('input[name=lastname]', 'Stark')
@@ -17,13 +17,13 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'enter a valid firstname');
   },
   'User sign up without lastname': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', '')
@@ -32,13 +32,13 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'enter a valid lastname');
   },
   'User sign up without email': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -47,13 +47,13 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'enter a valid email');
   },
   'User sign up without username': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -62,13 +62,13 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'username');
   },
   'User sign up without password': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -77,13 +77,13 @@ module.exports = {
       .setValue('input[name=password]', '')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'enter a valid password');
   },
   'User sign up with wrong password confirmation': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -92,13 +92,13 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'anotherPassword')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'paswords did not match. try again');
   },
   'User sign up with short password': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -107,13 +107,13 @@ module.exports = {
       .setValue('input[name=password]', 'pass')
       .setValue('input[name=passwordConfirmation]', 'pass')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'password must be greater than 7 characters')
   },
   'User sign up with invalid email': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', 'Arya')
       .setValue('input[name=lastname]', 'Stark')
@@ -122,13 +122,13 @@ module.exports = {
       .setValue('input[name=password]', 'pass')
       .setValue('input[name=passwordConfirmation]', 'pass')
       .click('.submit-signup')
-      .waitForElementVisible('.alert-error', config.pause)
+      .waitForElementVisible('.alert-error', config.waitFor)
       .assert.containsText('.alert-error', 'enter a valid email')
   },
   'User successfully signs up': (browser) => {
     browser
       .url(config.url)
-      .waitForElementVisible('body', 400)
+      .waitForElementVisible('body', config.waitFor)
       .click('.button-signup')
       .setValue('input[name=firstname]', user.firstName())
       .setValue('input[name=lastname]', user.lastName())
@@ -137,7 +137,7 @@ module.exports = {
       .setValue('input[name=password]', 'password')
       .setValue('input[name=passwordConfirmation]', 'password')
       .click('.submit-signup')
-      .waitForElementVisible('.signin-form', 3000)
+      .waitForElementVisible('.signin-form', config.waitFor)
       .assert.containsText('.form-container form h1', 'Sign in')
       .assert.urlEquals(`${config.url}signin`)
       .end();
