@@ -4,7 +4,7 @@ import chaiHttp from 'chai-http';
 import chai from 'chai';
 import sinon from 'sinon';
 import server from '../../../server';
-import middlewares from '../../../middlewares/';
+import * as middlewares from '../../../middlewares/';
 
 chai.use(chaiHttp);
 chai.should();

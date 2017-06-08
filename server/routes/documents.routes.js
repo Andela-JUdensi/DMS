@@ -150,7 +150,7 @@ const documentRoute = (router) => {
      *            items:
      *              $ref: '#/definitions/NewDocument'
      */
-    .put(middlewares.validateUserUpdateAccess, DocumentsController.update)
+    .put(middlewares.validateDocumentUpdate, DocumentsController.update)
     /**
      * @swagger
      * /api/documents/{id}:

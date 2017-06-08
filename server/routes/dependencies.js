@@ -5,7 +5,7 @@ import {
   SearchController,
   RolesController
 } from '../controllers';
-import middlewares from '../middlewares';
+import * as middlewares from '../middlewares';
 
 export {
   SERVER,

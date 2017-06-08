@@ -7,7 +7,7 @@ import winston from 'winston';
 import routes from './routes';
 import swagger from './routes/swagger';
 import { SERVER } from './configs';
-import middleware from './middlewares/';
+import * as middlewares from './middlewares/';
 
 const app = express();
 const router = express.Router();
@@ -20,7 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
-app.use([middleware.verifyAuthentication, middleware.verifyRouteAndMethod]);
+app.use([middlewares.verifyAuthentication,
+  middlewares.verifyRouteAndMethod]);
 app.use(morgan(format));
 
 if (process.env.NODE_ENV !== 'production') {

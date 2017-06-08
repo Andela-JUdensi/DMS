@@ -41,4 +41,20 @@ export default class Validator {
       return e.message;
     }
   }
+
+  /**
+   * validate user update
+   *
+   * @static
+   * @param {object} userInfo - user information
+   * @returns {boolean} - true if valid
+   *
+   * @memberof Validator
+   */
+  static validateUserUpdate(userInfo) {
+    if (userInfo.password && userInfo.password.length < 7) {
+      return 'password must not be less than 7 characters';
+    }
+    return true;
+  }
 }
