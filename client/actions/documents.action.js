@@ -60,11 +60,11 @@ const addDocumentAction = documentInformation =>
 
 /**
  * action dispatched deleting document
- * @param {integer} documentId - document id
+ * @param {object} status - deleted document
  */
-const deleteDocumentSuccess = documentId => ({
+const deleteDocumentSuccess = document => ({
   type: DELETE_DOCUMENT_SUCCESS,
-  documentId,
+  document,
 });
 
 /**
@@ -72,16 +72,10 @@ const deleteDocumentSuccess = documentId => ({
  * @param {*} documentId - document id
  */
 const deleteDocumentAction = documentId =>
-  dispatch => new Promise((resolve, reject) => {
-    axios.delete(`/api/documents/${documentId}`)
-      .then(() => {
-        dispatch(deleteDocumentSuccess(documentId));
-        resolve(documentId);
-      })
-      .catch((error) => {
-        reject(error.response.data.message);
-      });
-  });
+  dispatch => axios.delete(`/api/documents/${documentId}`)
+    .then((success) => {
+      dispatch(deleteDocumentSuccess({ status: success.data.status, documentId}));
+    });
 
 
 const updateDocumentSuccess = (document) => {

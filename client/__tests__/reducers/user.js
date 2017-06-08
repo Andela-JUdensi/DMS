@@ -38,7 +38,7 @@ describe('user reducer', () => {
         type: DELETE_USER_SUCCESS,
         status: true
       })
-    ).toEqual(true);
+    ).toEqual({status: true});
 
     expect(
       reducer([], {

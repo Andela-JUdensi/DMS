@@ -44,7 +44,7 @@ describe('asynchronous document actions', () => {
       });
   })
 
-  it('creates GET_DOCUMENTS_SUCCESS when adding a document', () => {
+  it('creates ADD_DOCUMENTS_SUCCESS when adding a document', () => {
     moxios.stubRequest('/api/documents/', {
       status: 200,
       response: {
@@ -79,16 +79,20 @@ describe('asynchronous document actions', () => {
       status: 200,
       response: {
         data: {
-          id: 1
+          id: 1,
+          status: 'deleted'
         }
       }
     });
 
     const documents = {};
     const expectedActions = [{
-      documentId: 1,
+      document: {
+        documentId: 1,
+        status: undefined
+      },
       type: "DELETE_DOCUMENT_SUCCESS"
-    }];
+    }]
 
     const store = mockStore();
 

@@ -17,6 +17,9 @@ describe('The <Dashboard />', () => {
       documents: {
         rows: [],
         count: 0,
+        metaData: {
+          pages: 1
+        }
       },
       currentUser: {
         username: 'thePiper',
@@ -39,7 +42,8 @@ describe('The <Dashboard />', () => {
             { id: 2, title: 'random title', body: 'great random body',
               User: { id: 2, username: 'SiliconValley' }
             }
-          ]
+          ],
+          metaData: { pages: 1}
         },
         currentUser: {
           username: 'thePiper',
@@ -233,7 +237,7 @@ describe('The <Dashboard />', () => {
 
 
   describe('componentWillUpdate lifecycle hook', () => {
-    it('should call componentWillUpdate', () => {
+    it('should call be called', () => {
       const component = shallow(
         <Dashboard {...spiedProps} />
       );
@@ -249,7 +253,8 @@ describe('The <Dashboard />', () => {
             { id: 1, title: 'my title', body: 'great article',
               User: { id: 3, username: 'ajudensi' }
             }
-          ]
+          ],
+          metaData: {}
         }
       });
 
@@ -258,7 +263,7 @@ describe('The <Dashboard />', () => {
       expect(component.instance().componentWillUpdate
         .callCount).toBe(1);
       expect(component.instance().componentWillUpdate
-        .firstCall.returnValue).toBe(true);
+        .firstCall.returnValue).toBe(undefined);
     });
   })
 

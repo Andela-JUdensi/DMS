@@ -30,11 +30,11 @@ describe('Document actions', () => {
   })
 
   it('should create an action to delete a document', () => {
-    const documentId = 5;
+    const document = { documentId: 5, status: 'deleted'};
     const expectedAction = {
       type: DELETE_DOCUMENT_SUCCESS,
-      documentId
+      document
     }
-    expect(deleteDocumentSuccess(documentId)).toEqual(expectedAction)
+    expect(deleteDocumentSuccess(document)).toEqual(expectedAction)
   })
 })

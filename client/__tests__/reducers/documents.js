@@ -23,10 +23,12 @@ describe('documents reducer', () => {
         }
       ],
       count: 2,
-      currentPage: 1,
-      pageSize: 1,
-      pages: 1,
-      totalCount: 2
+      metaData: {
+        currentPage: 1,
+        pageSize: 1,
+        pages: 1,
+        totalCount: 2
+      },
     }
 
   it('should return the initial state', () => {
@@ -86,13 +88,13 @@ describe('documents reducer', () => {
     const state = testDocuments;
     expect(reducer(state, {
       type: DELETE_DOCUMENT_SUCCESS,
-      documentId: 1
+      document: { documentId: 5, status: 'deleted'}
     }).count)
     .toEqual(2);
 
     expect(reducer(state, {
       type: DELETE_DOCUMENT_SUCCESS,
-      documentId: 1
+      document: { documentId: 1, status: 'deleted'}
     }).rows[0].title)
     .toEqual('title two');
   });
