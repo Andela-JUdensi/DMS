@@ -21,6 +21,7 @@ import Avatar from 'material-ui/Avatar';
 import ListItem from 'material-ui/List/ListItem';
 import NavigationMenu from './NavigationBar';
 import { signOut } from '../../actions/authentication.action';
+import Helpers from '../../utils/Helpers';
 import styles from '../../assets/styles';
 
 /**
@@ -54,7 +55,8 @@ class SideMenu extends React.Component {
    * @memberof SideMenu
    */
   signOut() {
-    this.props.signOut();
+    this.props.signOut()
+      .then(() => Helpers.clearLocalStorage());
   }
 
   /**
@@ -150,4 +152,6 @@ const mapStateToProps = state => ({
   state,
 });
 
-export default withRouter(connect(mapStateToProps, { signOut })(SideMenu));
+export default withRouter(connect(mapStateToProps,{
+  signOut
+})(SideMenu));
