@@ -132,10 +132,12 @@ export default class Helpers {
    */
   static paginate(containerObject, offset, limit) {
     return {
-      totalCount: containerObject.count,
-      pages: Math.ceil(containerObject.count / limit),
-      currentPage: Math.floor(offset / limit) + 1,
-      pageSize: containerObject.rows.length,
+      metaData: {
+        totalCount: containerObject.count,
+        pages: Math.ceil(containerObject.count / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+        pageSize: containerObject.rows.length,
+      }
     } || null;
   }
 }
