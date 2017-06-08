@@ -6,7 +6,8 @@ import { PropTypes } from 'prop-types';
 
 export default (ComposedComponent) => {
   /**
-   *
+   * Higher order component
+   * authenticate routes
    *
    * @class isAuthenticated
    * @extends {React.Component}

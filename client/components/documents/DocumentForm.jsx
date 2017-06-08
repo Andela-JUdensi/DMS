@@ -59,7 +59,12 @@ class DocumentForm extends React.Component {
     });
   }
   onContentChange(body) {
-    this.setState({ body });
+    this.setState({
+      body,
+      success: '',
+      errors: '',
+      snackBarOpen: false
+    });
   }
 
   onSubmit(event) {
@@ -94,7 +99,7 @@ class DocumentForm extends React.Component {
       <div className="mui-col-md-12 form-container add-document-form">
         <MuiThemeProvider>
           <div>
-            <form onSubmit={this.onSubmit} style={styles.formStyle}>
+            <form onSubmit={this.onSubmit}>
               <h1>Add new Document</h1>
               <Alerts errors={this.state.errors} success={this.state.success} />
               <div className="mui-col-md-6">
@@ -164,7 +169,8 @@ DocumentForm.propTypes = {
 };
 
 DocumentForm.defaultProps = {
-  newDocument: {}
+  newDocument: {},
+  ownerID: 0
 };
 
 const mapStateToProps = state => ({

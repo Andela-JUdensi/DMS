@@ -113,7 +113,7 @@ class EditDialog extends React.Component {
               </div>
               <div className="mui-col-md-12 markdown-editor-edit">
                 <MarkdownEditor
-                  initialContent="Start a new document here..."
+                  initialContent={this.state.body}
                   iconsSet="font-awesome"
                   name="body"
                   onContentChange={this.onContentChange}

@@ -42,29 +42,31 @@ class Dashboard extends React.Component {
     this.state = {
       inputData: '',
       selectedView: 'all',
+      offset: 0
     }
+
+    this.pageSize = 12;
+    this.offset = 0;
 
     this.getMoreDocuments = this.getMoreDocuments.bind(this);
     this.onUpdateInput = this.onUpdateInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.filterDocuments = this.filterDocuments.bind(this);
-    this.props.documentActions.getDocumentsAction(12);
+
+    this.props.documentActions.getDocumentsAction(this.pageSize);
   }
 
-  /**
-   * 
-   * determine of component will update
-   * @param {object} nextProps 
-   * @param {object} nextState 
-   * @returns 
-   * 
-   * @memberof Dashboard
-   */
-   componentWillUpdate(nextProps, nextState) {
-     if (!this.props.documents.totalCount || !nextProps.totalCount) {
-       return true;
-      } else {
-        return false;
+    /**
+     * call getDocumentsAction
+     * only if a document has been deleted
+     * ensure we have a filled up dashboard
+     * 
+     * @memberof Dashboard
+     */
+    componentWillUpdate(nextProps) {
+      if (nextProps.documents.status === 'deleted') {
+        this.props.documentActions
+          .getDocumentsAction(this.state.pageSize, this.state.offset);
       }
     }
 
@@ -80,12 +82,12 @@ class Dashboard extends React.Component {
     if (['all', 'private', 'role', 'public']
       .includes(selectedView)) {
       return this.props.documentActions
-        .getDocumentsAction(12, 0, 'ASC', selectedView);
+        .getDocumentsAction(this.pageSize, this.offset, 'ASC', selectedView);
     } else if (selectedView === 'own') {
       return this.props.userActions
         .userDocumentsAction(this.props.currentUser.userId);
     }
-    return this.props.documentActions.getDocumentsAction(12, 0);
+    return this.props.documentActions.getDocumentsAction((this.pageSize, this.offset));
   }
 
   /**
@@ -112,11 +114,12 @@ class Dashboard extends React.Component {
    * @memberof Dashboard
    */
   getMoreDocuments(offset) {
+    this.setState({ offset });
     if (this.state.selectedView === 'own') {
       return this.props.userActions.userDocumentsAction(this.props.currentUser.userId, offset);
     }
     if (this.state.inputData === '') {
-      return this.props.documentActions.getDocumentsAction(12, offset, 'ASC', this.state.selectedView);
+      return this.props.documentActions.getDocumentsAction(this.pageSize, offset, 'ASC', this.state.selectedView);
     }
     return this.props.searchActions.searchAction(this.state.inputData, offset);
   }
@@ -153,9 +156,9 @@ class Dashboard extends React.Component {
    */
   render() {
     if (this.props.documents.rows) {
-      const { count } = this.props.documents;
-      const { rows } = this.props.documents;
-      const { currentUser, documents } = this.props;
+      const { currentUser, documents, documents: {
+        count, rows, metaData
+      } } = this.props;
 
       if (currentUser.username) {
         return (
@@ -255,9 +258,9 @@ class Dashboard extends React.Component {
               <div className="mui-container">
                 <div className="pagination">
                   <Pagination
-                    total={documents.pages}
-                    current={documents.currentPage}
-                    display={documents.pages}
+                    total={metaData.pages}
+                    current={metaData.currentPage}
+                    display={metaData.pages}
                     onChange={number => this.getMoreDocuments((number - 1) * 12)}
                   />
                 </div>

@@ -24,28 +24,33 @@ class Feed extends React.Component {
   constructor(props) {
     super(props);
 
-    const numberOfDocuments = 8;
-    const offset = 0;
-    const order = 'DESC';
+    this.numberOfDocuments = 8;
+    this.offset = 0;
+    this.order = 'DESC';
 
     this.props.dispatch(
-      getDocumentsAction(numberOfDocuments, offset, order)
+      getDocumentsAction(this.numberOfDocuments, this.offset, this.order)
       );
   }
 
-  /**
-   * 
-   * determine of component will update
-   * @param {object} nextProps 
-   * @returns 
-   * 
-   * @memberof Feed
-   */
-  componentWillUpdate(nextProps) {
-    if (this.props.documents !== nextProps.documents) {
-      return true;
+    /**
+     * call getDocumentsAction
+     * only if a document has been deleted
+     * ensure we have a filled up Feed
+     * 
+     * @memberof Feed
+     */
+    componentWillUpdate(nextProps) {
+      if (nextProps.documents.status === 'deleted') {
+        return this.props
+          .dispatch(
+            getDocumentsAction(
+              this.numberOfDocuments,
+              this.offset,
+              this.order
+            ));
+      }
     }
-  }
 
   /**
    * 

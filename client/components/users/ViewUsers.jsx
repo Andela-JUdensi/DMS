@@ -9,14 +9,16 @@ import {
   TableHeaderColumn,
   TableRow,
 } from 'material-ui/Table';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Pagination from 'material-ui-pagination';
+import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
-import { getAllUsersAction, searchUserAction } from '../../actions/users.action';
+import {
+  getAllUsersAction,
+  searchUserAction
+} from '../../actions/users.action';
 import AllUsersTable from './AllUsersTable';
 
 /**
@@ -93,7 +95,9 @@ class ViewUsers extends React.Component {
       this.props.searchUserAction(this.state.inputData);
     });
     setTimeout(() => {
-      if ((this.state.inputData.length > 0 || document.activeElement['id'] === 'usersSearch') && this.searchInput !== null) {
+      if ((this.state.inputData.length > 0
+        || document.activeElement['id'] === 'usersSearch')
+        && this.searchInput !== null) {
         this.searchInput.focus();
       } else if (this.searchInput !== null) {
         this.searchInput.blur();
@@ -109,14 +113,14 @@ class ViewUsers extends React.Component {
    * @memberof ViewUsers
    */
   render() {
-    const { allUsers } = this.props;
+    const { allUsers
+    } = this.props;
+
     return (
       <div className="mui-row">
         <div className="mui-col-md-offset-1 mui-col-md-10">
-          <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+          <MuiThemeProvider>
             <div>
-
-
               <div className="dashboard-search">
                 <TextField
                   onChange={this.onUpdateInput}
@@ -127,40 +131,45 @@ class ViewUsers extends React.Component {
                   ref={(input) => { this.searchInput = input; }}
                 />
               </div>
-
-
-              <Table
-                selectable={false}
-                adjustForCheckbox={false}
-                className="users-list-table"
-              >
-                <TableHeader>
-                  <TableRow>
-                    <TableHeaderColumn tooltip="S/No">S/No</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Email">Email</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Role">Role</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Visit user profile">Profile</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {
-                    allUsers.rows
-                  ?
-                    allUsers.rows.map(AllUsersTable)
-                  :
-                    ''
-                  }
-                </TableBody>
-              </Table>
-              <div className="pagination">
-                <Pagination
-                  total={allUsers.pages}
-                  current={allUsers.currentPage}
-                  display={allUsers.pages}
-                  onChange={number => this.getMoreUsers((number - 1) * 5)}
-                />
-              </div>
+              {
+                allUsers.rows
+                ?
+                  <div>
+                    <Table
+                      selectable={false}
+                      adjustForCheckbox={false}
+                      className="users-list-table"
+                    >
+                      <TableHeader>
+                        <TableRow>
+                          <TableHeaderColumn tooltip="S/No">S/No</TableHeaderColumn>
+                          <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
+                          <TableHeaderColumn tooltip="Email">Email</TableHeaderColumn>
+                          <TableHeaderColumn tooltip="Role">Role</TableHeaderColumn>
+                          <TableHeaderColumn tooltip="Visit user profile">Profile</TableHeaderColumn>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {
+                          allUsers.rows.map(AllUsersTable)
+                        }
+                      </TableBody>
+                    </Table>
+                    <div className="pagination">
+                      <Pagination
+                        total={allUsers.metaData.pages}
+                        current={allUsers.metaData.currentPage}
+                        display={allUsers.metaData.pages}
+                        onChange={number => this.getMoreUsers((number - 1) * 5)}
+                      />
+                    </div>
+                  </div>
+                :
+                  <div>
+                    <h1>No user found</h1>
+                    <CircularProgress size={60} thickness={7} />
+                  </div>
+              }
             </div>
           </MuiThemeProvider>
         </div>
