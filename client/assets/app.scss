@@ -256,6 +256,14 @@ svg {
   color: $primary-white !important;
 }
 
+.form-container,
+.edit-profile-container,
+.edit-document-form {
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+  }
+}
+
 .dashboard-search label, .dashboard-search input {
   color: $primary-white !important;
 }

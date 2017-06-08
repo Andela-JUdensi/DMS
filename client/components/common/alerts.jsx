@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 const Alerts = (props) => {
   return (
     <div>
-      <p className="mui--text-center mui--text-dark alert-success">
+      <p className="mui--text-center mui--bg-primary mui--text-light alert-success">
         { props.success ? props.success : ''}
       </p>
-      <p className="mui--text-center mui--bg-primary alert-error">
+      <p className="mui--text-center mui--bg-danger mui--text-light alert-error">
         { props.errors ? props.errors : ''}
       </p>
     </div>
