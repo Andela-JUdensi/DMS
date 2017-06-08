@@ -11,6 +11,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { updateUserAction, getUserAction } from '../../actions/users.action';
 import styles from '../../assets/styles';
 import ProfileForm from './ProfileForm';
+import Validator from '../../shared/validator';
 
 /**
  * 
@@ -87,6 +88,11 @@ class EditProfileForm extends React.Component {
    */
   onSubmit(event) {
     event.preventDefault();
+
+    if (Validator.validateUserUpdate(this.state) !== true) {
+      return this.setState({ errors: Validator.validateUserUpdate(this.state)});
+    }
+
     this.setState({
       errors: '',
       isLoading: true,
@@ -97,13 +103,13 @@ class EditProfileForm extends React.Component {
     selectedUserInfo = lodash.omit(selectedUserInfo, ['userId']);
 
     this.props.updateUserAction(this.props.location.state.id, selectedUserInfo)
-      .then(() => {
+      .then((response) => {
         this.setState({
           errors: '',
           isLoading: false,
           snackBarOpen: true
-        });
-        this.props.getUserAction(this.state.userId);
+        }, () => this.props.getUserAction(this.state.userId));
+        setTimeout(() => this.setState({ snackBarOpen: false }), 3000);
       })
       .catch((error) => {
         this.setState({ errors: error, isLoading: false });

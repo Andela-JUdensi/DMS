@@ -55,13 +55,17 @@ export const updateUserInformationError = updateError => ({
  * @param {object} userDetails - user information
  */
 export const updateUserAction = (userId, userDetails) =>
-  dispatch => axios.put(`/api/users/${userId}`, userDetails)
+  dispatch => new Promise((resolve, reject) => {
+    axios.put(`/api/users/${userId}`, userDetails)
     .then((success) => {
       dispatch(updateUserInformationSuccess(success.data));
+      resolve(success)
     })
     .catch((error) => {
       dispatch(updateUserInformationError(error.response.data.message));
+      reject(error.response.data.message);
     });
+  });
 
 /**
  * action dispatched getting a user document(s)

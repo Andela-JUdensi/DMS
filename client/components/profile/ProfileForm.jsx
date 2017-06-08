@@ -11,6 +11,7 @@ import RoleIcon from 'material-ui/svg-icons/action/group-work';
 import AccessibilityIcon from 'material-ui/svg-icons/action/accessibility';
 import FormElements from '../common/FormTextFields';
 import styles from '../../assets/styles';
+import Alerts from '../common/alerts';
 
 /**
  * render update profile form
@@ -23,7 +24,7 @@ const ProfileForm = props => (
         className="profile-update-form" style={styles.formStyle}>
 
         <h1 id="updateProfile">Update Profile</h1>
-        {(props.errors) ? <p> {props.errors} </p> : ''}
+        <Alerts errors={props.errors} />
         <div className="mui-col-md-6">
           <FormElements
             field="firstname"
