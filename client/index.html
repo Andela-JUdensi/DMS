@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hermes | Document Management System</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.muicss.com/mui-0.9.16/css/mui.min.css">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+  </head>
+  <body>
+    <div id="app">
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//cdn.muicss.com/mui-0.9.16/js/mui.min.js"></script>
+    <script src="https://use.fontawesome.com/d12eecba89.js"></script>
+    <script src="javascript.js"></script>
+    <script>
+       $(function(){
+        var bgimage = new Image();      
+        bgimage.src="https://source.unsplash.com/1600x900/?nature,water";       
+        $("body").hide();     
+        $(bgimage).load(function(){
+          $("body").css("background-image","url("+$(this).attr("src")+")").fadeIn(2000, 'swing'); 
+        }); 
+       });
+    </script>
+  </body>
+</html>
