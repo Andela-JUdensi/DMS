@@ -1,5 +1,4 @@
 import path from 'path';
-// import favicon from 'serve-favicon';
 import webpack from 'webpack';
 import webpackMiddleWare from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -27,4 +26,3 @@ app.all('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

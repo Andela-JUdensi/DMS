@@ -14,6 +14,8 @@
 A document management system (DMS) is a system (based on computer programs in the case of the management of digital documents) used to track, manage and store documents and reduce paper work.
 
 ### Features
+##### Offline support
+
 ##### Privileges
 - Superadmin
   Supercedes all other users. Manages all data and account. A super admin have the privilege to update a user information. This is important in case of a forgotten password and to increase/decrease privilege of a user.
