@@ -1,0 +1,7 @@
+/lib/**
+/coverage/**
+/jsdoc/**
+/node_modules/
+/server/swagger/
+/client/
+/server/db/
