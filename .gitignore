@@ -1,7 +1,12 @@
 .DS_STORE
 node_modules
 .env
-runs.js
 .nyc_output
 coverage
 **docker**
+lib
+.idea
+.nyc_output
+bin
+coverage
+src

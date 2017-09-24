@@ -5,30 +5,6 @@ import {
 
 
 const documentRoute = (router) => {
-   /**
-   * @swagger
-   * definitions:
-   *   NewDocument:
-   *     type: object
-   *     required:
-   *        - title
-   *        - body
-   *        - access
-   *     properties:
-   *        title:
-   *           type: string
-   *        body:
-   *           type: string
-   *        access:
-   *            type: string
-   *   Document:
-   *      allOf:
-   *        - $ref: '#definitions/NewDocument'
-   *        - required:
-   *        - id:
-   *              type: integer
-   *              format: int64
-   */
   router
     .route('/documents')
     /**
@@ -37,7 +13,7 @@ const documentRoute = (router) => {
      *   post:
      *     description: Creates a new document
      *     tags:
-     *      - Create Document
+     *      - Create a new ocument
      *     produces:
      *      - application/json
      *     parameters:
@@ -46,13 +22,21 @@ const documentRoute = (router) => {
      *         description: an authorization header
      *         required: true
      *         type: string
-     *       - name: body
-     *         description: Document object
+     *       - name: title
+     *         description: Document title
      *         in:  body
      *         required: true
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/NewDocument'
+     *       - name: body
+     *         description: Document content
+     *         in:  body
+     *         required: true
+     *         type: string
+     *       - name: access
+     *         description: Document access
+     *         in:  body
+     *         required: false
+     *         type: string
      *     responses:
      *       201:
      *         description: documents
@@ -81,7 +65,7 @@ const documentRoute = (router) => {
      *              schema:
      *                  type: array
      *                  items:
-     *                      $ref: '#/definitions/NewDocument'
+     *                      $type: object
      */
     .get(DocumentsController.findAll);
   router
@@ -99,7 +83,7 @@ const documentRoute = (router) => {
      *        - name: Authorization
      *          in: header
      *          description: an authorization header
-     *          required: true
+     *          required: false
      *          type: string
      *        - name: id
      *          description: Document Id
@@ -111,8 +95,6 @@ const documentRoute = (router) => {
      *          description: documents
      *          schema:
      *            type: array
-     *            items:
-     *              $ref: '#/definitions/NewDocument'
      */
     .get(DocumentsController.findOne)
     /**
@@ -136,19 +118,20 @@ const documentRoute = (router) => {
      *          required: true
      *          type: integer
      *        - name: body
-     *          description: Document object
+     *          description: Document content
      *          in:  body
      *          required: true
      *          type: string
-     *          schema:
-     *            $ref: '#/definitions/NewDocument'
+     *        - name: access
+     *          description: Document access
+     *          in:  body
+     *          required: true
+     *          type: string
      *     responses:
      *        200:
      *          description: documents
      *          schema:
      *            type: array
-     *            items:
-     *              $ref: '#/definitions/NewDocument'
      */
     .put(middlewares.validateDocumentUpdate, DocumentsController.update)
     /**
@@ -176,8 +159,6 @@ const documentRoute = (router) => {
      *          description: documents
      *          schema:
      *            type: array
-     *            items:
-     *              $ref: '#/definitions/NewDocument'
      */
     .delete(middlewares.validateDeleteDocument, DocumentsController.delete);
 };

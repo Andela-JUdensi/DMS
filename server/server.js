@@ -28,17 +28,20 @@ app.use([middlewares.verifyAuthentication,
   middlewares.verifyRouteAndMethod]);
 app.use(morgan(format));
 
-if (process.env.NODE_ENV !== 'production') {
-  app.use('/documentation', express.static(path.join(__dirname, './swagger/')));
-} else {
-  app.use('/documentation', express.static(
-    path.join(__dirname, '../../server/swagger/')));
-}
+app.use('/api', router);
 
 routes(router);
 swagger(router);
 
-app.use('/api', router);
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/documentation', express.static(
+      path.join(__dirname, './documentation/dist/')));
+} else {
+  app.use('/documentation', express.static(
+    path.join(__dirname, '../../server/documentation/dist/')));
+}
+
 
 app.listen(SERVER.PORT, () =>
   winston.info(`Hermes is Awakened ON PORT ${SERVER.PORT}`));

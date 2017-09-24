@@ -4,39 +4,6 @@ import {
 } from './dependencies';
 
 const userRoute = (router) => {
-    /**
-     * @swagger
-     * definitions:
-     *   NewUser:
-     *     type: object
-     *     required:
-     *       - firstname
-     *       - lastname
-     *       - username
-     *       - email
-     *       - password
-     *     properties:
-     *       firstname:
-     *         type: string
-     *       lastname:
-     *         type: string
-     *       username:
-     *         type: string
-     *       password:
-     *         type: string
-     *         format: password
-     *       email:
-     *         type: string
-     *   User:
-     *     allOf:
-     *       - $ref: '#/definitions/NewUser'
-     *       - required:
-     *         - id
-     *       - properties:
-     *         id:
-     *           type: integer
-     *           format: int64
-     */
   router
     .route('/users')
     /**
@@ -49,13 +16,36 @@ const userRoute = (router) => {
      *     produces:
      *      - application/json
      *     parameters:
-     *       - name: body
-     *         description: User object
+     *       - name: firstname
+     *         description: Firstname
      *         in:  body
      *         required: true
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/NewUser'
+     *       - name: lastname
+     *         description: Lastname
+     *         in:  body
+     *         required: true
+     *         type: string
+     *       - name: email
+     *         description: Email
+     *         in:  body
+     *         required: true
+     *         type: string
+     *       - name: username
+     *         description: Username
+     *         in:  body
+     *         required: true
+     *         type: string
+     *       - name: password
+     *         description: Password
+     *         in:  body
+     *         required: true
+     *         type: string
+     *       - name: roleId
+     *         description: Password
+     *         in:  body
+     *         required: false
+     *         type: string
      *     responses:
      *       201:
      *         description: users
@@ -83,8 +73,6 @@ const userRoute = (router) => {
      *          description: users
      *          schema:
      *            type: array
-     *            items:
-     *              $ref: '#/definitions/NewUser'
      */
     .get(UsersController.findAll);
   router
@@ -109,8 +97,6 @@ const userRoute = (router) => {
      *         in:  path
      *         required: true
      *         type: integer
-     *         schema:
-     *           $ref: '#/definitions/NewUser'
      *     responses:
      *       201:
      *         description: users
@@ -138,13 +124,36 @@ const userRoute = (router) => {
      *         in:  path
      *         required: true
      *         type: integer
-     *       - name: body
-     *         description: User object
+     *       - name: firstname
+     *         description: Firstname
      *         in:  body
      *         required: true
+     *         type: false
+     *       - name: lastname
+     *         description: Lastname
+     *         in:  body
+     *         required: true
+     *         type: false
+     *       - name: email
+     *         description: Email
+     *         in:  body
+     *         required: true
+     *         type: false
+     *       - name: username
+     *         description: Username
+     *         in:  body
+     *         required: true
+     *         type: false
+     *       - name: password
+     *         description: Password
+     *         in:  body
+     *         required: false
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/NewUser'
+     *       - name: roleId
+     *         description: role Id
+     *         in:  body
+     *         required: false
+     *         type: integer
      *     responses:
      *       200:
      *         description: users
@@ -172,8 +181,6 @@ const userRoute = (router) => {
      *         in:  path
      *         required: true
      *         type: integer
-     *         schema:
-     *           $ref: '#/definitions/NewUser'
      *     responses:
      *       201:
      *         description: users
@@ -213,8 +220,6 @@ const userRoute = (router) => {
        *         in:  body
        *         required: true
        *         type: string
-       *         schema:
-       *           $ref: '#/definitions/Login'
        *     responses:
        *       200:
        *         description: users
@@ -247,8 +252,6 @@ const userRoute = (router) => {
      *         description: an authorization header
      *         required: true
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/Logout'
      *     responses:
      *       200:
      *         description: successfully logout

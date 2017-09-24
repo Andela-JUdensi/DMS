@@ -4,7 +4,8 @@ require('dotenv').config();
 
 const hostUrl = process.env.NODE_ENV === 'production'
   ? 'hermes-dms-develop.herokuapp.com'
-  : 'localhost:9090';
+  : `localhost:${process.env.NODE_ENV || 9090}`;
+
 // swagger definition
 const swaggerDefinition = {
   info: {
@@ -13,7 +14,8 @@ const swaggerDefinition = {
     description: 'API documentation for to create, manage and edit documents',
   },
   host: hostUrl,
-  basePath: '/'
+  basePath: '/',
+  swagger: '2.0',
 };
 
 // options for the swagger docs

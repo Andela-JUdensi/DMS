@@ -18,11 +18,10 @@ if (isDeveloping) {
     noInfo: true,
   }));
   app.use(webpackHotMiddleware(compiler));
+  app.all('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+  });
 } else {
   app.use(require('express').static('lib/client')); // eslint-disable-line
 }
-
-app.all('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html'));
-});
 

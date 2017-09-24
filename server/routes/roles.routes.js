@@ -4,29 +4,6 @@ import {
 } from './dependencies';
 
 const rolesRoute = (router) => {
-   /**
-   * @swagger
-   * definitions:
-   *   NewRole:
-   *     type: object
-   *     required:
-   *       - roleName
-   *       - description
-   *     properties:
-   *       roleName:
-   *         type: string
-   *       description:
-   *         type: string
-   *   Role:
-   *     allOf:
-   *       - $ref: '#/definitions/NewRole'
-   *       - required:
-   *         - id
-   *       - properties:
-   *         id:
-   *           type: integer
-   *           format: int64
-   */
   router
     .route('/roles')
     /**
@@ -44,18 +21,19 @@ const rolesRoute = (router) => {
      *         description: an authorization token
      *         required: true
      *         type: string
-     *       - name: body
-     *         description: Role object
+     *       - name: roleName
+     *         description: Role name
      *         in:  body
      *         required: true
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/NewRole'
+     *       - name: description
+     *         description: Role description
+     *         in:  body
+     *         required: true
+     *         type: string
      *     responses:
      *       201:
      *         description: roles
-     *         schema:
-     *          type: object
      */
     .post(middlewares.validateRoleChange, RolesController.create)
     /**
@@ -71,15 +49,11 @@ const rolesRoute = (router) => {
      *        - name: Authorization
      *          in: header
      *          description: an authorization header
-     *          required: false
+     *          required: true
      *          type: string
      *      responses:
      *          200:
      *              description: roles
-     *              schema:
-     *                  type: array
-     *                  items:
-     *                      $ref: '#/definitions/NewRole'
      */
     .get(RolesController.findAll);
   router
@@ -104,8 +78,6 @@ const rolesRoute = (router) => {
      *         in:  path
      *         required: true
      *         type: integer
-     *         schema:
-     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
@@ -134,12 +106,10 @@ const rolesRoute = (router) => {
      *         required: true
      *         type: integer
      *       - name: body
-     *         description: Role object
+     *         description: Role description
      *         in:  body
-     *         required: true
+     *         required: false
      *         type: string
-     *         schema:
-     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
@@ -167,8 +137,6 @@ const rolesRoute = (router) => {
      *         in:  path
      *         required: true
      *         type: integer
-     *         schema:
-     *           $ref: '#/definitions/NewRole'
      *     responses:
      *       201:
      *         description: roles
