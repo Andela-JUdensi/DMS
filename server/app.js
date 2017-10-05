@@ -18,7 +18,7 @@ if (isDeveloping) {
     noInfo: true,
   }));
   app.use(webpackHotMiddleware(compiler));
-  app.all('*', (req, res) => {
+  app.use('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
   });
 } else {
