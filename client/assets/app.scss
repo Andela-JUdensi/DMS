@@ -15,7 +15,7 @@ a {
 body {
  @extend .transparent-theme;
   background-repeat: no-repeat;
-  background-size: 100wh 100vh;
+  background-size: cover;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
