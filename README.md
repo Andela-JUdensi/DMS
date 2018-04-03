@@ -26,14 +26,14 @@ A document management system (DMS) is a system (based on computer programs in th
   These documents can be edited and deleted by the regular user.
 - Guests
   As a guest, you only have access to the 8 most recent public documents on the application home screen. This is important to help unregistered users get a feel of the application
-  
+
 ### Technologies
 - Nodejs: [an open source server framework that allows you to run JavaScript on the server.](https://www.nodejs.org)
 - Postgresql: [open source object-relational database system](https://www.postgresql.org/about/)
 - Reactjs: developed by facebook, it's an open source declarative, efficient, and flexible JavaScript library for building user interfaces.
 - Redux: is a predictable state container for JavaScript apps.
 - Material-ui: Google's material design UI components built with React.
-- Sequelize: Sequelize is a promise-based ORM for Node.js 
+- Sequelize: Sequelize is a promise-based ORM for Node.js
 
 
 ### Installation
@@ -73,4 +73,53 @@ Contributors are welcome to further enhance the features of this API by contribu
 
 ### Licence
 MIT
+
+# IMAGES
+### Your profile
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.36.54.png?raw=true)
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.37.13.png?raw=true)
+
+
+
+### Update your profile
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.37.26.png?raw=true)
+
+
+### Paginated list of users
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.37.50.png?raw=true)
+
+
+### Document dashbord
+##### All documents
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.04.png?raw=true)
+##### Your documents
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.11.png?raw=true)
+##### Document belonging to folks with the same role as you
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.20.png?raw=true)
+##### All public documents
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.28.png?raw=true)
+
+
+### Home page
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.44.png?raw=true)
+
+
+### Add a new document
+##### Document editor
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.38.56.png?raw=true)
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.44.33.png?raw=true)
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.44.42.png?raw=true)
+##### Preview before submission
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.41.59.png?raw=true)
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.44.22.png?raw=true)
+
+
+### View added documents
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.45.23.png?raw=true)
+##### Toggle Zen (Read focus) mode. Focuses only on what you read
+![](https://github.com/jyehoshua/DMS/blob/develop/readme-images/Screen%20Shot%202018-04-03%20at%2006.45.30.png?raw=true)
+
+
+
+
 
