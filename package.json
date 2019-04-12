@@ -145,7 +145,7 @@
     "regenerator-runtime": "^0.10.3",
     "sass-resources-loader": "^1.2.1",
     "selenium-standalone": "5.9.0",
-    "sequelize": "^3.30.4",
+    "sequelize": "^5.3.0",
     "sequelize-cli": "^2.7.0",
     "serve-favicon": "^2.4.2",
     "shortid": "^2.2.8",
