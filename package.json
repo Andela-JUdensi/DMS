@@ -122,7 +122,7 @@
     "material-ui": "^0.17.4",
     "material-ui-markdown-editor": "^1.0.10",
     "material-ui-pagination": "^1.0.3",
-    "mongoose": "^4.9.4",
+    "mongoose": "^5.3.9",
     "morgan": "^1.8.1",
     "morgan-json": "^1.1.0",
     "pg": "^6.1.5",
